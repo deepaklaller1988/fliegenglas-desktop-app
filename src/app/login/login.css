@@ -1,0 +1,117 @@
+.splash-intro {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    background: #030e1c;
+    background: -webkit-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    background: linear-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    background: linear-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f1e767", endColorstr="#feb645", GradientType=0);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+span.logo-splash img {
+    max-width: 90%;
+    width: 375px;
+    margin: 0 auto;
+    display: block;
+}
+
+span.logo-splash h6 {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 22px;
+    line-height: 30px;
+    color: white;
+}
+
+.button-splash.new-home-buttons {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 375px;
+    margin: 0 auto;
+}
+
+.button-splash.new-home-buttons p {
+    margin-top: 15px;
+    float: left;
+    width: 100%;
+    color: white;
+    font-size: 16px;
+}
+
+a.button.log-set {
+    color: #000;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: white;
+}
+
+a.button.log-set ion-img {
+    width: 28px;
+    margin-right: 10px;
+}
+
+a.button.google-set {
+    background-color: #4c8dff;
+    position: relative;
+    color: white;
+}
+
+a.button.log-set img {
+    width: 28px;
+    margin-right: 10px;
+}
+
+a.button.google-set img {
+    position: absolute;
+    left: 0;
+    background: white;
+    height: 100%;
+    border-radius: 6px 0 0 6px;
+    padding: 0 12px;
+    width: 53px;
+}
+
+a.button {
+    width: 100%;
+    float: left;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.yellow.button-google {
+    width: 100%;
+    background: transparent !important;
+    color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding: 14px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spashHub {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 50px 0;
+    height: 100vh;
+    max-height: 600px;
+}
