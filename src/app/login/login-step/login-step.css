@@ -26,8 +26,6 @@
   
   
     .form {
-      float: left;
-      width: 100%;
       margin-top: 40px;
   }
   .form label {
@@ -37,18 +35,16 @@
   }
   
   .form p {
-      font-size: 12px;
-      float: left;
-      width: 100%;
       color: white;
-      margin-top: 10px;
   }
   .form-view {
-      position: relative;
-      float: left;
-      width: 100%;
-      margin-bottom: 25px;
-  }
+    position: relative;
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
   
   .log-otp {
     background: #ECF4FB;
@@ -62,7 +58,7 @@
     background-color: #ff9900 !important;
     margin-top: 10px;
   }
-  .log-otp input.yellow.button.flie-loader{background-image: url(/assets/images/Button-loader-fly.gif);
+  input.yellow.button.flie-loader{background-image: url(/assets/images/Button-loader-fly.gif);
     /* background-color: #ff9900; */
     background-repeat: no-repeat;
     background-position: center;
@@ -76,6 +72,10 @@
     text-align: center;
     font-size: 18px;
   }
+  .container {
+    max-width: 375px;
+    margin: 0 auto;
+}
   
   .log-otp p {
     color: #0d223b;
@@ -117,10 +117,6 @@
     margin: 0 auto;
     border-top: 1px solid rgba(255, 255, 255, .5);
   }
-    form {
-      width: 96%;
-      margin-left: 2rem;
-    }
   
     .resendLink {
       color: #f90;
@@ -129,7 +125,13 @@
     .resendLink:hover {
       color: #ff6600 !important;
     }
-  
+    input.button {
+      border: 1px solid white;
+  }
+  .yellow {
+    background-color: #ff9900 !important;
+    border-color: #ff9900 !important;
+}
     .privacy span,
     .form p {
       font-size: 14px;
@@ -146,14 +148,5 @@
   
     .privacy {
       border: none !important;
-    }
-  
-    ion-checkbox {
-      --border-color: white;
-      --size: 35px;
-      --background: white;
-      --checkmark-color: #32ac5c;
-      --checkmark-width: 4px;
-      --border-radius: 1px;
     }
   

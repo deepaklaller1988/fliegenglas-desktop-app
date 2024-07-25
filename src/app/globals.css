@@ -42,6 +42,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+*{scroll-behavior: smooth;}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -101,27 +102,28 @@ body {
 }
 
 body {
+	min-height: 100vh;
 	-webkit-overflow-scrolling: touch;
 	background: #030e1c;
+    background: -webkit-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    background: linear-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    background: linear-gradient(to bottom, #0b1521 0%, #182e49 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f1e767", endColorstr="#feb645", GradientType=0);
 }
 ::-webkit-input-placeholder {
 	color: #babdc0;
-	font-size: 14px;
 }
 
 ::-moz-placeholder {
 	color: #babdc0;
-	font-size: 14px;
 }
 
 :-ms-input-placeholder {
 	color: #babdc0;
-	font-size: 14px;
 }
 
 :-moz-placeholder {
 	color: #babdc0;
-	font-size: 14px;
 }
 input:focus,
 select:focus,
@@ -130,20 +132,17 @@ button:focus {
 	outline: none;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"],
-input[type="email"] {
-	color: #333 !important;
-	float: left !important;
-	width: 100% !important;
-	border-radius: 4px !important;
-	border: none !important;
-	height: 45px !important;
-	padding: 0px 10px !important;
-	background: #fff !important;
+.button {
+    width: 100%;
+    float: left;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: center;
+    border: none;
+    color: white;
+    cursor: pointer;
+    height: 50px;
 }
-
 .textarea {
 	color: #333 !important;
 	float: left !important;
@@ -166,9 +165,91 @@ h2,
 h3,
 h4,
 h5,
-h6,
-label,
-a,
-input[type="submit"] {
-	font-family: product_sansbold !important;
+h6{font-family: product_sansbold !important;
 }
+
+
+/* Menu collapse open css */
+@keyframes menuTrans{
+	0% {opacity:0;}
+	70% {opacity:0;}
+	100% {opacity:1;}
+  }
+.menuTrans a, .menuTrans span{      
+animation: menuTrans 1s;
+}
+
+.collapseMenu .openClose span, .collapseMenu .collapseMenuMain a {
+font-size: 0;
+}
+
+.collapseMenu .collapseMenuMain {
+align-items: center;
+gap: 20px;
+}
+
+.collapseMenu a {
+color: white;
+}
+
+.collapseMenu h2 {
+display: none;
+}
+
+.collapseMenu {
+align-items: center;
+min-width: 100px;
+max-width: 100px;
+}
+
+.collapseMenu span {
+justify-content: center;
+gap: 0;
+}
+
+.collapseMenu .collapseMenuMain a {
+    gap: 0;
+    padding: 10px;
+    background: #3a4859;
+    border-radius: 6px;
+}
+
+.collapseMenu .collapseMenuMain section {
+gap: 20px;
+}
+.collapseMenuMain a {
+position: relative;
+}
+
+.collapseMenuMain a div {
+position: absolute;
+background: #545b64;
+padding: 6px 15px;
+z-index: 10;
+left: 100%;
+margin-left: 20px;
+border-radius: 8px;
+visibility: hidden;
+white-space: nowrap;
+}
+
+.collapseMenuMain a div:before {
+content: '';
+width: 10px;
+height: 10px;
+background: #545b64;
+position: absolute;
+left: -5px;
+top: 50%;
+transform: rotate(45deg);
+margin-top: -5px;
+}
+
+.collapseMenu .collapseMenuMain a:hover div {
+visibility: visible;
+}
+.rightSideSet{width:calc(100% - 300px); transition: .5s;}
+.collapseMenu + .rightSideSet {
+width: calc(100% - 100px);
+}
+/* Menu collapse open css */
