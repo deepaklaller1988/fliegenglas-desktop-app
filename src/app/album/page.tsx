@@ -8,6 +8,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import Link from "next/link";
 export default function Album() {
     return (<>
+    <div className="rightSideSet">
         <div className="w-full" id="top">
             <Slide>
                 <div className="each-slide-effect w-full">
@@ -75,6 +76,7 @@ export default function Album() {
         </div>
         <div className="w-full text-center mb-2">
             <Link href="" className="bg-white/0 rounded-md text-white p-2 px-3 text-[14px] inline-block m-auto underline">Datenschutzerklärung </Link>
+        </div>
         </div>
     </>)
 }

@@ -175,7 +175,7 @@ h6{font-family: product_sansbold !important;
 	70% {opacity:0;}
 	100% {opacity:1;}
   }
-.menuTrans a, .menuTrans span{      
+.menuTrans a, .menuTrans span, .menuTrans h2{      
 animation: menuTrans 1s;
 }
 

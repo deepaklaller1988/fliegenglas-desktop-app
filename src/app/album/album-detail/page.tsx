@@ -6,10 +6,11 @@ import { MdKeyboardBackspace } from "react-icons/md";
 export default function AlbumDetail() {
     return (
         <>
-        <div className='loaderSet w-full fixed top-0 left-0 h-full z-50 flex items-center justify-center hidden'>
-        <img className="block w-full max-w-[150px]" src="../assets/images/loader-animated-gif.gif" alt="Album" />
-        </div>
-            <div className='w-full fixed top-0 left-0 h-full right-0 overflow-auto bgChangeAlbum bg-cover bg-center' style={{ backgroundImage: 'url("../assets/images/slides/home-top-wittgenstein-pu.jpg")' }}>
+        <div className='rightSideSet'>
+            <div className='loaderSet w-full h-full flex items-center justify-center hidden'>
+                <img className="block w-full max-w-[150px]" src="../assets/images/loader-animated-gif.gif" alt="Album" />
+            </div>
+            <div className='w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed' style={{ backgroundImage: 'url("../assets/images/slides/home-top-wittgenstein-pu.jpg")' }}>
                 <div className='w-full p-3'>
                     <Link href="../album" className='flex items-center gap-1 py-2 pb-3 mb-2 text-white'><MdKeyboardBackspace className='w-6 h-6' /> Zurück</Link>
                     <div className='w-full'>
@@ -63,7 +64,7 @@ export default function AlbumDetail() {
                         </span>
                     </div>
                     <div className='w-full bg-white/80 rounded-md p-3 py-8 mt-3 flex gap-4 flex-col'>
-                    <h2 className='text-center text-[#232a2c]'>Inhalt des Hörbuches</h2>
+                        <h2 className='text-center text-[#232a2c]'>Inhalt des Hörbuches</h2>
                         <p className='text-[#232a2c] leading-6'>Die «Philosophischen Untersuchungen» von Ludwig Wittgensteins sind das wahrscheinlich einflussreichste und bedeutendste philosophische Werk der letzten 100 Jahre und jetzt erstmals in der Fliegenglas App als Hörbuch veröffentlicht!</p>
                         <p className='text-[#232a2c] leading-6'>Wittgensteins zentrale These, die er an unzähligen Beispielen plausibilisiert: Die Bedeutung der Sprache und der Worte besteht fast nie in einer Beschreibung oder Bezeichnung von Dingen, sondern drückt bestimmte Zwecke aus und macht nur in bestimmten Kontexten, «Sprachspielen» Sinn.</p>
                         <p className='text-[#232a2c] leading-6'>Diese Zwecke und Sprachspiele insgesamt sind nur innerhalb einer bestimmten «Lebensform» wie der menschlichen Lebensform, verständlich und sinnvoll.</p>
@@ -81,9 +82,10 @@ export default function AlbumDetail() {
                         <p className='text-[#232a2c] leading-6'>© Suhrkamp Verlag Frankfurt am Main 2003 – Alle Rechte bei und vorbehalten durch Suhrkamp Verlag Berlin</p>
                     </div>
                     <div className="w-full text-center mb-2">
-            <Link href="" className="bg-white/0 rounded-md text-white p-2 px-3 text-[14px] inline-block m-auto underline">Datenschutzerklärung </Link>
-        </div>
+                        <Link href="" className="bg-white/0 rounded-md text-white p-2 px-3 text-[14px] inline-block m-auto underline">Datenschutzerklärung </Link>
+                    </div>
                 </div>
+            </div>
             </div>
         </>
     )
