@@ -11,13 +11,9 @@ export default function Home() {
           className="text-white"
         >
           <h2 className="mb-3 text-2xl font-semibold">
-          Login
+            Login
           </h2>
         </a>
-
-      
-
-       
       </div>
     </main>
   );

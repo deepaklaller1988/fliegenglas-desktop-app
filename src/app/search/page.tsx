@@ -77,7 +77,7 @@ export default function Search() {
               </div>
             ))
           ) : data.length > 0 ? (
-            data.slice(0, show).map((item:any, index:any) => (
+            data.slice(0, show).map((item: any, index: any) => (
               <div
                 key={index}
                 className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4"
@@ -154,37 +154,37 @@ export default function Search() {
       </div>
       <div className="w-full mt-4">
         <Slide>
-            {loading ? (
-              Array.from({ length: show }).map((_, index) => (
-                <div
-                  key={index}
-                  className="min-w-[138px] h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                >
-                  {SkeletonLoader()}
-                </div>
-              ))
-            ) : (
-              data.map((item:any, index:any) => (
-                <div
-                  key={index}
-                  className="each-slide-effect w-full flex justify-center items-center"
-                >
-                  <div className="slider-parent">
-                    <div className="card h-full">
-                      <Link
-                        href={`album/album-detail?image=${encodeURIComponent(
-                          item.image
-                        )}`}
-                      >
-                        <img className="w-full" src={item.image} alt="Album" />
-                       
-                      </Link>
-                    </div>
+          {loading ? (
+            Array.from({ length: show }).map((_, index) => (
+              <div
+                key={index}
+                className="min-w-[138px] h-[220px] inline-block rounded-md overflow-hidden mr-3"
+              >
+                {SkeletonLoader()}
+              </div>
+            ))
+          ) : (
+            data.map((item: any, index: any) => (
+              <div
+                key={index}
+                className="each-slide-effect w-full flex justify-center items-center"
+              >
+                <div className="slider-parent">
+                  <div className="card h-full">
+                    <Link
+                      href={`album/album-detail?image=${encodeURIComponent(
+                        item.image
+                      )}`}
+                    >
+                      <img className="w-full" src={item.image} alt="Album" />
+
+                    </Link>
                   </div>
                 </div>
-              ))
-            )}
-          </Slide>
+              </div>
+            ))
+          )}
+        </Slide>
       </div>
       <div className="w-full p-5 pb-10 flex items-center justify-center">
         <Link

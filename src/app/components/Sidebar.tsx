@@ -37,7 +37,7 @@ export default function Sidebar() {
             <section className='text-white/60 flex flex-col gap-4 p-4 pt-0 h-full collapseMenuMain'>
                 <Link href="/album" className={getLinkClasses("/album")}><div>Startseite</div><GoHome className='w-5 h-5' /> Startseite</Link>
                 <Link href="/search" className={getLinkClasses("/search")}><div>Suche</div><IoSearch className='w-5 h-5' /> Suche</Link>
-                <Link href="/my-audiobooks" className={getLinkClasses("/my-audiobooks")}><div>Meine Hörbücher</div><BiBarChart className='w-5 h-5' /> Meine Hörbücher</Link>
+                <Link href="/order-list" className={getLinkClasses("/order-list")}><div>Meine Hörbücher</div><BiBarChart className='w-5 h-5' /> Meine Hörbücher</Link>
                 <Link href="/more" className={getLinkClasses("/more")}><div>Mehr</div><PiDotsThreeOutlineDuotone className='w-5 h-5' /> Mehr</Link>
                 <div className='w-full'>
                     <section className='flex gap-3 flex-col'>

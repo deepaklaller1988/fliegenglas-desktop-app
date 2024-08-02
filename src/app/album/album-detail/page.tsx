@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation'; 
+import { useSearchParams } from 'next/navigation';
 import Link from "next/link";
 import { MdKeyboardBackspace } from "react-icons/md";
 import Image from 'next/image';
 import Data from "../../../fliegenglas";
 import "./album-detail.css"
 export default function AlbumDetail() {
-    
+
     const [data, setData] = useState<any>(null);
     const searchParams = useSearchParams();
     const id = searchParams.get('id') || '';
@@ -23,11 +23,11 @@ export default function AlbumDetail() {
             console.log("Error ", error);
         }
     };
-    
+
     useEffect(() => {
         getApiData();
     }, [id]);
-    
+
     if (!data) {
         return <div>Loading...</div>;
     }
@@ -46,7 +46,7 @@ export default function AlbumDetail() {
                     <div className='w-full'>
                         <Image className="block w-full shadow-xl" src={data.image} alt="Album" width={265} height={300} />
                     </div>
-                   
+
                     <div className='w-full bg-white/80 rounded-md p-3 mt-3'>
                         <Link href="" className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto">Hörprobe hören</Link>
                     </div>

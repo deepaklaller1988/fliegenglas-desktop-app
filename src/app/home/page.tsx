@@ -1,6 +1,6 @@
 
-export default function Home(){
-    return(<>
-    Heloo
+export default function Home() {
+    return (<>
+        Heloo
     </>)
 }

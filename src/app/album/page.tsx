@@ -39,8 +39,8 @@ export default function Album() {
     getApiData();
   }, []);
 
-  const divOne = data?.filter((itemData:any) => itemData.type.toLowerCase() === "work");
-  const divTwo = data?.filter((itemData:any) => itemData.type.toLowerCase() === "activewear");
+  const divOne = data?.filter((itemData: any) => itemData.type.toLowerCase() === "work");
+  const divTwo = data?.filter((itemData: any) => itemData.type.toLowerCase() === "activewear");
 
   // Skeleton loader component for loading state
   const SkeletonLoader = () => (
@@ -55,8 +55,8 @@ export default function Album() {
       <div className="rightSideSet">
         <div className="w-full squareSet" id="top">
           <Slide>
-          {
-              data.map((item:any, index:any) => (
+            {
+              data.map((item: any, index: any) => (
                 <div
                   key={index}
                   className="each-slide-effect w-full flex justify-center items-center"
@@ -64,8 +64,8 @@ export default function Album() {
                   <div className="slider-parent">
                     <div className="card h-full">
                       <Link
-                        href = {`/album/album-detail?id=${item.id}`}>
-                      
+                        href={`/album/album-detail?id=${item.id}`}>
+
                         <img className="w-full" src={item.image} alt="Album" />
                         <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1 bg-[#040e1b]">
                           <FaPlayCircle className="w-5 h-5" /> Jetzt hören
@@ -100,11 +100,11 @@ export default function Album() {
                     key={index}
                     className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
                   >
-                   {SkeletonLoader()}
+                    {SkeletonLoader()}
                   </div>
                 ))
               ) : (
-                divOne.slice(0, show).map((item:any, index:any) => (
+                divOne.slice(0, show).map((item: any, index: any) => (
                   <div
                     key={index}
                     className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
@@ -145,7 +145,7 @@ export default function Album() {
                   </div>
                 ))
               ) : (
-                divTwo.slice(0, show).map((item:any, index:any) => (
+                divTwo.slice(0, show).map((item: any, index: any) => (
                   <div
                     key={index}
                     className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"

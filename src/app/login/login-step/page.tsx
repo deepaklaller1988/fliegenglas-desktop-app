@@ -25,7 +25,7 @@ export default function Loginstep() {
     <div id="login-page" className="px-4 w-full flex items-center justify-center">
       <div className="loginInner">
         <div className="header">
-          <a href="/startpage">
+          <a href="/login">
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg" />
             </div>
