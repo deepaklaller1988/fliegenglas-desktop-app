@@ -1,11 +1,12 @@
+.bgChangeAlbum{position: relative;}
 .bgChangeAlbum:after{    content: '';
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     backdrop-filter: blur(30px);
-    z-index: -1;
+    z-index:0;
 }
 .border-half-both:before, .border-half-both:after {
     height: 1px;

@@ -6,11 +6,11 @@ export default function Loginstep() {
         <div id="login-page" className="px-4">
             <div className="loginInner">
                 <div className="header">
-                    <a href="/startpage">
+                    <Link href="/login">
                         <div className="py-4 pr-4 text-white">
                             <HiArrowLeft className="text-lg" />
                         </div>
-                    </a>
+                    </Link>
                     <span className="text-white">E-Mail: sandeep@contriverz.com</span>
                 </div>
                 <div className="w-full">
