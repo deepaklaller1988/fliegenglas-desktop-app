@@ -1,0 +1,171 @@
+.header {
+  display: flex;
+  align-items: center;
+}
+
+ion-input.login-text {
+  margin-top: 20px;
+  float: left;
+}
+
+.header p {
+  color: #8a949d;
+  float: right;
+  margin-right: -2rem;
+  margin-top: 1rem;
+}
+
+.header span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header img {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+
+.form {
+  margin-top: 40px;
+}
+
+.form label {
+  margin-bottom: 15px;
+  ;
+  display: block;
+  color: white;
+}
+
+.form p {
+  color: white;
+}
+
+.form-view {
+  position: relative;
+  width: 100%;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.log-otp {
+  background: #ECF4FB;
+  float: left;
+  width: 100%;
+  border-radius: 4px;
+  padding: 24px 20px;
+  margin-bottom: 15px;
+}
+
+.log-otp input.yellow.button {
+  background-color: #ff9900 !important;
+  margin-top: 10px;
+}
+
+input.yellow.button.flie-loader {
+  background-image: url(/assets/images/Button-loader-fly.gif);
+  /* background-color: #ff9900; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.log-otp ion-input {
+  border: 1px solid #6C7279;
+  border-radius: 4px;
+}
+
+.log-otp label {
+  color: #0d223b;
+  text-align: center;
+  font-size: 18px;
+}
+
+.container {
+  max-width: 375px;
+  margin: 0 auto;
+}
+
+.log-otp p {
+  color: #0d223b;
+  margin: 0;
+  font-size: 16px !important;
+  line-height: 1.5em;
+}
+
+.privacy {
+  padding-top: 24px;
+  border-top: 1px solid #6c7279;
+  display: inline-flex;
+}
+
+.privacy input {
+  width: 27px;
+  height: 27px;
+}
+
+.privacy a {
+  font-size: 12px;
+  text-decoration: underline;
+  color: #f39300;
+
+}
+
+.privacy span {
+  font-size: 12px;
+  float: left;
+  margin-left: 12px;
+  width: 100%;
+}
+
+.privacy-btn {
+  font-size: 14px;
+  display: block;
+  width: 231px;
+  text-decoration: underline;
+  background-color: transparent;
+  color: white;
+  padding: 17px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(255, 255, 255, .5);
+}
+
+.resendLink {
+  color: #f90;
+  font-size: 14px;
+}
+
+.resendLink:hover {
+  color: #ff6600 !important;
+}
+
+input.button {
+  border: 1px solid white;
+}
+
+.yellow {
+  background-color: #ff9900 !important;
+  border-color: #ff9900 !important;
+}
+
+.privacy span,
+.form p {
+  font-size: 14px;
+}
+
+ion-label {
+  min-width: 25px;
+}
+
+.logo-img {
+  width: 80px;
+  height: 80px;
+}
+
+.privacy {
+  border: none !important;
+}

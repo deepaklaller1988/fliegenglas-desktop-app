@@ -1,0 +1,12 @@
+.playNail {
+    background: rgb(3, 14, 28);
+    background: -moz-linear-gradient(top, rgba(241, 231, 103, 1) 0%, rgba(254, 182, 69, 1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(241, 231, 103, 1)), color-stop(100%, rgba(254, 182, 69, 1)));
+    background: linear-gradient(to bottom, rgb(3, 14, 28) 0%, rgb(16, 42, 71) 100%);
+    background: -o-linear-gradient(top, rgba(241, 231, 103, 1) 0%, rgba(254, 182, 69, 1) 100%);
+    background: -ms-linear-gradient(top, rgba(241, 231, 103, 1) 0%, rgba(254, 182, 69, 1) 100%);
+    background: linear-gradient(to bottom, rgb(3, 14, 28) 0%, rgb(16, 42, 71) 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f1e767', endColorstr='#feb645', GradientType=0);
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
