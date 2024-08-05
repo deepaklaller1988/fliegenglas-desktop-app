@@ -25,7 +25,7 @@ export default function Loginstep() {
     <div id="login-page" className="px-4 w-full flex items-center justify-center">
       <div className="loginInner">
         <div className="header">
-          <a href="/login">
+          <a href="/auth/login">
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg" />
             </div>
@@ -66,7 +66,7 @@ export default function Loginstep() {
             >
               Anmelde-Link senden
             </button>
-            <Link href="login-step/login-otp" className="text-white">Login</Link>
+            <Link href="/auth/login-step/login-otp" className="text-white">Login</Link>
           </div>
         </div>
       </div>

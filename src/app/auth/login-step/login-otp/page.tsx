@@ -6,7 +6,7 @@ export default function Loginstep() {
         <div id="login-page" className="px-4">
             <div className="loginInner">
                 <div className="header">
-                    <Link href="/login">
+                    <Link href="/auth/login">
                         <div className="py-4 pr-4 text-white">
                             <HiArrowLeft className="text-lg" />
                         </div>
@@ -23,7 +23,7 @@ export default function Loginstep() {
                             <p>Sollte der Anmelde-Link in Deiner E-Mail nicht funktionieren, melde Dich bitte mit dem mitgesendeten Einmal-Passwort an:</p>
                             <input className="rounded-sm p-2 w-full" type="number" placeholder="Einmal-Passwort" />
                             <input type="submit" value="Weiter" className="yellow button"></input>
-                            <Link href="../../album" className="text-black">LoginOTP</Link>
+                            <Link href="/album" className="text-black">LoginOTP</Link>
                         </div>
                     </div>
                 </div>
