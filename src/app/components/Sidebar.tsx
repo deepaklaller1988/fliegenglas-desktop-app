@@ -3,14 +3,6 @@ import Menu from "@lib/SidebarData";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { AiFillExclamationCircle } from "react-icons/ai";
-import { BiBarChart, BiGridAlt } from "react-icons/bi";
-import { FaRegUser } from "react-icons/fa";
-import { GiFly } from "react-icons/gi";
-import { GoHome } from "react-icons/go";
-import { IoChatboxEllipsesOutline, IoLogOut, IoSearch, IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineMail } from "react-icons/md";
-import { PiDotsThreeOutlineDuotone, PiDownloadSimpleBold } from "react-icons/pi";
 import { TbBellRinging2Filled, TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled } from "react-icons/tb";
 import { TiUserDelete } from "react-icons/ti";
 
