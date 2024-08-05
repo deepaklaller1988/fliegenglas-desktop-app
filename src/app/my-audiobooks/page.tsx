@@ -52,7 +52,7 @@ export default function OrderList() {
             {/* Top slideshow section */}
             <div className="rightSideSet">
                 <div className="w-full p-3 pb-0">
-                    <Link href="../album" className='flex items-center gap-1 py-2 pb-3 text-white'>
+                    <Link href="../home" className='flex items-center gap-1 py-2 pb-3 text-white'>
                         <MdKeyboardBackspace className='w-6 h-6' /> Zurück
                     </Link>
                 </div>
@@ -85,7 +85,7 @@ export default function OrderList() {
                                         key={index}
                                         className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
                                     >
-                                        <Link href={`/album/album-detail?id=${item.id}`}>
+                                        <Link href={`/home/album-detail?id=${item.id}`}>
                                             <Image
                                                 src={item.image}
                                                 alt={item.title}
@@ -126,7 +126,7 @@ export default function OrderList() {
                                         key={index}
                                         className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
                                     >
-                                        <Link href={`/album/album-detail?id=${item.id}`}>
+                                        <Link href={`/home/album-detail?id=${item.id}`}>
                                             <Image
                                                 src={item.image}
                                                 alt={item.title}
