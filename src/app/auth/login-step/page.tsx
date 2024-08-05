@@ -3,11 +3,32 @@ import { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi";
 import Link from "next/link";
 import "./login-step.css";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import useTitle from "@hooks/useTitle";
+import API from "@lib/API";
 
 export default function Loginstep() {
+  useTitle("Login Step")
+  const route = useRouter();
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      return await API.post(`autoLogin/?&email=${email}&time=${new Date().toString()}`, {
+        email: email,
+        time: new Date().toString(),
+      });
+    },
+    onSuccess: () => {
+      route.push(`/auth/login-step/login-otp?email=${encodeURIComponent(email)}`);
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+    },
+  });
 
   const handleSubmit = () => {
     if (!email) {
@@ -16,8 +37,7 @@ export default function Loginstep() {
       setError("Bitte markieren Sie das Kontrollkästchen.");
     } else {
       setError("");
-      // Logic to send the email
-      console.log("Email sent to:", email);
+      mutation.mutate();
     }
   };
 
@@ -25,7 +45,7 @@ export default function Loginstep() {
     <div id="login-page" className="px-4 w-full flex items-center justify-center">
       <div className="loginInner">
         <div className="header">
-          <a href="/auth/login">
+          <a href="/login">
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg" />
             </div>
@@ -66,7 +86,7 @@ export default function Loginstep() {
             >
               Anmelde-Link senden
             </button>
-            <Link href="/auth/login-step/login-otp" className="text-white">Login</Link>
+            <Link href="login-step/login-otp" className="text-white">Login</Link>
           </div>
         </div>
       </div>
