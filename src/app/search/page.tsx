@@ -172,7 +172,7 @@ export default function Search() {
                 <div className="slider-parent">
                   <div className="card h-full">
                     <Link
-                      href={`album/album-detail?image=${encodeURIComponent(
+                      href={`/home/album-detail?image=${encodeURIComponent(
                         item.image
                       )}`}
                     >

@@ -90,7 +90,7 @@ export default function Loginstep() {
                                     className="yellow button"   
                                     onClick={handleSubmit}
                                 />
-                                <Link href="../../album" className="text-black">LoginOTP</Link>
+                                <Link href="/home" className="text-black">LoginOTP</Link>
                             </div>
                         </div>
                     </div>

@@ -86,7 +86,7 @@ export default function Album() {
                                         key={index}
                                         className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
                                     >
-                                        <Link href={`/album/album-detail?id=${item.id}`}>
+                                        <Link href={`/home/album-detail?id=${item.id}`}>
                                             <Image
                                                 src={item.image}
                                                 alt={item.title}
@@ -127,7 +127,7 @@ export default function Album() {
                                         key={index}
                                         className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
                                     >
-                                        <Link href={`/album/album-detail?id=${item.id}`}>
+                                        <Link href={`/home/album-detail?id=${item.id}`}>
                                             <Image
                                                 src={item.image}
                                                 alt={item.title}

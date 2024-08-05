@@ -4,15 +4,28 @@ import { usePathname } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 
 const LayoutPath = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
-  // const noSidebarPaths = ["/", "/login", "/login/login-step", "/login/login-step/login-otp", "/login/timeout"];
-  const isLoginPath = pathname.startsWith("/login");
+  const path = usePathname();
+  const route = path.split("/");
+
+  const isDashboard = () => {
+    return !route.includes("auth") ? !route.includes("maintenance") ? true : false : false;
+  }
+
 
   return (
     <div className="flex">
-      {/* !noSidebarPaths.includes(pathname) && <Sidebar /> */}
-      {!isLoginPath && <Sidebar />}
-      {children}
+      {
+      isDashboard() ? (
+        <>
+        <Sidebar />
+        {children}
+        </>
+      ) : (
+        <>
+        {children}
+        </>
+      )
+    }
     </div>
   );
 };
