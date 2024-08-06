@@ -24,7 +24,8 @@ class API {
 
       let headers = new Headers();
       headers.append("Accept", "application/json");
-      headers.append("Content-Type", "application/json");
+      // headers.append("Content-Type", "application/json");
+      // headers.append("Access-Control-Allow-Headers-Type", "x-requested-with, Content-Type, Origin, Authorization, accept, client-security-token");
 
       if (this.token) {
         headers.append("Authorization", `Bearer ${this.token}`);
@@ -33,7 +34,7 @@ class API {
       try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
           method: "GET",
-          credentials: "include",
+          // credentials: "include",
           headers: headers,
         });
 

@@ -7,9 +7,9 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "../../../../context/UserContext";
 import { useMutation } from "@tanstack/react-query";
-import ErrorPopup from "app/components/ErrorPopUp";
 import useTitle from "@hooks/useTitle";
 import API from "@lib/API";
+import ErrorPopup from "@components/ErrorPopUp";
 
 export default function Loginstep() {
     useTitle("Login Otp")
