@@ -7,7 +7,7 @@ import "./login.css";
 
 export default function Login() {
    const router=useRouter()
-   const { googleSignIn, facebookSignIn, appleSignIn } = UserAuth();
+   const { googleSignIn, appleSignIn } = UserAuth();
 
    const socialSignIn = async (e: any, platform: string) => {
       e.preventDefault();

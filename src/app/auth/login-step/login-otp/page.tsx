@@ -34,7 +34,7 @@ export default function Loginstep() {
             } else {
                 console.log(response, "res");
                 setUser(response);
-                sessionStorage.setItem("token", response?.token);
+                sessionStorage.setItem("user",JSON.stringify(response))
                 route.push("/home");
             }
         },
@@ -98,7 +98,7 @@ export default function Loginstep() {
             </div>
 
             {error && (
-                <ErrorPopup message={error} onClose={handleClosePopup} heading={"Hinweis"}/>
+                <ErrorPopup message={error} onClose={handleClosePopup} heading={"Hinweis"} type="login"/>
             )}
         </>
     );

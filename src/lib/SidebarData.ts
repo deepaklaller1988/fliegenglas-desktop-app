@@ -62,7 +62,7 @@ export default class Menu {
     {
         id: "settings",
         item: "Einstellungen",
-        path: "/settings",
+        path: "/settings/setting",
         type: "link",
         icon: IoSettingsOutline,
         size: 20,
@@ -70,7 +70,7 @@ export default class Menu {
     {
         id: "downloads",
         item: "Downloads",
-        path: "/downloads",
+        path: "/settings/downloads",
         type: "link",
         icon: PiDownloadSimpleBold,
         size: 20,
@@ -78,7 +78,7 @@ export default class Menu {
     {
         id: "email",
         item: "E-Mail-Adresse",
-        path: "/email",
+        path: "/settings/update-email",
         type: "link",
         icon: MdOutlineMail,
         size: 20,
@@ -86,7 +86,7 @@ export default class Menu {
     {
         id: "username",
         item: "Dein Name",
-        path: "/username",
+        path: "/settings/update-username",
         type: "link",
         icon: FaRegUser,
         size: 20,
@@ -94,7 +94,7 @@ export default class Menu {
     {
         id: "categories",
         item: "Lieblingskategorien",
-        path: "/categories",
+        path: "/settings/categories",
         type: "link",
         icon: BiGridAlt,
         size: 20,
@@ -102,7 +102,7 @@ export default class Menu {
     {
         id: "notifications",
         item: "Benachrichtigungen",
-        path: "/notifications",
+        path: "/settings/notifications",
         type: "link",
         icon: TbBellRinging2Filled,
         size: 20,
@@ -110,7 +110,7 @@ export default class Menu {
     {
         id: "logout",
         item: "Aus der App ausloggen",
-        path: "/logout",
+        path: "/settings/logout",
         type: "logout",
         icon: IoLogOut,
         size: 20,
@@ -122,7 +122,7 @@ export default class Menu {
     {
         id: "about",
         item: "Über uns",
-        path: "/about",
+        path: "/information/about-us",
         type: "link",
         icon: GiFly,
         size: 20,
@@ -130,7 +130,7 @@ export default class Menu {
     {
         id: "faq",
         item: "Häufig gestellte Fragen (FAQ)",
-        path: "/faq",
+        path: "/information/faq",
         type: "link",
         icon: AiFillExclamationCircle,
         size: 20,
@@ -138,7 +138,7 @@ export default class Menu {
     {
         id: "feedback",
         item: "Dein Feedback",
-        path: "/feedback",
+        path: "/information/feedback",
         type: "link",
         icon: IoChatboxEllipsesOutline,
         size: 20,
@@ -146,7 +146,7 @@ export default class Menu {
     {
         id: "impressum",
         item: "Impressum",
-        path: "/impressum",
+        path: "/information/impressum",
         type: "link",
         icon: AiFillExclamationCircle,
         size: 20,
@@ -154,7 +154,7 @@ export default class Menu {
     {
         id: "terms",
         item: "Nutzungsbedingungen (AGB)",
-        path: "/terms",
+        path: "/information/terms",
         type: "link",
         icon: AiFillExclamationCircle,
         size: 20,
@@ -162,7 +162,7 @@ export default class Menu {
     {
         id: "privacy",
         item: "Datenschutzerklärung",
-        path: "/privacy",
+        path: "/information/privacy",
         type: "link",
         icon: AiFillExclamationCircle,
         size: 20,
@@ -170,7 +170,7 @@ export default class Menu {
     {
         id: "revocation",
         item: "Widerrufsrecht",
-        path: "/revocation",
+        path: "/information/revocation",
         type: "link",
         icon: AiFillExclamationCircle,
         size: 20,
@@ -178,8 +178,8 @@ export default class Menu {
     {
         id: "delete-account",
         item: "Kundenkonto löschen",
-        path: "/delete-account",
-        type: "logout",
+        path: "/information/delete-account",
+        type: "link",
         icon: TiUserDelete,
         size: 20,
     },

@@ -24,6 +24,7 @@ export default function Sidebar() {
     }
 
     const getLinkClasses = (path: string) => (
+
         `flex items-center gap-3 hover:text-white ${pathname === path ? 'text-white font-bold' : ''}`
     );
 

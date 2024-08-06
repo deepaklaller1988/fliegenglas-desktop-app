@@ -24,6 +24,7 @@ export default function Loginstep() {
     },
     onSuccess: () => {
       route.push(`/auth/login-step/login-otp?email=${encodeURIComponent(email)}`);
+      
     },
     onError: (error) => {
       console.error("Mutation error:", error);

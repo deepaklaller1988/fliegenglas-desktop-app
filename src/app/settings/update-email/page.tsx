@@ -1,0 +1,58 @@
+
+"use client"
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import useTitle from "@hooks/useTitle";
+import API from "@lib/API";
+import { useUser } from "context/UserContext";
+import Form from "@components/Form";
+
+export default function UpdateEmail() {
+  useTitle("Update Email");
+  const { user }: any = useUser();
+  const [email, setEmail] = useState<string>("");
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const response = await API.post(`changeEmail/?userID=${user.id}&email=${email}&time=${new Date().toString()}`, {
+        email: email,
+        userID: user.id,
+        time: new Date().toString()
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      alert("Email changed successfully");
+      setEmail("");
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+    },
+  });
+
+  const handleSubmit = () => {
+    if (email) {
+      mutation.mutate();
+    } else {
+      console.error("Email is required");
+    }
+  };
+
+  return (
+    <Form
+      title="Deine E-Mail-Adresse"
+      label="Hast Du eine neue E-Mail Adresse? Gib sie hier ein:"
+      placeholder="Enter new Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      onSubmit={handleSubmit}
+      buttonText="Speichern"
+      type="email"
+      additionalContent={
+        <div>
+          <h1 className="text-white mb-4">{user?.email}</h1>
+        </div>
+      }
+    />
+  );
+}
