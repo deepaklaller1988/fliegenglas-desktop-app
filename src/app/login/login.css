@@ -93,7 +93,7 @@ a.button {
     align-items: center;
     justify-content: center;
 }
-
+/* 
 a.yellow.button-google {
     width: 100%;
     background: transparent !important;
@@ -105,7 +105,7 @@ a.yellow.button-google {
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
 .spashHub {
     display: flex;
