@@ -30,6 +30,7 @@ export default function Sidebar() {
 
     return (
         <div className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${isOn ? "collapseMenu" : ""}`}>
+            <div className="sticky top-0 z-10">
             <div className='w-full sticky top-0 z-10 bg-[#242e39] openClose'>
                 <section className='text-white/60 flex flex-col gap-4 p-4'>
                     <span onClick={handleClick} className='bg-black/20 rounded-md p-3 cursor-pointer flex items-center justify-between gap-3 text-white'>
@@ -101,6 +102,7 @@ export default function Sidebar() {
                 }
                 
             </section>
+            </div>
         </div>
     )
 };

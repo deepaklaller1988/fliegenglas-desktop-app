@@ -26,7 +26,7 @@ export default function Loginstep() {
       route.push(`/auth/login-step/login-otp?email=${encodeURIComponent(email)}`);
       
     },
-    onError: (error) => {
+    onError: (error:any) => {
       console.error("Mutation error:", error);
     },
   });
@@ -64,7 +64,7 @@ export default function Loginstep() {
             <label>Deine E-Mail-Addresse:</label>
             <div className="form-view">
               <input
-                className="bg-white text-black rounded-lg p-3"
+                className="bg-white text-black rounded-md p-3"
                 placeholder="E-Mail"
                 type="email"
                 value={email}
@@ -90,7 +90,7 @@ export default function Loginstep() {
             {error && <p className="text-red-500 text-sm mb-2 ">{error}</p>}
             <button
               onClick={handleSubmit}
-              className={`button yellow rounded-lg ${mutation.isPending  ? 'flie-loader' : ''}`}
+              className={`button yellow rounded-md ${mutation.isPending  ? 'flie-loader' : ''}`}
               disabled={!email || !isChecked || mutation.isPending }
             >
               Anmelde-Link senden

@@ -62,15 +62,15 @@ export default function Login() {
             </span>
             <div className="button-splash new-home-buttons">
                <p>Bitte verwende bei Fliegenglas immer<br></br> die gleiche E-Mail-Adresse.</p>
-               <Link href="" className="button log-set" onClick={(e) => socialSignIn(e, "apple")}>
+               <Link href="" className="button log-set rounded-md" onClick={(e) => socialSignIn(e, "apple")}>
                   <img src="/assets/apple-logo.svg" className="md hydrated" />
                   Mit Apple anmelden
                </Link>
-               <Link href="" className="button google-set" onClick={(e) => socialSignIn(e, "google")}>
+               <Link href="" className="button google-set rounded-md" onClick={(e) => socialSignIn(e, "google")}>
                   <img src="/assets/google.svg" className="md hydrated" />
                   Mit Google anmelden
                </Link>
-               <Link className="button" href="/auth/login-step" >Mit Deiner E-Mail anmelden</Link>
+               <Link className="button rounded-md" href="/auth/login-step" >Mit Deiner E-Mail anmelden</Link>
             </div>
          </div>
       </div>

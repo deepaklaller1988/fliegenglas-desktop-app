@@ -77,7 +77,7 @@ export default function Loginstep() {
                             <div className="log-otp">
                                 <p>Sollte der Anmelde-Link in Deiner E-Mail nicht funktionieren, melde Dich bitte mit dem mitgesendeten Einmal-Passwort an:</p>
                                 <input 
-                                    className="rounded-sm p-2 w-full" 
+                                    className="rounded-md p-2 w-full" 
                                     type="number" 
                                     name="password"
                                     placeholder="Einmal-Passwort" 
@@ -88,7 +88,7 @@ export default function Loginstep() {
                                     type="submit" 
                                     value="Weiter" 
                                     onClick={handleSubmit}
-                                    className={`button yellow rounded-lg ${mutation.isPending  ? 'flie-loader' : ''}`}
+                                    className={`button rounded-md yellow ${mutation.isPending  ? ' flie-loader' : ''}`}
                                     disabled={!password || mutation.isPending }
                                 />
                                 <Link href="/home" className="text-black">LoginOTP</Link>
