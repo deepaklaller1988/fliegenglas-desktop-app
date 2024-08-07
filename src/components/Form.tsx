@@ -1,6 +1,6 @@
 import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface FormProps {
   title: string;
@@ -8,11 +8,12 @@ interface FormProps {
   value: string;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onSubmit: () => void;
-  label?:string
+  label?: string
   buttonText: string;
   type: "text" | "email" | "textarea";
   readOnly?: boolean;
   additionalContent?: React.ReactNode;
+  isPending?:boolean
 }
 
 const Form: React.FC<FormProps> = ({
@@ -26,53 +27,61 @@ const Form: React.FC<FormProps> = ({
   label,
   readOnly = false,
   additionalContent,
+  isPending
 }) => {
-  const router = useRouter();
 
   return (
-    <div id="form-page" className="px-4 w-full mt-10 flex items-center justify-center">
-      <div className="formInner bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
-        <div className="header mb-4">
-          <a href="#" className="text-white flex items-center" onClick={() => router.back()}>
-            <HiArrowLeft className="text-lg" />
-          </a>
+    <div id="login-page" className="px-4 w-full">
+      <div className="loginInner">
+        <div className="header">
+
+          <Link href="/album">
+            <div className="py-4 pr-4 text-white">
+              <HiArrowLeft className="text-lg" />
+            </div>
+          </Link>
         </div>
-        <div className="container">
-          <div className="form">
-            <h1 className="text-white text-2xl mb-4">{title}</h1>
-            {additionalContent}
-            {type === "textarea" ? (
-              <>
-                <textarea
-                  id="field"
-                  value={value}
-                  className="bg-white text-black rounded-sm p-3 w-full h-24 resize-none mb-4"
-                  placeholder={placeholder}
-                  onChange={onChange as React.ChangeEventHandler<HTMLTextAreaElement>}
-                ></textarea>
-              </>
-            ) : (
-              <>
-                <label htmlFor="field" className="text-white block mb-2">
-                  {label}
-                </label>
-                <input
-                  id="field"
-                  className="bg-white text-black rounded-sm p-3 w-full mb-4"
-                  placeholder={placeholder}
-                  type={type}
-                  value={value}
-                  onChange={onChange as React.ChangeEventHandler<HTMLInputElement>}
-                  readOnly={readOnly}
-                />
-              </>
-            )}
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              onClick={onSubmit}
-            >
-              {buttonText}
-            </button>
+
+        <div className="w-full">
+          <div className="form-view">
+            <div className="w-full">
+              <h2 className="text-bold text-xl text-white block text-center mb-4">{title}</h2>
+              <b className="text-bold text-[18px] text-white block text-center mb-12 pt-4"> {additionalContent}</b>
+              {type === "textarea" ? (
+                <>
+                  <textarea
+                    id="field"
+                    value={value}
+                    className="bg-white text-black rounded-sm p-3 w-full h-24 resize-none mb-4"
+                    placeholder={placeholder}
+                    onChange={onChange as React.ChangeEventHandler<HTMLTextAreaElement>}
+                  ></textarea>
+                </>
+              ) : (
+                <>
+                  <b className="text-white mt-2 font-bold block">
+                    {label}
+                  </b>
+                  <input
+                    id="field"
+                    className="my-3 bg-white text-black rounded-md p-2 w-full"
+                    placeholder={placeholder}
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    readOnly={readOnly}
+                  />
+                </>
+              )}
+              <button
+                type="submit"
+                className={`${isPending  ? 'flie-loader' : ''} yellow button-google w-full border border-white rounded-lg p-2 text-white`}
+                onClick={onSubmit}
+                disabled={isPending} 
+              >
+                {buttonText}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -81,3 +90,4 @@ const Form: React.FC<FormProps> = ({
 };
 
 export default Form;
+

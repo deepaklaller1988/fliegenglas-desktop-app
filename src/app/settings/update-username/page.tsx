@@ -6,15 +6,14 @@ import useTitle from "@hooks/useTitle";
 import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
+import { toasterSuccess } from "@components/core/Toaster";
 
 export default function UpdateUsername() {
   useTitle("Update Profile");
-  const { setUser ,user} : any = useUser();
-  console.log(user,"user")
+  const { user} : any = useUser();
   const [name,setName] = useState<string>("");
 
   const mutation = useMutation({
-    
     mutationFn: async () => {
         if(user){
       const response = await API.post(`changeUsername/?&userid=${user.id}&username=${user.username}&first_name=${name}
@@ -30,8 +29,7 @@ export default function UpdateUsername() {
     }
     },
     onSuccess: () => {
-      alert("Username changed successfully");
-    //   setUser();
+      toasterSuccess("Update Username SucessFully !",1000,"id")
       setName("");
     },
     onError: (error) => {
@@ -53,6 +51,7 @@ export default function UpdateUsername() {
       label="Hast Du einen neuen Namen? Gib ihn hier ein:"
       placeholder="Enter new Name"
       value={name}
+      isPending={mutation.isPending}
       onChange={(e:any) => setName(e.target.value)}
       onSubmit={handleSubmit}
       buttonText="Speichern"
