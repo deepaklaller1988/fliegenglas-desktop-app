@@ -57,7 +57,7 @@ export default function Loginstep() {
             <label>Deine E-Mail-Addresse:</label>
             <div className="form-view">
               <input
-                className="bg-white text-black rounded-sm p-3"
+                className="bg-white text-black rounded-lg p-3"
                 placeholder="E-Mail"
                 type="email"
                 value={email}
@@ -82,7 +82,7 @@ export default function Loginstep() {
             {error && <p className="text-red-500">{error}</p>}
             <button
               onClick={handleSubmit}
-              className="button yellow flie-loader"
+              className="button yellow flie-loader rounded-lg"
               disabled={!email || !isChecked}
             >
               Anmelde-Link senden

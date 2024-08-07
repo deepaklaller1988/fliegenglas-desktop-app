@@ -309,3 +309,15 @@ h6 {
 .spaceBorder section {
 	border-bottom: 1px solid #232c37
 }
+a.yellow.button-google {
+    width: 100%;
+    background: transparent !important;
+    color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding: 14px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
