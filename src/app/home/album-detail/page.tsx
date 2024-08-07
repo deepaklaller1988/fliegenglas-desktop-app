@@ -39,7 +39,7 @@ export default function AlbumDetail() {
             </div>
             <div className='w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed' style={{ backgroundImage: `url(${data.image})` }}>
                 <div className='w-full p-3 relative z-10'>
-                    <Link href="../album" className='flex items-center gap-1 py-2 pb-3 mb-2 text-white'>
+                    <Link href="../home" className='flex items-center gap-1 py-2 pb-3 mb-2 text-white'>
                         <MdKeyboardBackspace className='w-6 h-6' /> Zurück
                     </Link>
                     {/* Display the image based on the URL */}
