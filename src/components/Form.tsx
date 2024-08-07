@@ -1,6 +1,5 @@
 import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface FormProps {
@@ -14,6 +13,7 @@ interface FormProps {
   type: "text" | "email" | "textarea";
   readOnly?: boolean;
   additionalContent?: React.ReactNode;
+  isPending?:boolean
 }
 
 const Form: React.FC<FormProps> = ({
@@ -27,8 +27,8 @@ const Form: React.FC<FormProps> = ({
   label,
   readOnly = false,
   additionalContent,
+  isPending
 }) => {
-  const router = useRouter();
 
   return (
     <div id="login-page" className="px-4 w-full">
@@ -42,11 +42,9 @@ const Form: React.FC<FormProps> = ({
           </Link>
         </div>
 
-
         <div className="w-full">
           <div className="form-view">
             <div className="w-full">
-
               <h2 className="text-bold text-xl text-white block text-center mb-4">{title}</h2>
               <b className="text-bold text-[18px] text-white block text-center mb-12 pt-4"> {additionalContent}</b>
               {type === "textarea" ? (
@@ -77,8 +75,9 @@ const Form: React.FC<FormProps> = ({
               )}
               <button
                 type="submit"
-                className="yellow button-google w-full border border-white rounded-lg p-2 text-white"
+                className={`${isPending  ? 'flie-loader' : ''} yellow button-google w-full border border-white rounded-lg p-2 text-white`}
                 onClick={onSubmit}
+                disabled={isPending} 
               >
                 {buttonText}
               </button>

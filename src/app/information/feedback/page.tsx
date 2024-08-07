@@ -6,6 +6,7 @@ import useTitle from "@hooks/useTitle";
 import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
+import { toasterSuccess } from "@components/core/Toaster";
 
 export default function Feedback() {
   useTitle("Feedback");
@@ -18,7 +19,7 @@ export default function Feedback() {
       return response.data;
     },
     onSuccess: () => {
-      alert("Feedback sent successfully");
+      toasterSuccess("Feedback sent successfully",1000,"id");
       setFeedback("");
     },
     onError: (error) => {
@@ -39,6 +40,7 @@ export default function Feedback() {
       title="Dein Feedback"
       placeholder="Deine Kommentare oder Fragen"
       value={feedback}
+      isPending={mutation.isPending}
       onChange={(e) => setFeedback(e.target.value)}
       onSubmit={handleSubmit}
       buttonText="Absenden"
