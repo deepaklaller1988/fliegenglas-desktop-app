@@ -162,15 +162,15 @@ button:focus {
 }
 
 .button {
-	width: 100%;
-	float: left;
-	padding: 12px;
-	border-radius: 4px;
-	text-align: center;
-	border: none;
-	color: white;
-	cursor: pointer;
-	height: 50px;
+    width: 100%;
+    float: left;
+    padding: 12px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    height: 50px;
+    border: 1px solid white;
+	font-family: product_sansbold !important;
 }
 
 .textarea {

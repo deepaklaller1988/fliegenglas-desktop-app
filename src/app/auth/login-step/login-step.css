@@ -65,7 +65,10 @@ ion-input.login-text {
   background-color: #ff9900 !important;
   margin-top: 10px;
 }
-
+.yellow:hover {
+  border-color: #ff6600 !important;
+  background-color: #ff6600 !important;
+}
 input.yellow.button.flie-loader {
   background-image: url(/assets/images/Button-loader-fly.gif);
   /* background-color: #ff9900; */

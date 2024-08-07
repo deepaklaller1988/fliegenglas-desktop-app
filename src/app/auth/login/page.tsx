@@ -70,7 +70,7 @@ export default function Login() {
                   <img src="/assets/google.svg" className="md hydrated" />
                   Mit Google anmelden
                </Link>
-               <Link className="yellow button-google" href="/auth/login-step" >Mit Deiner E-Mail anmelden</Link>
+               <Link className="button" href="/auth/login-step" >Mit Deiner E-Mail anmelden</Link>
             </div>
          </div>
       </div>
