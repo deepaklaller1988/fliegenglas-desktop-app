@@ -121,7 +121,13 @@ body {
 	background: #5c6b7d;
 	border-radius: 10px;
 }
-
+.flie-loader {
+    background: url(/assets/images/Button-loader-fly.gif);
+    /* background-color: #ff9900; */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 body {
 	min-height: 100vh;
 	-webkit-overflow-scrolling: touch;

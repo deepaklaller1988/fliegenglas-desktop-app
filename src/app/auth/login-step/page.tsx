@@ -15,7 +15,7 @@ export default function Loginstep() {
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
 
-  const mutation = useMutation({
+  const mutation:any = useMutation({
     mutationFn: async () => {
       return await API.post(`autoLogin/?&email=${email}&time=${new Date().toString()}`, {
         email: email,
@@ -31,14 +31,21 @@ export default function Loginstep() {
     },
   });
 
+  const validateEmail = (email: string) => {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleSubmit = () => {
     if (!email) {
       setError("Bitte geben Sie zuerst eine E-Mail-Adresse ein.");
+    } else if (!validateEmail(email)) {
+      setError("Bitte geben Sie eine gültige E-Mail-Adresse ein.");
     } else if (!isChecked) {
       setError("Bitte markieren Sie das Kontrollkästchen.");
     } else {
       setError("");
-      mutation.mutate();
+     mutation.mutate();
     }
   };
 
@@ -46,7 +53,7 @@ export default function Loginstep() {
     <div id="login-page" className="px-4 w-full flex items-center justify-center">
       <div className="loginInner">
         <div className="header">
-          <a href="/login">
+          <a href="/auth/login">
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg" />
             </div>
@@ -61,6 +68,7 @@ export default function Loginstep() {
                 placeholder="E-Mail"
                 type="email"
                 value={email}
+                required
                 onChange={(e) => setEmail(e.target.value)}
               />
               <p>An Deine E-Mail Adresse senden wir einen Anmelde-Link, um Dich in der App anzumelden. Prüfe bitte, ob Deine E-Mail korrekt eingegeben wurde.</p>
@@ -79,11 +87,11 @@ export default function Loginstep() {
                 </span>
               </div>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500 text-sm mb-2 ">{error}</p>}
             <button
               onClick={handleSubmit}
-              className="button yellow flie-loader rounded-lg"
-              disabled={!email || !isChecked}
+              className={`button yellow rounded-lg ${mutation.isPending  ? 'flie-loader' : ''}`}
+              disabled={!email || !isChecked || mutation.isPending }
             >
               Anmelde-Link senden
             </button>

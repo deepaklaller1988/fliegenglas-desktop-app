@@ -62,7 +62,7 @@ export default class Menu {
     {
         id: "settings",
         item: "Einstellungen",
-        path: "/settings/setting",
+        path: "/settings/subscriptions",
         type: "link",
         icon: IoSettingsOutline,
         size: 20,

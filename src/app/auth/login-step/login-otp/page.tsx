@@ -87,8 +87,9 @@ export default function Loginstep() {
                                 <input 
                                     type="submit" 
                                     value="Weiter" 
-                                    className="yellow button"   
                                     onClick={handleSubmit}
+                                    className={`button yellow rounded-lg ${mutation.isPending  ? 'flie-loader' : ''}`}
+                                    disabled={!password || mutation.isPending }
                                 />
                                 <Link href="/home" className="text-black">LoginOTP</Link>
                             </div>
