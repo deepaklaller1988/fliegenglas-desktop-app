@@ -1,53 +1,62 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import "./album.css";
-import React, { useEffect, useState } from "react";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { FaPlayCircle } from "react-icons/fa";
 import Link from "next/link";
-import Data from "../../fliegenglas";
-import Image from "next/image";
-
-interface Item {
-  id: string;
-  image: string;
-  title: string;
-  type: string;
-  price: number;
-  description: string;
-  quantity: number;
-}
+import API from "@lib/API";
+import { useQuery } from "@tanstack/react-query";
+import { useUser } from "context/UserContext";
+import AlbumSection from "@components/AlbumCard";
 
 export default function Album() {
-  const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [show, setShow] = useState<number>(8);
+  const { user }: any = useUser()
 
-  const getApiData = async () => {
+  const fetchData = async () => {
+    if (!user) {
+      return [];
+    }
     try {
-      setData(Data);
-      console.log("Data-Album :", Data);
-      setLoading(false);
+      const response = await API.get(`getCategories?&user_id=${user.id}&time=${new Date().toString()}`);
+      return response || [];
     } catch (error) {
-      console.log("Error :", error);
-      setLoading(false);
+      console.log(error);
+      return [];
+    }
+  };
+  const {
+    isLoading,
+    data = [],
+  } = useQuery({
+    queryKey: ["data", user],
+    queryFn: fetchData,
+
+  });
+
+  const getFavourites = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const response = await API.get(`getFavChannelProducts?&user_id=${user.id}&time=${new Date().toString()}`);
+      return response || [];
+    } catch (error) {
+      console.log(error);
+      return [];
     }
   };
 
-  useEffect(() => {
-    getApiData();
-  }, []);
 
-  const divOne = data?.filter((itemData: any) => itemData.type.toLowerCase() === "work");
-  const divTwo = data?.filter((itemData: any) => itemData.type.toLowerCase() === "activewear");
+  const {
+    isLoading: isFavourite,
+    data: sliderData = [],
+    error,
+  } = useQuery({
+    queryKey: ["sliderData", user],
+    queryFn: getFavourites,
+  });
 
-  // Skeleton loader component for loading state
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-    </div>
-  );
 
   return (
     <>
@@ -56,7 +65,7 @@ export default function Album() {
         <div className="w-full squareSet" id="top">
           <Slide>
             {
-              data.map((item: any, index: any) => (
+              sliderData?.map((item: any,index:any) => (
                 <div
                   key={index}
                   className="each-slide-effect w-full flex justify-center items-center"
@@ -65,8 +74,7 @@ export default function Album() {
                     <div className="card h-full">
                       <Link
                         href={`/home/album-detail?id=${item.id}`}>
-
-                        <img className="w-full" src={item.image} alt="Album" />
+                        <img className="w-full" src={item.product_header_graphic} alt="Album" />
                         <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1 bg-[#040e1b]">
                           <FaPlayCircle className="w-5 h-5" /> Jetzt hören
                         </p>
@@ -80,90 +88,14 @@ export default function Album() {
         </div>
 
         {/* Main content section */}
+
+
         <div className="w-full">
-          <div className="w-full playNail p-3 pr-0 py-6 text-white">
-            <label className="text-[12px]">EMPFEHLUNG HEUTE</label>
-            <div className="full flex gap-2 justify-between pr-3">
-              <b className="text-[22px] leading-tight">
-                Work
-              </b>
-              <Link href="" className="text-[14px] whitespace-nowrap mt-1">
-                Alle anzeigen
-              </Link>
-            </div>
-
-            {/* Horizontal scrollable album list */}
-            <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
-              {loading ? (
-                Array.from({ length: show }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                  >
-                    {SkeletonLoader()}
-                  </div>
-                ))
-              ) : (
-                divOne.slice(0, show).map((item: any, index: any) => (
-                  <div
-                    key={index}
-                    className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
-                  >
-                    <Link href={`/home/album-detail?id=${item.id}`}>
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full block rounded-md"
-                        width={220}
-                        height={220}
-                      />
-                    </Link>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* According to type */}
-          <div className="w-full playNail p-3 pr-0 py-6 text-white">
-            <div className="full flex gap-2 justify-between pr-3">
-              <b className="text-[22px] leading-tight">
-                Activewear
-              </b>
-              <Link href="" className="text-[14px] whitespace-nowrap mt-1">
-                Alle anzeigen
-              </Link>
-            </div>
-            <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
-              {loading ? (
-                Array.from({ length: show }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                  >
-                    {SkeletonLoader()}
-                  </div>
-                ))
-              ) : (
-                divTwo.slice(0, show).map((item: any, index: any) => (
-                  <div
-                    key={index}
-                    className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                  >
-                    <Link href={`/home/album-detail?id=${item.id}`}>
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={265}
-                        height={300}
-                        className="w-full block rounded-md"
-                      />
-                    </Link>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          <AlbumSection
+            data={data}
+            isLoading={isLoading}
+          />
+      
         </div>
 
         {/* Refresh button section */}
@@ -187,7 +119,7 @@ export default function Album() {
         {/* Privacy policy link */}
         <div className="w-full text-center mb-2">
           <Link
-            href=""
+            href="/information/privacy"
             className="bg-white/0 rounded-md text-white p-2 px-3 text-[14px] inline-block m-auto underline"
           >
             Datenschutzerklärung
