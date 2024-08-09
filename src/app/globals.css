@@ -164,11 +164,9 @@ button:focus {
 .button {
     width: 100%;
     float: left;
-    padding: 12px;
     text-align: center;
     color: white;
     cursor: pointer;
-    height: 50px;
     border: 1px solid white;
 	font-family: product_sansbold !important;
 }
@@ -306,7 +304,7 @@ h6 {
 .squareSet {
 	aspect-ratio: 1 /1;
 }
-
+.activeSidebarLink{ font-family: product_sansbold !important;}
 .loaderGradient {
 	background: linear-gradient(to bottom, #4e6878 75%, #3a536a 50%);
 	display: block;

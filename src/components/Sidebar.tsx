@@ -25,7 +25,7 @@ export default function Sidebar() {
 
     const getLinkClasses = (path: string) => (
 
-        `flex items-center gap-3 hover:text-white ${pathname === path ? 'text-white font-bold' : ''}`
+        `flex items-center gap-3 hover:text-[#ff9900] transition ${pathname === path ? 'text-[#ff9900] activeSidebarLink ' : ''}`
     );
 
     return (

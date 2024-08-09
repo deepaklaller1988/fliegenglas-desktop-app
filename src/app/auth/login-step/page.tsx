@@ -64,7 +64,7 @@ export default function Loginstep() {
             <label>Deine E-Mail-Addresse:</label>
             <div className="form-view">
               <input
-                className="bg-white text-black rounded-md p-3"
+                className="bg-white text-black rounded-md p-3 h-[50px]"
                 placeholder="E-Mail"
                 type="email"
                 value={email}
@@ -90,7 +90,7 @@ export default function Loginstep() {
             {error && <p className="text-red-500 text-sm mb-2 ">{error}</p>}
             <button
               onClick={handleSubmit}
-              className={`button yellow rounded-md ${mutation.isPending  ? 'flie-loader' : ''}`}
+              className={`button yellow rounded-md h-[50px] ${mutation.isPending  ? 'flie-loader' : ''}`}
               disabled={!email || !isChecked || mutation.isPending }
             >
               Anmelde-Link senden

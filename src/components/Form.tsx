@@ -43,7 +43,7 @@ const Form: React.FC<FormProps> = ({
         </div>
 
         <div className="w-full">
-          <div className="form-view">
+          <div className="form-view max-w-[400px] m-auto">
             <div className="w-full">
               <h2 className="text-bold text-xl text-white block text-center mb-4">{title}</h2>
               <b className="text-bold text-[18px] text-white block text-center mb-12 pt-4"> {additionalContent}</b>
@@ -59,12 +59,12 @@ const Form: React.FC<FormProps> = ({
                 </>
               ) : (
                 <>
-                  <b className="text-white mt-2 font-bold block">
+                  <b className="text-white mt-2 block">
                     {label}
                   </b>
                   <input
                     id="field"
-                    className="my-3 bg-white text-black rounded-md p-2 w-full"
+                    className="my-3 bg-white text-black rounded-md p-3 h-[50px] w-full"
                     placeholder={placeholder}
                     type={type}
                     value={value}
@@ -75,7 +75,7 @@ const Form: React.FC<FormProps> = ({
               )}
               <button
                 type="submit"
-                className={`${isPending  ? 'flie-loader' : ''} yellow button-google w-full border border-white rounded-lg p-2 text-white`}
+                className={`${isPending  ? 'flie-loader' : ''} p-2 w-full border button border-white rounded-md text-white`}
                 onClick={onSubmit}
                 disabled={isPending} 
               >
