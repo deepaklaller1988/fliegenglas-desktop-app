@@ -13,7 +13,7 @@ const LayoutPath = ({ children }: { children: React.ReactNode }) => {
 
 
   return (
-    <div className="flex">
+    <div className="flex w-full">
       {
       isDashboard() ? (
         <>

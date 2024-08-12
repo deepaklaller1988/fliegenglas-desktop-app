@@ -11,16 +11,17 @@ import ProductDes from "@components/ProductDes";
 import { useState } from "react";
 import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
 import FlieLoader from "@components/core/FlieLoader";
+import { getImagePath } from "@lib/getImagePath";
 
 export default function AlbumDetail() {
   const searchParams = useSearchParams();
-  const id = searchParams.get("id") || "";
+  const productId = searchParams.get("id") || "";
   const { user }: any = useUser();
 
   const fetchData = async () => {
     try {
       const response = API.get(
-        `getProductByID?product_id=${id}&customerID=${user.id}`
+        `getProductByID?product_id=${productId}&customerID=${user?.id}`
       );
       return response || {};
     } catch (error) {
@@ -30,7 +31,7 @@ export default function AlbumDetail() {
   };
 
   const { isLoading, data = {} } = useQuery<any>({
-    queryKey: ["album-detail", id],
+    queryKey: ["album-detail", productId,user?.id],
     queryFn: fetchData,
   });
 
@@ -190,7 +191,7 @@ export default function AlbumDetail() {
               <span className="min-w-[85px] max-w-[85px]">
                 <Image
                   className="block w-full"
-                  src={"/" + data?.artistavatar}
+                  src={getImagePath(data?.artistavatar)}
                   alt="Speaker"
                   width={85}
                   height={85}

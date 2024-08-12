@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { MdKeyboardBackspace } from "react-icons/md";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { VscHeartFilled } from "react-icons/vsc";
@@ -11,6 +11,7 @@ import FlieLoader from "./core/FlieLoader";
 
 export default function AuthorDetails() {
   const searchParams = useSearchParams();
+  const router=useRouter()
   const authorId = searchParams.get("authorId") || "";
   const artistId = searchParams.get("artistId") || "";
 
@@ -39,17 +40,15 @@ export default function AuthorDetails() {
 
   if (isLoading) {
     return (
-      <div>
-        <FlieLoader />;
-      </div>
+        <FlieLoader />
     )
 
   }
 
   return (
 
-    <div className='rightSideSet'>
-      <section className="bg-[#6c7279] p-4">
+    <div className='w-full'>
+      <section className="bg-[#6c7279] p-4 ">
         <Link href="../home" className='flex items-center gap-1 pt-0 pb-4 text-white'>
           <MdKeyboardBackspace className='w-6 h-6' /> Zurück
         </Link>
@@ -67,7 +66,7 @@ export default function AuthorDetails() {
         return (
           <div className="w-full pt-4 spaceBorder px-4">
             <section className="py-6">
-              <div className="w-full flex gap-4 text-white">
+              <div className="w-full flex gap-4 text-white" onClick={()=>router.push(`/home/album-detail?id=${item.id}`)}>
                 <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
                   <img src={getImagePath(item?.local_image)} alt="Image" />
                 </span>

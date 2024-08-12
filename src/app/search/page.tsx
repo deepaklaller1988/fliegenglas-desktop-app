@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
-import { Slide } from "react-slideshow-image";
 import { FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import "./search.css";
 import Link from "next/link";
 import "react-slideshow-image/dist/styles.css";
 import Image from "next/image";
+import HomeSlider from "@components/HomeSlider";
 
 interface Item {
   id: string;
@@ -38,11 +38,11 @@ export default function Search() {
     getApiData();
   }, []);
 
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-    </div>
-  );
+  // const SkeletonLoader = () => (
+  //   <div className="animate-pulse space-y-3">
+  //     <div className="w-full h-56 bg-gray-300 rounded-md"></div>
+  //   </div>
+  // );
 
   return (
     <div className="rightSideSet">
@@ -152,7 +152,7 @@ export default function Search() {
         </section>
       </div>
       <div className="w-full mt-4">
-        <Slide>
+        {/* <Slide>
           {loading ? (
             Array.from({ length: show }).map((_, index) => (
               <div
@@ -183,7 +183,9 @@ export default function Search() {
               </div>
             ))
           )}
-        </Slide>
+        </Slide> */}
+
+        <HomeSlider/>
       </div>
       <div className="w-full p-5 pb-10 flex items-center justify-center">
         <Link
