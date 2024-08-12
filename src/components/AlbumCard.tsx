@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const AlbumSection = ({ data, isLoading }: any) => {
-    console.log(data);
     const SkeletonLoader = () => (
         <div className="animate-pulse space-y-3">
             <div className="w-full h-56 bg-gray-300 rounded-md"></div>
@@ -36,7 +35,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
                             <b className="text-[22px] leading-tight">
                                 {item?.category?.name}
                             </b>
-                            <Link href={""} className="text-[14px] whitespace-nowrap mt-1">
+                            <Link href={`/home/listing?id=${item?.category?.categoryid}`} className="text-[14px] whitespace-nowrap mt-1">
                                 Alle anzeigen
                             </Link>
                         </div>

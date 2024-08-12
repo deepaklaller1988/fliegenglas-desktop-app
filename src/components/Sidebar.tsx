@@ -42,10 +42,7 @@ export default function Sidebar() {
                 
                 </div>
             ))}
-                {/* <Link href="/home" className={getLinkClasses("/home")}><div>Startseite</div><GoHome className='w-5 h-5' /> Startseite</Link>
-                <Link href="/search" className={getLinkClasses("/search")}><div>Suche</div><IoSearch className='w-5 h-5' /> Suche</Link>
-                <Link href="/order-list" className={getLinkClasses("/order-list")}><div>Meine Hörbücher</div><BiBarChart className='w-5 h-5' /> Meine Hörbücher</Link> */}
-                {/* <Link href="/more" className={getLinkClasses("/more")}><div>Mehr</div><PiDotsThreeOutlineDuotone className='w-5 h-5' /> Mehr</Link> */}
+               
                 {
                     isMoreOptions && (
                      <div className='w-full'>
@@ -64,13 +61,7 @@ export default function Sidebar() {
                                     
                                     </div>
                                 ))}
-                                {/* <Link href="/settings" className={getLinkClasses("/settings")}><div>Einstellungen</div><IoSettingsOutline className='w-5 h-5' /> Einstellungen</Link>
-                                <Link href="/downloads" className={getLinkClasses("/downloads")}><div>Downloads</div><PiDownloadSimpleBold className='w-5 h-5' /> Downloads</Link>
-                                <Link href="/email" className={getLinkClasses("/email")}><div>E-Mail-Adresse</div><MdOutlineMail className='w-5 h-5' /> E-Mail-Adresse</Link>
-                                <Link href="/username" className={getLinkClasses("/username")}><div>Dein Name</div><FaRegUser className='w-5 h-5' /> Dein Name</Link>
-                                <Link href="/categories" className={getLinkClasses("/categories")}><div>Lieblingskategorien</div><BiGridAlt className='w-5 h-5' /> Lieblingskategorien</Link>
-                                <Link href="/notifications" className={getLinkClasses("/notifications")}><div>Benachrichtigungen</div><TbBellRinging2Filled className='w-5 h-5' /> Benachrichtigungen</Link>
-                                <Link href="/logout" className={getLinkClasses("/logout")}><div>Aus der App ausloggen</div><IoLogOut className='w-5 h-5' /> Aus der App ausloggen </Link> */}
+                                
                             </section>
                             <section className='flex flex-col gap-4 bg-black/20 rounded-md p-4'>
                                 <h2 className='text-lg text-white'>Informationen</h2>

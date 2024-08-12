@@ -95,7 +95,6 @@ export default function Loginstep() {
             >
               Anmelde-Link senden
             </button>
-            <Link href="login-step/login-otp" className="text-white">Login</Link>
           </div>
         </div>
       </div>

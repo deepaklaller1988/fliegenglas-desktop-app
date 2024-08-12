@@ -7,9 +7,6 @@ import User from "@hooks/User";
 const AuthContext = createContext<any>(null);
 
 export const AuthContextProvider = ({ children }: any) => {
-    // const token = User.token
-    // console.log('User token:', token);
-
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
 
@@ -36,7 +33,6 @@ export const AuthContextProvider = ({ children }: any) => {
       .then(() => {
         router.push("/auth/login");
         localStorage.removeItem("token");
-        // toasterSuccess(translations?.common?.logOutSucess, 1000, "id");
       })
       .catch((error) => {
         console.error("Failed to sign out", error);

@@ -91,7 +91,6 @@ export default function Loginstep() {
                                     className={`p-3 h-[50px] button rounded-md yellow ${mutation.isPending  ? ' flie-loader' : ''}`}
                                     disabled={!password || mutation.isPending }
                                 />
-                                <Link href="/home" className="text-black">LoginOTP</Link>
                             </div>
                         </div>
                     </div>

@@ -61,21 +61,21 @@ export default function AlbumDetail() {
                         <Link href="" className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto">Hörbuch ohne Abo kaufen</Link>
                         <div className='w-full flex items-center justify-between gap-1 pt-3'>
                             <p className='text-[#232a2c] text-[16px]'>Preis inkl. MWST (7,7%) </p>
-                            <b className='text-[#232a2c] text-[16px]'>€ {data.preview_price}</b>
+                            <b className='text-[#232a2c] text-[16px]'>€ {data?.preview_price}</b>
                         </div>
                     </div>
                     <div className='w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-3'>
                         <div className='w-full flex items-center gap-1'>
-                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Titel:</b><p className='text-[#232a2c] text-[16px]'>{data.name}</p>
+                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Titel:</b><p className='text-[#232a2c] text-[16px]'>{data?.name}</p>
                         </div>
                         <div className='w-full flex items-center gap-1'>
-                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Bewertung:</b><p className='text-[#232a2c] text-[16px] flex gap-1 items-center'><Image className='w-[20px]' src="../assets/images/icon-like-new-filled.svg" alt="favorite" width={20} height={20} />{data.likes} gefällt das.</p>
+                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Bewertung:</b><p className='text-[#232a2c] text-[16px] flex gap-1 items-center'><Image className='w-[20px]' src="../assets/images/icon-like-new-filled.svg" alt="favorite" width={20} height={20} />{data?.likes} gefällt das.</p>
                         </div>
                         <div className='w-full flex items-center gap-1'>
-                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Dauer:</b><p className='text-[#232a2c] text-[16px]'>{data.audiobookDuration}</p>
+                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Dauer:</b><p className='text-[#232a2c] text-[16px]'>{data?.audiobookDuration}</p>
                         </div>
                         <div className='w-full flex items-center gap-1'>
-                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Copyright:</b><p className='text-[#232a2c] text-[16px]'>{data.copyright}</p>
+                            <b className='text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]'>Copyright:</b><p className='text-[#232a2c] text-[16px]'>{data?.copyright}</p>
                         </div>
                     </div>
                     <div className='w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3'>
