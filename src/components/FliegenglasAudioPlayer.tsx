@@ -10,7 +10,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { MdFormatListBulleted } from "react-icons/md";
 import { PiShareFatLight } from "react-icons/pi";
-import FlieLoader from "./FlieLoader";
+import FlieLoader from "./core/FlieLoader";
 
 interface FliegenglasAudioPlayerProps {
   audioDetail: any;
