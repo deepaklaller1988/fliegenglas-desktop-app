@@ -6,7 +6,6 @@ import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { FaPlayCircle } from "react-icons/fa";
 import Link from "next/link";
-import Data from "../../fliegenglas";
 import Image from "next/image";
 import ScrollContainer from 'react-indiana-drag-scroll'
 
@@ -27,8 +26,8 @@ export default function Album() {
 
   const getApiData = async () => {
     try {
-      setData(Data);
-      console.log("Data-Album :", Data);
+      setData("Data");
+      console.log("Data-Album :", "Data");
       setLoading(false);
     } catch (error) {
       console.log("Error :", error);
