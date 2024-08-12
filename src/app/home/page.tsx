@@ -9,6 +9,7 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
+import FlieLoader from "@components/FlieLoader";
 
 export default function Album() {
   const { user }: any = useUser()
@@ -56,6 +57,12 @@ export default function Album() {
     queryKey: ["sliderData", user],
     queryFn: getFavourites,
   });
+  
+  if(isFavourite){
+    return (
+      <FlieLoader/>
+    )
+  }
 
 
   return (

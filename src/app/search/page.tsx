@@ -7,7 +7,6 @@ import { IoClose } from "react-icons/io5";
 import "./search.css";
 import Link from "next/link";
 import "react-slideshow-image/dist/styles.css";
-import Data from "fliegenglas";
 import Image from "next/image";
 
 interface Item {
@@ -22,8 +21,8 @@ export default function Search() {
 
   const getApiData = async () => {
     try {
-      setData(Data);
-      console.log(Data);
+      setData("Data");
+      console.log("Data");
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,7 @@
 "use client";
 import useFetchPageData from '@hooks/UseFetchData';
 import React from 'react';
+import FlieLoader from './FlieLoader';
 
 interface PageContentProps {
   slug: string;
@@ -9,7 +10,11 @@ interface PageContentProps {
 const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   const { pageData, loading, error } = useFetchPageData(slug);
 
-  if (loading) return <p>Loading...</p>;
+  if(loading){
+    return (
+      <FlieLoader/>
+    )
+  }
   if (error) return <p>Error: {error}</p>;
 
   return (
