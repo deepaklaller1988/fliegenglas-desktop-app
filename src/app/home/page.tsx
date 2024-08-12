@@ -9,29 +9,28 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
+import FlieLoader from "@components/core/FlieLoader";
 
 export default function Album() {
-  const { user }: any = useUser()
+  const { user }: any = useUser();
 
   const fetchData = async () => {
     if (!user) {
       return [];
     }
     try {
-      const response = await API.get(`getCategories?&user_id=${user.id}&time=${new Date().toString()}`);
+      const response = await API.get(
+        `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+      );
       return response || [];
     } catch (error) {
       console.log(error);
       return [];
     }
   };
-  const {
-    isLoading,
-    data = [],
-  } = useQuery({
+  const { isLoading, data = [] } = useQuery({
     queryKey: ["data", user],
     queryFn: fetchData,
-
   });
 
   const getFavourites = async () => {
@@ -39,14 +38,17 @@ export default function Album() {
       return [];
     }
     try {
-      const response = await API.get(`getFavChannelProducts?&user_id=${user.id}&time=${new Date().toString()}`);
+      const response = await API.get(
+        `getFavChannelProducts?&user_id=${
+          user.id
+        }&time=${new Date().toString()}`
+      );
       return response || [];
     } catch (error) {
       console.log(error);
       return [];
     }
   };
-
 
   const {
     isLoading: isFavourite,
@@ -57,6 +59,9 @@ export default function Album() {
     queryFn: getFavourites,
   });
 
+  if (isFavourite) {
+    return <FlieLoader />;
+  }
 
   return (
     <>
@@ -64,38 +69,34 @@ export default function Album() {
       <div className="rightSideSet">
         <div className="w-full squareSet" id="top">
           <Slide>
-            {
-              sliderData?.map((item: any,index:any) => (
-                <div
-                  key={index}
-                  className="each-slide-effect w-full flex justify-center items-center"
-                >
-                  <div className="slider-parent">
-                    <div className="card h-full">
-                      <Link
-                        href={`/home/album-detail?id=${item.id}`}>
-                        <img className="w-full" src={item.product_header_graphic} alt="Album" />
-                        <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1 bg-[#040e1b]">
-                          <FaPlayCircle className="w-5 h-5" /> Jetzt hören
-                        </p>
-                      </Link>
-                    </div>
+            {sliderData?.map((item: any, index: any) => (
+              <div
+                key={index}
+                className="each-slide-effect w-full flex justify-center items-center"
+              >
+                <div className="slider-parent">
+                  <div className="card h-full">
+                    <Link href={`/home/album-detail?id=${item.id}`}>
+                      <img
+                        className="w-full"
+                        src={item.product_header_graphic}
+                        alt="Album"
+                      />
+                      <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1 bg-[#040e1b]">
+                        <FaPlayCircle className="w-5 h-5" /> Jetzt hören
+                      </p>
+                    </Link>
                   </div>
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </Slide>
         </div>
 
         {/* Main content section */}
 
-
         <div className="w-full">
-          <AlbumSection
-            data={data}
-            isLoading={isLoading}
-          />
-      
+          <AlbumSection data={data} isLoading={isLoading} />
         </div>
 
         {/* Refresh button section */}
@@ -111,8 +112,8 @@ export default function Album() {
         {/* Footer section */}
         <div className="w-full mb-10">
           <p className="flex items-center justify-center text-[14px] gap-1 text-white">
-            Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht in
-            Zürich
+            Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht
+            in Zürich
           </p>
         </div>
 

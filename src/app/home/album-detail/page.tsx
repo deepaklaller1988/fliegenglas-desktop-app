@@ -17,9 +17,6 @@ export default function AlbumDetail() {
   const { user }: any = useUser();
 
   const fetchData = async () => {
-    //   if (!user && !id) {
-    //     return {}
-    //   }
     try {
       const response = API.get(
         `getProductByID?product_id=${id}&customerID=${user.id}`
@@ -176,7 +173,7 @@ export default function AlbumDetail() {
                 </p>
                 <Link
                   className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                  href="/artist-details"
+                  href={`/home/artist-details?authorId=${data?.author_id}&role=author`}
                 >
                   Alle Hörbücher
                 </Link>
@@ -199,7 +196,7 @@ export default function AlbumDetail() {
                 </p>
                 <Link
                   className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                  href="/artist-details"
+                  href={`/home/artist-details?artistId=${data?.artist_id}&role=artist`}
                 >
                   Alle Hörbücher
                 </Link>
