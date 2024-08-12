@@ -10,7 +10,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { MdFormatListBulleted } from "react-icons/md";
 import { PiShareFatLight } from "react-icons/pi";
-import FlieLoader from "./FlieLoader";
+import FlieLoader from "./core/FlieLoader";
 
 interface FliegenglasAudioPlayerProps {
   audioDetail: any;
@@ -29,17 +29,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [open, setOpen] = useState(false);
+  const [seeking, setSeeking] = useState(false);
+  const [buffering, setBuffering] = useState<boolean>(true);
   const playerRef = useRef<ReactPlayer>(null);
-
-  const [buffering, setBuffering] = useState<boolean>(false);
 
   useEffect(() => {
     if (play && playerRef.current) {
       playerRef.current.seekTo(played);
     }
   }, [play]);
-
-  console.log(buffering);
 
   // useEffect(() => {
   //   if (audioType === "online") {
@@ -57,8 +55,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     played: number;
     playedSeconds: number;
   }) => {
-    setPlayed(progress.played);
-    setPlayedSeconds(progress.playedSeconds);
+    if (!seeking) {
+      setPlayed(progress.played);
+      setPlayedSeconds(progress.playedSeconds);
+    }
   };
 
   const handleDuration = (duration: number) => {
@@ -121,6 +121,21 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setBuffering(false);
   };
 
+  const handleSeekMouseDown = () => {
+    setSeeking(true);
+  };
+
+  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayed(parseFloat(e.target.value));
+  };
+
+  const handleSeekMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+    setSeeking(false);
+    if (playerRef.current) {
+      playerRef.current.seekTo(parseFloat(e.currentTarget.value), "fraction");
+    }
+  };
+
   return (
     <div className="w-full flex items-center justify-center h-screen w-screen">
       <div className="w-7/12 sm:w-6/12 md:w-11/12 lg:w-10/12 xl:w-6/12">
@@ -148,6 +163,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
               onProgress={handleProgress}
               onDuration={handleDuration}
               playbackRate={playbackRate}
+              controls={true}
+              // progressInterval={1}
               width="0"
               height="0"
             />
@@ -236,7 +253,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           </div>
           <div className="w-full flex items-center justify-center md:block hidden">
             {buffering ? (
-              <div className="w-full h-40 p-20 flex items-center justify-center mt-10 h-full">
+              <div className="w-full h-40 p-20 flex items-center justify-center h-full">
                 <FlieLoader />
               </div>
             ) : (
@@ -298,30 +315,30 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             ) : (
               <div className="mt-10 flex flex-row justify-between mx-5">
                 <button
-                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw]"
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl"
                   onClick={seekBackward}
                 >
-                  <IoPlaySkipBack />
+                  <IoPlaySkipBack size={20} />
                 </button>
                 <button
-                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-[4vw]"
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full"
                   onClick={seekBackward}
                 >
-                  <TbRewindBackward10 />
+                  <TbRewindBackward10 size={20} />
                 </button>
                 {play ? (
                   <button
                     className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
                     onClick={togglePlayPause}
                   >
-                    <FaCirclePause />
+                    <FaCirclePause size={50} />
                   </button>
                 ) : (
                   <button
                     className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
                     onClick={togglePlayPause}
                   >
-                    <FaCirclePlay />
+                    <FaCirclePlay size={50} />
                   </button>
                 )}
                 <button
@@ -331,7 +348,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   <TbRewindForward10 />
                 </button>
                 <button
-                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw]"
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
+                  style={{ fontSize: "10vw" }}
                   onClick={seekForward}
                 >
                   <IoPlaySkipForward />
@@ -341,34 +359,52 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           </div>
         </div>
         <div className="md:mt-8 mt-0">
-          <div className="progress-container">
-            <progress
-              value={played}
-              max={1}
-              className="play-progress"
-              onClick={(e) =>
-                handleSeek(e.nativeEvent.offsetX / e.currentTarget.clientWidth)
-              }
-            />
-          </div>
-          <input
-            type="range"
-            value={played}
-            // min={0}
-            max={1}
-            className="rounded-xl w-full mt-4"
-            onClick={(e) =>
-              handleSeek(e.nativeEvent.offsetX / e.currentTarget.clientWidth)
-            }
-          />
-          <div className="flex flex-row justify-between text-sm mt-2">
-            <p>
-              {new Date(played * duration * 1000)
-                .toISOString()
-                .substring(11, 19)}
-            </p>
-            <p>{new Date(duration * 1000).toISOString().substring(11, 19)}</p>
-          </div>
+          {buffering ? (
+            <div className="h-16"></div>
+          ) : (
+            <div>
+              {/* <div className="progress-container">
+                <progress
+                  value={played}
+                  max={1}
+                  className="play-progress"
+                  onClick={(e) =>
+                    handleSeek(
+                      e.nativeEvent.offsetX / e.currentTarget.clientWidth
+                    )
+                  }
+                />
+              </div> */}
+
+              <div className="relative">
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step="any"
+                  value={played}
+                  onMouseDown={handleSeekMouseDown}
+                  onChange={handleSeekChange}
+                  onMouseUp={handleSeekMouseUp}
+                  className="rounded-xl w-full mt-4 cursor-pointer range-slider absolute"
+                />
+                <div
+                  className="bg-orange-400 rounded-full h-2 z-0 absolute mt-2.5"
+                  style={{ width: `calc(${played * 100}% + 0.15%)` }}
+                />
+              </div>
+              <div className="flex flex-row justify-between text-sm mt-2 pt-7">
+                <p>
+                  {new Date(played * duration * 1000)
+                    .toISOString()
+                    .substring(11, 19)}
+                </p>
+                <p>
+                  {new Date(duration * 1000).toISOString().substring(11, 19)}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="flex justify-between mt-2">
             <button className="flex flex-col items-center gap-1 hover:bg-white/10 p-5 rounded-full duration-300">
               <IoMdHeartEmpty className="sm:text-[3vw] xl:text-[2vw] text-[5vw]" />
