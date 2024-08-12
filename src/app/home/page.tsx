@@ -10,14 +10,16 @@ import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 
 export default function Album() {
-  const { user }: any = useUser()
+  const { user }: any = useUser();
 
   const fetchData = async () => {
     if (!user) {
       return [];
     }
     try {
-      const response = await API.get(`getCategories?&user_id=${user.id}&time=${new Date().toString()}`);
+      const response = await API.get(
+        `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+      );
       return response || [];
     } catch (error) {
       console.log(error);
@@ -31,7 +33,6 @@ export default function Album() {
   } = useQuery({
     queryKey: ["data", user],
     queryFn: fetchData,
-
   });
 
   return (
@@ -63,8 +64,8 @@ export default function Album() {
         {/* Footer section */}
         <div className="w-full mb-10">
           <p className="flex items-center justify-center text-[14px] gap-1 text-white">
-            Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht in
-            Zürich
+            Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht
+            in Zürich
           </p>
         </div>
 

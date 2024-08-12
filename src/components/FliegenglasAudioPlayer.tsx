@@ -11,6 +11,7 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { MdFormatListBulleted } from "react-icons/md";
 import { PiShareFatLight } from "react-icons/pi";
 import FlieLoader from "./core/FlieLoader";
+import FlieLoaderCustom from "./core/FlieLoaderCustom";
 
 interface FliegenglasAudioPlayerProps {
   audioDetail: any;
@@ -114,12 +115,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   // };
 
   const handleBuffer = () => {
-    setBuffering(true);
+    setBuffering(!buffering);
   };
 
-  const handleReady = () => {
-    setBuffering(false);
-  };
+  // const handleReady = () => {
+  //   setBuffering(false);
+  // };
 
   const handleSeekMouseDown = () => {
     setSeeking(true);
@@ -136,13 +137,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
+  // console.log(buffering);
+
   return (
     <div className="w-full flex items-center justify-center h-screen w-screen">
       <div className="w-7/12 sm:w-6/12 md:w-11/12 lg:w-10/12 xl:w-6/12">
         <div>
           <div className="absolute inset-0 h-full z-[-10]">
             <Image
-              src="/assets/images/search/search-icon-7387.png"
+              src={`/${audioDetail?.player_background_image}`}
               alt="Background Image"
               layout="fill"
               objectFit="cover"
@@ -153,18 +156,20 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           <div className="w-full">
             <ReactPlayer
               ref={playerRef}
-              // url={audioDetail?.preview_url}
-              url={
-                "https://upload.wikimedia.org/wikipedia/commons/4/49/Wikipedia.ogg"
-              }
+              url={`${(audioDetail?.preview_url).replace("mp3", "m3u8")}`}
               playing={play}
-              onBuffer={handleBuffer}
-              onReady={handleReady}
+              onBuffer={() => setBuffering(true)}
+              onBufferEnd={() => setBuffering(false)}
+              // onBuffer={() => console.log("buffer")}
+              // onBufferEnd={() => console.log("buffer end")}
+              // onError={() => console.log("error")}
+              // onStart={() => console.log("start")}
+              // onPlay={() => console.log("play")}
+              // onReady={handleReady}
               onProgress={handleProgress}
               onDuration={handleDuration}
               playbackRate={playbackRate}
               controls={true}
-              // progressInterval={1}
               width="0"
               height="0"
             />
@@ -242,9 +247,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           </button>
         </div>
         <div className="flex md:flex-row flex-col h-full">
-          <div className="w-full">
+          <div className="w-full h-96 relative">
+            {buffering && (
+              <div className="absolute bg-black/50">
+                <FlieLoaderCustom />
+              </div>
+            )}
             <Image
-              src="/assets/images/search/search-icon-7387.png"
+              src={`/${audioDetail?.local_image}`}
               alt="Audio Thumbnail"
               height={500}
               width={500}
@@ -252,118 +262,118 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             />
           </div>
           <div className="w-full flex items-center justify-center md:block hidden">
-            {buffering ? (
+            {/* {buffering ? (
               <div className="w-full h-40 p-20 flex items-center justify-center h-full">
-                <FlieLoader />
+                <FlieLoaderCustom />
               </div>
-            ) : (
-              <div className="flex flex-col mx-5 w-full">
-                <div className="flex flex-row justify-between">
-                  <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full"
-                    onClick={seekBackward}
-                  >
-                    <TbRewindBackward10 size={40} />
-                  </button>
-
-                  <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                    onClick={seekForward}
-                  >
-                    <TbRewindForward10 size={40} />
-                  </button>
-                </div>
-                <div className="text-center">
-                  {play ? (
-                    <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                      onClick={togglePlayPause}
-                    >
-                      <FaCirclePause size={200} />
-                    </button>
-                  ) : (
-                    <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                      onClick={togglePlayPause}
-                    >
-                      <FaCirclePlay size={200} />
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-row justify-between">
-                  <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                    onClick={seekBackward}
-                  >
-                    <IoPlaySkipBack size={40} />
-                  </button>
-                  <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                    onClick={seekForward}
-                  >
-                    <IoPlaySkipForward size={40} />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="w-full flex items-center justify-center md:hidden block">
-            {buffering ? (
-              <div className="w-full h-40 w-40 flex items-center justify-center h-full">
-                <FlieLoader />
-              </div>
-            ) : (
-              <div className="mt-10 flex flex-row justify-between mx-5">
-                <button
-                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl"
-                  onClick={seekBackward}
-                >
-                  <IoPlaySkipBack size={20} />
-                </button>
+            ) : ( */}
+            <div className="flex flex-col mx-5 w-full">
+              <div className="flex flex-row justify-between">
                 <button
                   className="cursor-pointer p-4 hover:bg-white/10 rounded-full"
                   onClick={seekBackward}
                 >
-                  <TbRewindBackward10 size={20} />
+                  <TbRewindBackward10 size={40} />
                 </button>
+
+                <button
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
+                  onClick={seekForward}
+                >
+                  <TbRewindForward10 size={40} />
+                </button>
+              </div>
+              <div className="text-center">
                 {play ? (
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
                     onClick={togglePlayPause}
                   >
-                    <FaCirclePause size={50} />
+                    <FaCirclePause size={200} />
                   </button>
                 ) : (
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
                     onClick={togglePlayPause}
                   >
-                    <FaCirclePlay size={50} />
+                    <FaCirclePlay size={200} />
                   </button>
                 )}
+              </div>
+              <div className="flex flex-row justify-between">
                 <button
-                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw]"
-                  onClick={seekForward}
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
+                  onClick={seekBackward}
                 >
-                  <TbRewindForward10 />
+                  <IoPlaySkipBack size={40} />
                 </button>
                 <button
                   className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
-                  style={{ fontSize: "10vw" }}
                   onClick={seekForward}
                 >
-                  <IoPlaySkipForward />
+                  <IoPlaySkipForward size={40} />
                 </button>
               </div>
-            )}
+            </div>
+            {/* )} */}
+          </div>
+          <div className="w-full flex items-center justify-center md:hidden block">
+            {/* {buffering ? (
+              <div className="w-full h-40 w-40 flex items-center justify-center h-full">
+                <FlieLoaderCustom />
+              </div>
+            ) : ( */}
+            <div className="mt-10 flex flex-row justify-between mx-5">
+              <button
+                className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl"
+                onClick={seekBackward}
+              >
+                <IoPlaySkipBack size={20} />
+              </button>
+              <button
+                className="cursor-pointer p-4 hover:bg-white/10 rounded-full"
+                onClick={seekBackward}
+              >
+                <TbRewindBackward10 size={20} />
+              </button>
+              {play ? (
+                <button
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                  onClick={togglePlayPause}
+                >
+                  <FaCirclePause size={50} />
+                </button>
+              ) : (
+                <button
+                  className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                  onClick={togglePlayPause}
+                >
+                  <FaCirclePlay size={50} />
+                </button>
+              )}
+              <button
+                className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw]"
+                onClick={seekForward}
+              >
+                <TbRewindForward10 />
+              </button>
+              <button
+                className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
+                style={{ fontSize: "10vw" }}
+                onClick={seekForward}
+              >
+                <IoPlaySkipForward />
+              </button>
+            </div>
+            {/* )} */}
           </div>
         </div>
         <div className="md:mt-8 mt-0">
-          {buffering ? (
+          {/* {buffering ? (
             <div className="h-16"></div>
-          ) : (
-            <div>
-              {/* <div className="progress-container">
+          ) : ( */}
+          <div>
+            {/* <div className="progress-container">
                 <progress
                   value={played}
                   max={1}
@@ -376,35 +386,33 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 />
               </div> */}
 
-              <div className="relative">
-                <input
-                  type="range"
-                  min={0}
-                  max={1}
-                  step="any"
-                  value={played}
-                  onMouseDown={handleSeekMouseDown}
-                  onChange={handleSeekChange}
-                  onMouseUp={handleSeekMouseUp}
-                  className="rounded-xl w-full mt-4 cursor-pointer range-slider absolute"
-                />
-                <div
-                  className="bg-orange-400 rounded-full h-2 z-0 absolute mt-2.5"
-                  style={{ width: `calc(${played * 100}% + 0.15%)` }}
-                />
-              </div>
-              <div className="flex flex-row justify-between text-sm mt-2 pt-7">
-                <p>
-                  {new Date(played * duration * 1000)
-                    .toISOString()
-                    .substring(11, 19)}
-                </p>
-                <p>
-                  {new Date(duration * 1000).toISOString().substring(11, 19)}
-                </p>
-              </div>
+            <div className="relative">
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step="any"
+                value={played}
+                onMouseDown={handleSeekMouseDown}
+                onChange={handleSeekChange}
+                onMouseUp={handleSeekMouseUp}
+                className="rounded-xl w-full mt-4 cursor-pointer range-slider absolute"
+              />
+              <div
+                className="bg-orange-400 rounded-full h-2 z-0 absolute mt-2.5"
+                style={{ width: `calc(${played * 100}% + 0.15%)` }}
+              />
             </div>
-          )}
+            <div className="flex flex-row justify-between text-sm mt-2 pt-7">
+              <p>
+                {new Date(played * duration * 1000)
+                  .toISOString()
+                  .substring(11, 19)}
+              </p>
+              <p>{new Date(duration * 1000).toISOString().substring(11, 19)}</p>
+            </div>
+          </div>
+          {/* )} */}
           <div className="flex justify-between mt-2">
             <button className="flex flex-col items-center gap-1 hover:bg-white/10 p-5 rounded-full duration-300">
               <IoMdHeartEmpty className="sm:text-[3vw] xl:text-[2vw] text-[5vw]" />
