@@ -9,7 +9,7 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
-import FlieLoader from "@components/FlieLoader";
+import FlieLoader from "@components/core/FlieLoader";
 
 export default function Album() {
   const { user }: any = useUser()

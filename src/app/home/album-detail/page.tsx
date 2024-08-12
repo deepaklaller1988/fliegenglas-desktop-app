@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import ProductDes from "@components/ProductDes";
 import { useState } from "react";
 import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
+import FlieLoader from "@components/core/FlieLoader";
 
 export default function AlbumDetail() {
   const searchParams = useSearchParams();
@@ -38,6 +39,12 @@ export default function AlbumDetail() {
   const handleShowPlayer = () => {
     setShowPlayer(!showPlayer);
   };
+
+  if(isLoading){
+    return (
+      <FlieLoader/>
+    )
+  }
 
   return (
     <>

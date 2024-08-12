@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
 import { HiArrowLeft } from "react-icons/hi";
-import FlieLoader from './FlieLoader';
+import FlieLoader from './core/FlieLoader';
 
 export default function Homelisting() {
     const searchParams = useSearchParams();

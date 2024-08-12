@@ -1,7 +1,7 @@
 "use client";
 import useFetchPageData from '@hooks/UseFetchData';
 import React from 'react';
-import FlieLoader from './FlieLoader';
+import FlieLoader from './core/FlieLoader';
 
 interface PageContentProps {
   slug: string;

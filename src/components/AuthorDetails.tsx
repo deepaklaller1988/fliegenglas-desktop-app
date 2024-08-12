@@ -4,9 +4,9 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { useSearchParams } from "next/navigation";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
-import FlieLoader from "./FlieLoader";
 import { VscHeartFilled } from "react-icons/vsc";
 import { getImagePath } from "@lib/getImagePath";
+import FlieLoader from "./core/FlieLoader";
 
 
 export default function AuthorDetails() {
