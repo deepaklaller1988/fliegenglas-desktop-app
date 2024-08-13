@@ -44,6 +44,8 @@ export default function Album() {
     queryFn: fetchData,
   });
 
+  console.log(data,"data");
+
   
   return (
     <>

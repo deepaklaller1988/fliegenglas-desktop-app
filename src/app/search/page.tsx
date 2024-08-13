@@ -1,48 +1,84 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import "./search.css";
 import Link from "next/link";
 import "react-slideshow-image/dist/styles.css";
-import Image from "next/image";
 import HomeSlider from "@components/HomeSlider";
-
-interface Item {
-  id: string;
-  image: string;
-}
+import { useQuery } from "@tanstack/react-query";
+import API from "@lib/API";
+import { useUser } from "context/UserContext";
+import { getData, saveData } from "utils/indexDB";
+import Image from "next/image";
 
 export default function Search() {
-  const [data, setData] = useState<any>([]);
-  const [show, setShow] = useState<number>(4);
-  const [loading, setLoading] = useState(true);
+  const { user }: any = useUser();
 
-  const getApiData = async () => {
+  const staticData = [
+    { banner_image: '/assets/images/search-icon-neu.png', link: "/home/listing?id=106" },
+    { banner_image: '/assets/images/search-icon-kostenlos.png', link: "/home/listing?id=43"},
+    { banner_image: '/assets/images/search-icon-autor.png' , link:"/search/nav-author"},
+    { banner_image: '/assets/images/search-icon-sprecher.png',link:"/search/nav-artist" }
+  ];
+
+  const fetchData = async () => {
+    if (!user) {
+      return [];
+    }
     try {
-      setData("Data");
-      console.log("Data");
+      const cachedData = await getData('tags');
+      if (cachedData) {
+        return cachedData;
+      }
+      const response: any = await API.get(`getTagsearch?&time=${new Date().toString()}`);
+      await saveData('tags', response.tags);
+      return response.tags;
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      return [];
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+  const {
+    isLoading,
+    data = [],
+  } = useQuery({
+    queryKey: ["data", user],
+    queryFn: fetchData,
+  });
 
-  useEffect(() => {
-    getApiData();
-  }, []);
+  const getChannelData = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const cachedData = await getData('channelData');
+      if (cachedData) {
+        return cachedData;
+      }
+      const response: any = await API.get(`getChannels?&user_id=${user.id}?&time=${new Date().toString()}`);
+      await saveData('channelData', response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const {
+    isLoading: isChannelLoading,
+    data: channelData = [],
+  } = useQuery({
+    queryKey: ["channel-data", user],
+    queryFn: getChannelData,
+  });
 
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-3">
       <div className="w-full h-56 bg-gray-300 rounded-md"></div>
     </div>
   );
+  const combinedChannelData = [...channelData, ...staticData];
 
   return (
     <div className="rightSideSet">
@@ -65,26 +101,19 @@ export default function Search() {
         <h3 className="text-white">Entdecke Hörbücher unter:</h3>
       </div>
       <div className="w-full">
-        {/* <section className="flex flex-wrap pr-4">
-          {loading ? (
-            [...Array(show)].map((_, index) => (
-              <div
-                key={index}
-                className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4"
-              >
+        <section className="flex flex-wrap pr-4">
+          {isChannelLoading ? (
+            [...Array(4)].map((_, index) => (
+              <div key={index} className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4">
                 <div className="w-full h-[300px] bg-gray-300 animate-pulse rounded-md"></div>
               </div>
             ))
-          ) : data.length > 0 ? (
-            data.slice(0, show).map((item: any, index: any) => (
-              <div
-                key={index}
-                className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4"
-              >
-                <Link
-                  href="/channel-details">
+          ) : combinedChannelData.length > 0 ? (
+            combinedChannelData?.map((item: any, index: any) => (
+              <div key={index} className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4">
+                <Link href={item.link || `/search/channel-details?id=${item.id}`}>
                   <Image
-                    src={item.image}
+                    src={item.banner_image}
                     alt="img"
                     width={265}
                     height={300}
@@ -96,96 +125,24 @@ export default function Search() {
           ) : (
             <p className="text-white">Keine Daten verfügbar</p>
           )}
-        </section> */}
+        </section>
       </div>
       <div className="w-full p-4 mt-2">
         <h3 className="text-white">Häufigste Suchbegriffe:</h3>
         <section className="flex flex-wrap gap-3 mt-2">
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Platon
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Zeit
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Platon
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Platon
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Zeit
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Zeit
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Nora
-          </Link>
-          <Link
-            className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
-            href=""
-          >
-            Kant
-          </Link>
+          {data && data?.map((item: any) => (
+            <Link
+              className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
+              href={``}
+              key={item.tag} 
+            >
+              {item.tag}
+            </Link>
+          ))}
         </section>
       </div>
       <div className="w-full mt-4">
-        {/* <Slide>
-          {loading ? (
-            Array.from({ length: show }).map((_, index) => (
-              <div
-                key={index}
-                className="min-w-[138px] h-[220px] inline-block rounded-md overflow-hidden mr-3"
-              >
-                {SkeletonLoader()}
-              </div>
-            ))
-          ) : (
-            data.map((item: any, index: any) => (
-              <div
-                key={index}
-                className="each-slide-effect w-full flex justify-center items-center"
-              >
-                <div className="slider-parent">
-                  <div className="card h-full">
-                    <Link
-                      href={`/home/album-detail?image=${encodeURIComponent(
-                        item.image
-                      )}`}
-                    >
-                      <img className="w-full" src={item.image} alt="Album" />
-
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </Slide> */}
-
-        <HomeSlider/>
+        <HomeSlider />
       </div>
       <div className="w-full p-5 pb-10 flex items-center justify-center">
         <Link
