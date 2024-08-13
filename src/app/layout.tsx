@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <AudioPlayerProvider>
-            <div>
+            <div className="w-full">
               <LayoutPath>{children}</LayoutPath>
               <ToastProvider />
             </div>

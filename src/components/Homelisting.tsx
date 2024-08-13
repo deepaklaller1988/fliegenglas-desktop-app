@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
-import FlieLoader from './core/FlieLoader';
+import FlieLoader from "./core/FlieLoader";
+import Image from "next/image";
 
 export default function Homelisting() {
   const searchParams = useSearchParams();
@@ -55,19 +56,21 @@ export default function Homelisting() {
         data.length > 0 &&
         data.map((item: any) => {
           return (
-            <div className="rightSideSet" key={item?.id}>
-              <div className="w-full pt-2 spaceBorder px-4">
-                <section className="py-6">
+            <div key={item?.id}>
+              <div className="w-full spaceBorder px-4">
+                <section className="">
                   <div
-                    className="w-full flex gap-4 text-white"
+                    className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
                     onClick={() =>
                       router.push(`/home/album-detail?id=${item?.id}`)
                     }
                   >
                     <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px] overflow-hidden">
-                      <img
+                      <Image
                         src={"/" + item?.local_image}
                         alt={"Image"}
+                        width={100}
+                        height={100}
                         className="object-cover w-full h-full"
                       />
                     </span>

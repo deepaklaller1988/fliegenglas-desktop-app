@@ -1,10 +1,10 @@
-import AuthorDetails from '@components/AuthorDetails'
-import React from 'react'
+import AuthorDetails from "@components/AuthorDetails";
+import React from "react";
 
 export default function page() {
   return (
-    <div>
-        <AuthorDetails/>
+    <div className="w-full">
+      <AuthorDetails />
     </div>
-  )
+  );
 }

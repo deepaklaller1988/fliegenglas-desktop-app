@@ -82,8 +82,8 @@ export default function AlbumDetail() {
                 className="block w-full shadow-xl"
                 src={"/" + data?.local_image}
                 alt="Album"
-                width={265}
-                height={300}
+                width={500}
+                height={500}
               />
             </div>
 
@@ -161,7 +161,7 @@ export default function AlbumDetail() {
             <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
               <span className="min-w-[85px] max-w-[85px]">
                 <Image
-                  className="block w-full"
+                  className="block w-full rounded-lg"
                   src={"/" + data.authoravatar}
                   alt="Author"
                   width={85}
@@ -184,7 +184,7 @@ export default function AlbumDetail() {
             <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
               <span className="min-w-[85px] max-w-[85px]">
                 <Image
-                  className="block w-full"
+                  className="block w-full rounded-lg"
                   src={getImagePath(data?.artistavatar)}
                   alt="Speaker"
                   width={85}

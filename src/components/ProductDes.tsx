@@ -3,7 +3,7 @@ import React from "react";
 
 const ProductDes: React.FC<any> = ({ data }: any) => {
   return (
-    <div className="bg-white text-black mt-10">
+    <div className="bg-white/40 rounded-lg p-2 text-black mt-2">
       <div
         dangerouslySetInnerHTML={{ __html: (data && data?.description) || "" }}
       />
