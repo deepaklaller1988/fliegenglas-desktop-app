@@ -10,7 +10,6 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { MdFormatListBulleted } from "react-icons/md";
 import { PiShareFatLight } from "react-icons/pi";
-import FlieLoader from "./core/FlieLoader";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
 
 interface FliegenglasAudioPlayerProps {
@@ -156,7 +155,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           <div className="w-full">
             <ReactPlayer
               ref={playerRef}
-              url={`${(audioDetail?.preview_url).replace("mp3", "m3u8")}`}
+              url={`${audioDetail?.preview_url?.replace("mp3", "m3u8")}`}
               playing={play}
               onBuffer={() => setBuffering(true)}
               onBufferEnd={() => setBuffering(false)}
@@ -249,7 +248,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
         <div className="flex md:flex-row flex-col h-full">
           <div className="w-full h-96 relative">
             {buffering && (
-              <div className="absolute bg-black/50">
+              <div className="absolute bg-black/50 h-full flex items-center justify-center">
                 <FlieLoaderCustom />
               </div>
             )}
