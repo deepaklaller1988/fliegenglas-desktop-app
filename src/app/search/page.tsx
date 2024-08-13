@@ -38,11 +38,11 @@ export default function Search() {
     getApiData();
   }, []);
 
-  // const SkeletonLoader = () => (
-  //   <div className="animate-pulse space-y-3">
-  //     <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-  //   </div>
-  // );
+  const SkeletonLoader = () => (
+    <div className="animate-pulse space-y-3">
+      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
+    </div>
+  );
 
   return (
     <div className="rightSideSet">
@@ -65,7 +65,7 @@ export default function Search() {
         <h3 className="text-white">Entdecke Hörbücher unter:</h3>
       </div>
       <div className="w-full">
-        <section className="flex flex-wrap pr-4">
+        {/* <section className="flex flex-wrap pr-4">
           {loading ? (
             [...Array(show)].map((_, index) => (
               <div
@@ -96,7 +96,7 @@ export default function Search() {
           ) : (
             <p className="text-white">Keine Daten verfügbar</p>
           )}
-        </section>
+        </section> */}
       </div>
       <div className="w-full p-4 mt-2">
         <h3 className="text-white">Häufigste Suchbegriffe:</h3>

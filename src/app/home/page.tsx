@@ -8,19 +8,28 @@ import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
+import { saveData, getData } from "../../utils/indexDB";
 
 export default function Album() {
   const { user }: any = useUser();
+
 
   const fetchData = async () => {
     if (!user) {
       return [];
     }
     try {
-      const response = await API.get(
+      const cachedData = await getData('home-categories');
+      if (cachedData) {
+        return cachedData;
+      }
+
+      const response :any = await API.get(
         `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
       );
-      return response || [];
+
+      await saveData('home-categories',response );
+      return response;
     } catch (error) {
       console.log(error);
       return [];
@@ -35,6 +44,7 @@ export default function Album() {
     queryFn: fetchData,
   });
 
+  
   return (
     <>
       {/* Top slideshow section */}

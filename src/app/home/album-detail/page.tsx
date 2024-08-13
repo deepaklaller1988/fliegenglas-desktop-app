@@ -12,6 +12,7 @@ import { useState } from "react";
 import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
 import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
+import { getData, saveData } from "utils/indexDB";
 
 export default function AlbumDetail() {
   const searchParams = useSearchParams();

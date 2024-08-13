@@ -6,6 +6,7 @@ import FlieLoader from './core/FlieLoader';
 import { Slide } from "react-slideshow-image";
 import Link from 'next/link';
 import { FaPlayCircle } from "react-icons/fa";
+import { getData, saveData } from 'utils/indexDB';
 
 
 export default function HomeSlider() {
@@ -16,14 +17,18 @@ export default function HomeSlider() {
             return [];
         }
         try {
+
+            const cachedData = await getData('fav-categories');
+            if (cachedData) {
+              return cachedData;
+            }
             const response = await API.get(`getFavChannelProducts?&user_id=${user.id}&time=${new Date().toString()}`);
-            return response || [];
-        } catch (error) {
+            await saveData('fav-categories',response );
+            return response;        } catch (error) {
             console.log(error);
             return [];
         }
     };
-
 
     const {
         isLoading: isFavourite,
@@ -33,6 +38,12 @@ export default function HomeSlider() {
         queryKey: ["sliderData", user],
         queryFn: getFavourites,
     });
+
+    const SkeletonLoader = () => (
+        <div className="animate-pulse space-y-3">
+          <div className="w-full h-56 bg-gray-300 rounded-md"></div>
+        </div>
+      );
 
     if (isFavourite) {
         return (
@@ -65,6 +76,9 @@ export default function HomeSlider() {
                     ))
                 }
             </Slide>
+
+
+            
         </div>
     )
 }
