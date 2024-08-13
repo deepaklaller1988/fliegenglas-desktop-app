@@ -1,6 +1,13 @@
+"use client";
+
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, provider, facebookProvider, appleProvider } from "../utils/firebase";
+import {
+  auth,
+  provider,
+  facebookProvider,
+  appleProvider,
+} from "../utils/firebase";
 import { useRouter } from "next/navigation";
 import User from "@hooks/User";
 

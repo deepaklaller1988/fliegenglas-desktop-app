@@ -4,6 +4,8 @@ import "./globals.css";
 import LayoutPath from "../components/LayoutPath";
 import Provider from "../components/core/Provider";
 import ToastProvider from "@components/core/ToasterProvider";
+import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
+import { AudioPlayerProvider } from "context/AudioPlayerContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,16 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={inter.className}>
-      <Provider>
-        <LayoutPath>
-          {children}
-        </LayoutPath>
-        <ToastProvider />
-      </Provider>
+        <Provider>
+          <AudioPlayerProvider>
+            <div>
+              <LayoutPath>{children}</LayoutPath>
+              <ToastProvider />
+            </div>
+            <FliegenglasAudioPlayer />
+          </AudioPlayerProvider>
+        </Provider>
       </body>
     </html>
   );

@@ -9,15 +9,17 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import ProductDes from "@components/ProductDes";
 import { useState } from "react";
-import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
+// import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
 import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
 import { getData, saveData } from "utils/indexDB";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function AlbumDetail() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("id") || "";
   const { user }: any = useUser();
+  const { isVisible, closePlayer, showPlayer } = useAudioPlayer();
 
   const fetchData = async () => {
     try {
@@ -32,37 +34,28 @@ export default function AlbumDetail() {
   };
 
   const { isLoading, data = {} } = useQuery<any>({
-    queryKey: ["album-detail", productId,user?.id],
+    queryKey: ["album-detail", productId, user?.id],
     queryFn: fetchData,
   });
 
-  const [showPlayer, setShowPlayer] = useState(false);
-
   const handleShowPlayer = () => {
-    setShowPlayer(!showPlayer);
+    showPlayer({
+      audioUrl: data?.preview_url,
+      imageUrl: data?.local_image,
+      backgroundImageUrl: data?.player_background_image,
+      audioID: data?.appleID,
+      artist: data?.artist,
+      shareurl: data?.shareurl,
+      name: data?.name,
+    });
   };
 
-  if(isLoading){
-    return (
-      <FlieLoader/>
-    )
+  if (isLoading) {
+    return <FlieLoader />;
   }
 
   return (
     <>
-      <div
-        className={`transition-transform duration-500 ease-in-out flex items-center justify-center fixed z-20 inset-0 bg-black ${
-          showPlayer ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        {showPlayer && (
-          <FliegenglasAudioPlayer
-            audioDetail={data}
-            audioType={"online"}
-            handleShowPlayer={handleShowPlayer}
-          />
-        )}
-      </div>
       <div className="rightSideSet">
         <div className="loaderSet w-full h-full items-center justify-center hidden">
           <Image
