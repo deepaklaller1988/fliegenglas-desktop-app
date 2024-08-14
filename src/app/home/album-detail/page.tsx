@@ -8,8 +8,6 @@ import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import ProductDes from "@components/ProductDes";
-import { useState } from "react";
-// import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
 import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
 import { getData, saveData } from "utils/indexDB";
@@ -80,7 +78,11 @@ export default function AlbumDetail() {
             <div className="w-full">
               <Image
                 className="block w-full shadow-xl"
-                src={"/" + data?.local_image}
+                src={
+                  data?.local_image.includes("assets")
+                    ? "/" + data?.local_image
+                    : data?.local_image
+                }
                 alt="Album"
                 width={500}
                 height={500}

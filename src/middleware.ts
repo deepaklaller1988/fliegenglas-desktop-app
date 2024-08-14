@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
 
 
-export function middleware(request: NextRequest) {
+
+export async function middleware(request: NextRequest) {
   const excludedPaths = [
     '/_next/static/',
     '/favicon.ico',
@@ -21,13 +22,20 @@ export function middleware(request: NextRequest) {
   }
 
 
-  const token = getCookie('user', { req: request });
-  if (token) {
+  const user: any = getCookie('user', { req: request });
+
+  if (user) {
+    const token = JSON.parse(user);
+    // let { data, success }: any = await checkToken(token, "access");
     if (request.nextUrl.pathname.startsWith('/auth')) {
       return NextResponse.redirect(new URL('/home', request.url));
     }
   } else {
     if (request.nextUrl.pathname === '/auth/login') {
+      return NextResponse.next();
+    } else if (request.nextUrl.pathname === '/auth/login-step') {
+      return NextResponse.next();
+    } else if (request.nextUrl.pathname === '/auth/login-step/login-otp') {
       return NextResponse.next();
     } else {
       return NextResponse.redirect(new URL('/auth/login', request.url));

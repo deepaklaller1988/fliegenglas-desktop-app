@@ -1,4 +1,3 @@
-// Loginstep.tsx
 "use client";
 import "./login-otp.css";
 import { HiArrowLeft } from "react-icons/hi";
@@ -10,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import useTitle from "@hooks/useTitle";
 import API from "@lib/API";
 import ErrorPopup from "@components/ErrorPopUp";
+import { setCookie } from "cookies-next";
 
 export default function Loginstep() {
   useTitle("Login Otp");
@@ -39,6 +39,7 @@ export default function Loginstep() {
       } else {
         setUser(response);
         sessionStorage.setItem("user", JSON.stringify(response));
+        setCookie("user", JSON.stringify(response));
         route.push("/home");
       }
     },
