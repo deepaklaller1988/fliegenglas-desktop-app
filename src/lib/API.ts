@@ -27,8 +27,9 @@ class API {
       // headers.append("Content-Type", "application/json");
       // headers.append("Access-Control-Allow-Headers-Type", "x-requested-with, Content-Type, Origin, Authorization, accept, client-security-token");
 
-      if (this.token) {
-        headers.append("Authorization", `Bearer ${this.token}`);
+      const accessToken = sessionStorage.getItem("user");
+      if (accessToken) {
+        headers.append("Authorization", `Bearer ${accessToken}`);
       }
 
       try {
@@ -58,7 +59,7 @@ class API {
     body: any,
     resent: boolean = false
   ): Promise<Res> {
-   try {
+    try {
       // Use the environment variable for the base URL
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
       const fullPath = `${baseUrl}${path}`;
@@ -67,8 +68,9 @@ class API {
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-      if (this.token) {
-        headers.append("Authorization", `Bearer ${this.token}`);
+      const accessToken = sessionStorage.getItem("user");
+      if (accessToken) {
+        headers.append("Authorization", `Bearer ${accessToken}`);
       }
 
       const response = await fetch(fullPath, {
@@ -90,7 +92,7 @@ class API {
       throw error;
     }
   }
-  
+
 
   static async postFile(
     path: string | string[],
@@ -103,7 +105,7 @@ class API {
 
       let headers = new Headers();
 
-     if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
           `Bearer ${localStorage.getItem("token")}`
@@ -149,7 +151,7 @@ class API {
 
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-    if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
           `Bearer ${localStorage.getItem("token")}`
@@ -196,7 +198,7 @@ class API {
 
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
-     if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token")) {
         headers.append(
           "Authorization",
           `Bearer ${localStorage.getItem("token")}`
@@ -251,8 +253,8 @@ class API {
       return res;
     } catch (error) {
       console.error("Error parsing response:", error);
-      throw handleError (error); // Rethrow the error to propagate it
-      
+      throw handleError(error); // Rethrow the error to propagate it
+
     }
   }
 

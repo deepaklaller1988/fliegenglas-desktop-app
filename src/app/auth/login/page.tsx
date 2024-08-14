@@ -4,10 +4,13 @@ import { UserAuth } from "context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import "./login.css";
+import { useUser } from "../../../context/UserContext";
+import { setCookie } from "cookies-next";
 
 export default function Login() {
   const router = useRouter();
   const { googleSignIn, appleSignIn } = UserAuth();
+  const { setUser }: any = useUser();
 
   const socialSignIn = async (e: any, platform: string) => {
     e.preventDefault();
@@ -23,32 +26,22 @@ export default function Login() {
         const mainFormData = {
           firstname: userData?.displayName,
           email: userData?.email,
-          mobilenumber: userData?.phoneNumber,
-          platform: platform,
         };
-        const url = "api/v1/loginRegister";
-        const mainResponse = await API.post("social_login/", mainFormData);
-        if (mainResponse.success === true) {
-          const searchText = localStorage.getItem("search");
-          if (searchText == "" || searchText == null) {
-            router.push("/home");
-          } else {
-            router.push("/review");
-          }
-          // toasterSuccess(
-          //    translations?.common?.loginSuccessMsg,
-          //    1000, mainResponse?.result?.id
-          // );
-        } else {
-          // toasterError(mainResponse?.error, 3000, "id");
-          // setIsSubmitting(false);
-        }
+        const response = await API.post(
+          `social_login/?&email=${
+            userData?.email
+          }&time=${new Date().toString()}`,
+          mainFormData
+        );
+        setUser(response);
+        sessionStorage.setItem("user", JSON.stringify(response));
+        setCookie("user", response);
+        router.push("/home");
       } else {
         console.error("User or email is null");
       }
     } catch (error) {
       console.error("Error during social sign-in:", error);
-      // setIsSubmitting(false);
     }
   };
 
