@@ -1,3 +1,5 @@
+"use client"
+
 import useRole from '@hooks/useRole';
 import { useRouter } from 'next/navigation';
 import React from 'react'

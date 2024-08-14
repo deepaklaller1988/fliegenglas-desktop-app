@@ -12,8 +12,8 @@ import useRole from "@hooks/useRole";
 import {useRouter} from "next/navigation";
 
 export default function Album() {
-  const { user }: any = useUser();
   const [roleLoading, roleData] = useRole();
+  const { user }: any = useUser();
   const router=useRouter()
 
   const fetchData = async () => {

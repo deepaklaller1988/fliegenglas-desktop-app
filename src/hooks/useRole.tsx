@@ -4,15 +4,15 @@ import User from "./User";
 export default function useRole() {
   const [loading, setLoading] = useState(true);
   const [roleData, setRoleData] = useState<any>({});
+  let userRole =  User.role();
 
   useEffect(() => {
     check();
   }, []);
 
   async function check() {
-    let userRole = await User.role();
-    console.log(userRole,"userrty======");
-    if(userRole){ setRoleData(userRole);}
+    if(userRole){ 
+      setRoleData(userRole);}
     setLoading(false);
   }
 

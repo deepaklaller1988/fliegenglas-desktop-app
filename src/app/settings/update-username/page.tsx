@@ -12,11 +12,11 @@ import useRole from "@hooks/useRole";
 
 export default function UpdateUsername() {
   useTitle("Update Profile");
+  const [roleLoading, roleData] = useRole();
   const { user} : any = useUser();
   const router = useRouter();
 
   const [name,setName] = useState<string>("");
-  const [roleLoading, roleData] = useRole();
   
   const mutation = useMutation({
     mutationFn: async () => {

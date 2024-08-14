@@ -1,3 +1,5 @@
+"use client"
+
 import { HiArrowLeft } from "react-icons/hi";
 import Link from "next/link";
 import useRole from "@hooks/useRole";

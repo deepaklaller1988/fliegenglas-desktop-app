@@ -14,9 +14,9 @@ import { useRouter } from "next/router";
 import useRole from "@hooks/useRole";
 
 export default function Search() {
+  const [roleLoading, roleData] = useRole();
   const { user }: any = useUser();
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
   const staticData = [
     { banner_image: '/assets/images/search-icon-neu.png', link: "/home/listing?id=106" },
     { banner_image: '/assets/images/search-icon-kostenlos.png', link: "/home/listing?id=43"},

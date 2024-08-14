@@ -12,10 +12,10 @@ import useRole from "@hooks/useRole";
 
 export default function Feedback() {
   useTitle("Feedback");
+  const [roleLoading, roleData] = useRole();
   const [feedback, setFeedback] = useState("");
   const { user }: any = useUser();
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await API.get(`sendFeedback/?email=${user.email}&feedback=${feedback}&time=${new Date().toString()}`);

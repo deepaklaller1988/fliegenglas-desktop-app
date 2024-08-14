@@ -12,12 +12,12 @@ import { getData, saveData } from "utils/indexDB";
 import useRole from "@hooks/useRole";
 
 export default function ChannelDetails() {
+    const [roleLoading, roleData] = useRole();
     const { user }: any = useUser();
     const searchParams = useSearchParams();
     const channelId = searchParams.get("id") || "";
     const [isLiked, setIsLiked] = useState(false);
     const router = useRouter();
-    const [roleLoading, roleData] = useRole();
 
     const mutation: any = useMutation({
         mutationFn: async () => {

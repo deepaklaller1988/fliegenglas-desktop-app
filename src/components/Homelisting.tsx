@@ -9,10 +9,10 @@ import Image from "next/image";
 import useRole from "@hooks/useRole";
 
 export default function Homelisting() {
+  const [roleLoading, roleData] = useRole();
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
 
   const fetchData = async () => {
     if (!id) {

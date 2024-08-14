@@ -6,9 +6,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
 
 export default function TypePage() {
+  const [roleLoading, roleData] = useRole();
   const { type } :any= useParams();
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
 
   const fetchData = async () => {
     try {

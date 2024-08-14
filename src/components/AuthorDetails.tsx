@@ -10,9 +10,9 @@ import FlieLoader from "./core/FlieLoader";
 import useRole from "@hooks/useRole";
 
 export default function AuthorDetails() {
+  const [roleLoading, roleData] = useRole();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
   const authorId = searchParams.get("authorId") || "";
   const artistId = searchParams.get("artistId") || "";
 

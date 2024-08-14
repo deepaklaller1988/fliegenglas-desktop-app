@@ -12,9 +12,9 @@ import useRole from '@hooks/useRole';
 
 
 export default function HomeSlider() {
+    const [roleLoading, roleData] = useRole();
     const { user }: any = useUser()
     const router = useRouter();
-    const [roleLoading, roleData] = useRole();
   
     const getFavourites = async () => {
         if (!user) {

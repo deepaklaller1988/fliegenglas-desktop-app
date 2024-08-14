@@ -12,9 +12,9 @@ import useRole from "@hooks/useRole";
 
 export default function UpdateEmail() {
   useTitle("Update Email");
-  const { user }: any = useUser();
+  const [roleLoading, roleData] = useRole(); 
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
+  const { user }: any = useUser();
   const [email, setEmail] = useState<string>("");
 
   const mutation :any= useMutation({
