@@ -7,10 +7,12 @@ import { useQuery } from "@tanstack/react-query";
 import { VscHeartFilled } from "react-icons/vsc";
 import { getImagePath } from "@lib/getImagePath";
 import FlieLoader from "./core/FlieLoader";
+import useRole from "@hooks/useRole";
 
 export default function AuthorDetails() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [roleLoading, roleData] = useRole();
   const authorId = searchParams.get("authorId") || "";
   const artistId = searchParams.get("artistId") || "";
 
@@ -42,6 +44,10 @@ export default function AuthorDetails() {
     );
   }
 
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
   return (
     <div className="w-full">
       <section className="bg-[#6c7279] p-4 ">

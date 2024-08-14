@@ -7,12 +7,17 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
+import { useRouter } from "next/navigation";
+import useRole from "@hooks/useRole";
 
 export default function UpdateUsername() {
   useTitle("Update Profile");
   const { user} : any = useUser();
-  const [name,setName] = useState<string>("");
+  const router = useRouter();
 
+  const [name,setName] = useState<string>("");
+  const [roleLoading, roleData] = useRole();
+  
   const mutation = useMutation({
     mutationFn: async () => {
         if(user){
@@ -44,6 +49,12 @@ export default function UpdateUsername() {
       console.error("Username is required");
     }
   };
+
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
 
   return (
     <Form

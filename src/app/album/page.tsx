@@ -27,10 +27,8 @@ export default function Album() {
   const getApiData = async () => {
     try {
       setData("Data");
-      console.log("Data-Album :", "Data");
       setLoading(false);
     } catch (error) {
-      console.log("Error :", error);
       setLoading(false);
     }
   };

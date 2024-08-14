@@ -1,11 +1,15 @@
 "use client";
 
 import ErrorPopup from '@components/ErrorPopUp';
+import useRole from '@hooks/useRole';
 import useTitle from '@hooks/useTitle';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 export default function AccountDelete() {
   useTitle("Account Delete");
+  const router = useRouter();
+  const [roleLoading, roleData] = useRole();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleLogout = () => {
@@ -20,6 +24,11 @@ export default function AccountDelete() {
   const cancelLogout = () => {
     setIsPopupVisible(false);
   };
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 w-full">

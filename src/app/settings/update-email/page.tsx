@@ -7,10 +7,14 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
+import { useRouter } from "next/navigation";
+import useRole from "@hooks/useRole";
 
 export default function UpdateEmail() {
   useTitle("Update Email");
   const { user }: any = useUser();
+  const router = useRouter();
+  const [roleLoading, roleData] = useRole();
   const [email, setEmail] = useState<string>("");
 
   const mutation :any= useMutation({
@@ -39,6 +43,11 @@ export default function UpdateEmail() {
     }
   };
 
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
   return (
     <Form
       title="Deine E-Mail-Adresse"

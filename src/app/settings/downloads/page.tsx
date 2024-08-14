@@ -1,6 +1,16 @@
 import { HiArrowLeft } from "react-icons/hi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useRole from "@hooks/useRole";
 export default function Downloads() {
+
+    const router = useRouter();
+    const [roleLoading, roleData] = useRole();
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
     return (<>
         <div id="login-page" className="px-4 w-full">
             <div className="loginInner">

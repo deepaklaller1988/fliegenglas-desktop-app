@@ -2,18 +2,27 @@
 import useFetchPageData from "@hooks/UseFetchData";
 import React from "react";
 import FlieLoader from "./core/FlieLoader";
+import {useRouter} from "next/navigation";
+import useRole from "@hooks/useRole";
 
 interface PageContentProps {
   slug: string;
 }
 
+
 const PageContent: React.FC<PageContentProps> = ({ slug }) => {
+  const router=useRouter()
   const { pageData, loading, error } = useFetchPageData(slug);
+  const [roleLoading, roleData] = useRole();
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
 
   if (loading) {
     return <FlieLoader />;
   }
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="bg-white pt-10 px-2">

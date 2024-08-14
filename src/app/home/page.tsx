@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import "./album.css";
 import "react-slideshow-image/dist/styles.css";
@@ -10,11 +9,12 @@ import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
 import useRole from "@hooks/useRole";
+import {useRouter} from "next/navigation";
 
 export default function Album() {
   const { user }: any = useUser();
   const [roleLoading, roleData] = useRole();
-console.log(roleData,roleLoading,"=====")
+  const router=useRouter()
 
   const fetchData = async () => {
     if (!user) {
@@ -46,9 +46,11 @@ console.log(roleData,roleLoading,"=====")
     queryFn: fetchData,
   });
 
-  console.log(data,"data");
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
 
-  
   return (
     <>
       {/* Top slideshow section */}

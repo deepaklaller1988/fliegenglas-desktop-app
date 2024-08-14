@@ -7,11 +7,15 @@ import { Slide } from "react-slideshow-image";
 import Link from 'next/link';
 import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from 'utils/indexDB';
+import { useRouter } from 'next/navigation';
+import useRole from '@hooks/useRole';
 
 
 export default function HomeSlider() {
     const { user }: any = useUser()
-
+    const router = useRouter();
+    const [roleLoading, roleData] = useRole();
+  
     const getFavourites = async () => {
         if (!user) {
             return [];
@@ -50,7 +54,11 @@ export default function HomeSlider() {
             <FlieLoader />
         )
     }
-
+    if(roleLoading && !roleData.id){
+        router.push('/auth/login'); 
+        return null;
+      }
+    
     return (
 
         <div className="w-full squareSet" id="top">

@@ -6,11 +6,13 @@ import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
 import FlieLoader from "./core/FlieLoader";
 import Image from "next/image";
+import useRole from "@hooks/useRole";
 
 export default function Homelisting() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const router = useRouter();
+  const [roleLoading, roleData] = useRole();
 
   const fetchData = async () => {
     if (!id) {
@@ -30,6 +32,13 @@ export default function Homelisting() {
     queryKey: ["data", id],
     queryFn: fetchData,
   });
+
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
+
 
   if (isLoading) {
     return <FlieLoader />;

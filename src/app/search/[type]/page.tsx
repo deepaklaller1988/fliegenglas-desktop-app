@@ -1,11 +1,14 @@
 "use client"
+import useRole from '@hooks/useRole';
 import API from '@lib/API';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
 
 export default function TypePage() {
   const { type } :any= useParams();
+  const router = useRouter();
+  const [roleLoading, roleData] = useRole();
 
   const fetchData = async () => {
     try {
@@ -50,6 +53,11 @@ export default function TypePage() {
     acc[firstLetter].push(item);
     return acc;
   }, {});
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
 
   return (
     <div className="container mx-auto p-4">

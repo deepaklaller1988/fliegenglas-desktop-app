@@ -37,7 +37,6 @@ export default function Loginstep() {
           "Die Anmeldung hat nicht funktioniert. Bitte prüfe Deine E-Mail-Adresse oder Dein Passwort."
         );
       } else {
-        console.log(response, "res");
         setUser(response);
         sessionStorage.setItem("user", JSON.stringify(response));
         route.push("/home");

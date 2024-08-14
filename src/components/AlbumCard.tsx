@@ -1,13 +1,24 @@
+"use client"
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import useRole from "@hooks/useRole";
+import { useRouter } from "next/navigation";
 
 const AlbumSection = ({ data, isLoading }: any) => {
+  const router = useRouter();
+  const [roleLoading, roleData] = useRole();
+
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-3">
       <div className="w-full h-56 bg-gray-300 rounded-md"></div>
     </div>
   );
+
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
   return (
     <>
       <div className="w-full playNail p-3 pr-0 py-6 text-white">

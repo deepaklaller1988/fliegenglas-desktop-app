@@ -10,10 +10,13 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import useRole from "@hooks/useRole";
 
 export default function Search() {
   const { user }: any = useUser();
-
+  const router = useRouter();
+  const [roleLoading, roleData] = useRole();
   const staticData = [
     { banner_image: '/assets/images/search-icon-neu.png', link: "/home/listing?id=106" },
     { banner_image: '/assets/images/search-icon-kostenlos.png', link: "/home/listing?id=43"},
@@ -80,6 +83,11 @@ export default function Search() {
   );
   const combinedChannelData = [...channelData, ...staticData];
 
+  if(roleLoading && !roleData.id){
+    router.push('/auth/login'); 
+    return null;
+  }
+  
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
