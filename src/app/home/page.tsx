@@ -8,13 +8,9 @@ import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
-import useRole from "@hooks/useRole";
-import {useRouter} from "next/navigation";
 
 export default function Album() {
-  const [roleLoading, roleData] = useRole();
   const { user }: any = useUser();
-  const router=useRouter()
 
   const fetchData = async () => {
     if (!user) {
@@ -46,10 +42,6 @@ export default function Album() {
     queryFn: fetchData,
   });
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
 
   return (
     <>

@@ -12,7 +12,6 @@ import useRole from "@hooks/useRole";
 
 export default function UpdateUsername() {
   useTitle("Update Profile");
-  const [roleLoading, roleData] = useRole();
   const { user} : any = useUser();
   const router = useRouter();
 
@@ -51,10 +50,7 @@ export default function UpdateUsername() {
   };
 
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+
 
   return (
     <Form

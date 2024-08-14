@@ -12,7 +12,6 @@ import { getData, saveData } from "utils/indexDB";
 import useRole from "@hooks/useRole";
 
 export default function ChannelDetails() {
-    const [roleLoading, roleData] = useRole();
     const { user }: any = useUser();
     const searchParams = useSearchParams();
     const channelId = searchParams.get("id") || "";
@@ -144,10 +143,7 @@ export default function ChannelDetails() {
     );
     
 
-    if(roleLoading && !roleData.id){
-        router.push('/auth/login'); 
-        return null;
-      }
+ 
     return (
         <>
             {/* Top slideshow section */}

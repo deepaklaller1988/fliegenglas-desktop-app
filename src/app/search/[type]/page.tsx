@@ -6,7 +6,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
 
 export default function TypePage() {
-  const [roleLoading, roleData] = useRole();
   const { type } :any= useParams();
   const router = useRouter();
 
@@ -54,10 +53,7 @@ export default function TypePage() {
     return acc;
   }, {});
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+
 
   return (
     <div className="container mx-auto p-4">

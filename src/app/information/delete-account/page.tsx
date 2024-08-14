@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 export default function AccountDelete() {
   useTitle("Account Delete");
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleLogout = () => {
@@ -25,10 +24,6 @@ export default function AccountDelete() {
     setIsPopupVisible(false);
   };
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 w-full">

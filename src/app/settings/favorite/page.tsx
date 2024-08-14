@@ -6,12 +6,7 @@ import React from 'react'
 export default function Favorite() {
 
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
   return (
     <div>page</div>
   )

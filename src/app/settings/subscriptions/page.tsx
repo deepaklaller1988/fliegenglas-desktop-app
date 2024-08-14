@@ -7,12 +7,7 @@ import { useRouter } from "next/navigation";
 export default function Subscriptions() {
 
     const router = useRouter();
-    const [roleLoading, roleData] = useRole();
 
-    if (roleLoading && !roleData.id) {
-        router.push('/auth/login');
-        return null;
-    }
     return (<>
         <div id="login-page" className="px-4 w-full">
             <div className="loginInner">

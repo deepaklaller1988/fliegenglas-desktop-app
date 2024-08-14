@@ -12,7 +12,6 @@ import useRole from "@hooks/useRole";
 
 export default function Feedback() {
   useTitle("Feedback");
-  const [roleLoading, roleData] = useRole();
   const [feedback, setFeedback] = useState("");
   const { user }: any = useUser();
   const router = useRouter();
@@ -38,10 +37,7 @@ export default function Feedback() {
     }
   };
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+
   return (
     <Form
       title="Dein Feedback"

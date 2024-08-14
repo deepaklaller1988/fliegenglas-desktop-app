@@ -33,7 +33,6 @@ class User {
       }
     return user;   
   }
-
   static clearUserDetails() {
     const { clearUser }: any = useUser();
     clearUser();

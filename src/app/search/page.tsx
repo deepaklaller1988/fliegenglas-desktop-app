@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import useRole from "@hooks/useRole";
 
 export default function Search() {
-  const [roleLoading, roleData] = useRole();
   const { user }: any = useUser();
   const router = useRouter();
   const staticData = [
@@ -83,10 +82,7 @@ export default function Search() {
   );
   const combinedChannelData = [...channelData, ...staticData];
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+  
   
   return (
     <div className="rightSideSet">

@@ -10,7 +10,6 @@ import FlieLoader from "./core/FlieLoader";
 import useRole from "@hooks/useRole";
 
 export default function AuthorDetails() {
-  const [roleLoading, roleData] = useRole();
   const searchParams = useSearchParams();
   const router = useRouter();
   const authorId = searchParams.get("authorId") || "";
@@ -44,10 +43,7 @@ export default function AuthorDetails() {
     );
   }
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+ 
   return (
     <div className="w-full">
       <section className="bg-[#6c7279] p-4 ">

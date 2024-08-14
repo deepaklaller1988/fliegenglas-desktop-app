@@ -9,7 +9,6 @@ import Image from "next/image";
 import useRole from "@hooks/useRole";
 
 export default function Homelisting() {
-  const [roleLoading, roleData] = useRole();
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const router = useRouter();
@@ -34,10 +33,6 @@ export default function Homelisting() {
   });
 
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
 
 
   if (isLoading) {

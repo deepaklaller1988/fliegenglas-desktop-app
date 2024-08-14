@@ -1,20 +1,23 @@
+import { useUser } from "context/UserContext";
 import { useEffect, useState } from "react";
-import User from "./User";
 
 export default function useRole() {
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const [roleData, setRoleData] = useState<any>({});
-  let userRole =  User.role();
+
+  console.log(roleData);
 
   useEffect(() => {
-    check();
-  }, []);
+    async function check() {
+      if (user) {
+        setRoleData(user);
+      }
+      setLoading(false);
+    }
 
-  async function check() {
-    if(userRole){ 
-      setRoleData(userRole);}
-    setLoading(false);
-  }
+    check();
+  }, [user]);
 
   return [loading, roleData];
 }

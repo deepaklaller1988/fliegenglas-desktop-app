@@ -12,7 +12,6 @@ import useRole from "@hooks/useRole";
 
 export default function UpdateEmail() {
   useTitle("Update Email");
-  const [roleLoading, roleData] = useRole(); 
   const router = useRouter();
   const { user }: any = useUser();
   const [email, setEmail] = useState<string>("");
@@ -44,10 +43,6 @@ export default function UpdateEmail() {
   };
 
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
   return (
     <Form
       title="Deine E-Mail-Adresse"

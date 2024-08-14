@@ -12,7 +12,6 @@ import useRole from '@hooks/useRole';
 
 
 export default function HomeSlider() {
-    const [roleLoading, roleData] = useRole();
     const { user }: any = useUser()
     const router = useRouter();
   
@@ -54,10 +53,7 @@ export default function HomeSlider() {
             <FlieLoader />
         )
     }
-    if(roleLoading && !roleData.id){
-        router.push('/auth/login'); 
-        return null;
-      }
+
     
     return (
 

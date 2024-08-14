@@ -15,9 +15,7 @@ const NotFound = () => {
         <p className="text-3xl font-medium text-gray-700 mb-4">
           Oops! The page you're looking for doesn't exist.
         </p>
-        <button className="w-6/12 ml-20 float-left text-center text-white cursor-pointer border border-white font-sansbutton yellow w-6/12	rounded-md h-[50px]" onClick={handleGoBack}>
-
-
+        <button className="w-6/12 ml-32 float-left text-center text-white cursor-pointer border border-white font-sansbutton yellow w-6/12	rounded-md h-[50px]" onClick={handleGoBack}>
           Go Back
         </button>
       </div>

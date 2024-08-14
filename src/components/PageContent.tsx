@@ -11,14 +11,9 @@ interface PageContentProps {
 
 
 const PageContent: React.FC<PageContentProps> = ({ slug }) => {
-  const [roleLoading, roleData] = useRole();
   const router=useRouter()
   const { pageData, loading, error } = useFetchPageData(slug);
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
 
   if (loading) {
     return <FlieLoader />;

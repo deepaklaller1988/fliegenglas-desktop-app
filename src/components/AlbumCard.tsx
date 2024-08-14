@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 
 const AlbumSection = ({ data, isLoading }: any) => {
   const router = useRouter();
-  const [roleLoading, roleData] = useRole();
 
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-3">
@@ -15,10 +14,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
     </div>
   );
 
-  if(roleLoading && !roleData.id){
-    router.push('/auth/login'); 
-    return null;
-  }
+
   return (
     <>
       <div className="w-full playNail p-3 pr-0 py-6 text-white">
