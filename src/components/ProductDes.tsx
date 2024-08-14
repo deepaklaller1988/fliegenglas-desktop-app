@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import useRole from "@hooks/useRole";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const ProductDes: React.FC<any> = ({ data }: any) => {
   const router=useRouter()

@@ -7,7 +7,7 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useRole from "@hooks/useRole";
 
 export default function Feedback() {

@@ -53,31 +53,31 @@ const AlbumSection = ({ data, isLoading }: any) => {
                 <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
                   {isLoading
                     ? Array.from({ length: 8 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                      >
+                        {SkeletonLoader()}
+                      </div>
+                    ))
+                    : item?.products
+                      ?.slice(0, 8)
+                      .map((product: any, index: any) => (
                         <div
                           key={index}
-                          className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                          className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
                         >
-                          {SkeletonLoader()}
+                          <Link href={`/home/album-detail?id=${product?.id}`}>
+                            <Image
+                              src={product?.image || ""}
+                              alt={product?.name || ""}
+                              width={150}
+                              height={150}
+                              className="w-full block rounded-md"
+                            />
+                          </Link>
                         </div>
-                      ))
-                    : item?.products
-                        ?.slice(0, 8)
-                        .map((product: any, index: any) => (
-                          <div
-                            key={index}
-                            className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
-                          >
-                            <Link href={`/home/album-detail?id=${product?.id}`}>
-                              <Image
-                                src={product?.image || ""}
-                                alt={product?.name || ""}
-                                width={150}
-                                height={150}
-                                className="w-full block rounded-md"
-                              />
-                            </Link>
-                          </div>
-                        ))}
+                      ))}
                 </div>
               </div>
             );

@@ -1,6 +1,5 @@
 "use client";
-import { FiSearch } from "react-icons/fi";
-import { IoClose } from "react-icons/io5";
+
 import "./search.css";
 import Link from "next/link";
 import "react-slideshow-image/dist/styles.css";
@@ -10,12 +9,13 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import useRole from "@hooks/useRole";
+import SearchBar from "@components/SearchBar";
+import { useState } from "react";
 
 export default function Search() {
   const { user }: any = useUser();
-  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState<any>('');
+
   const staticData = [
     { banner_image: '/assets/images/search-icon-neu.png', link: "/home/listing?id=106" },
     { banner_image: '/assets/images/search-icon-kostenlos.png', link: "/home/listing?id=43"},
@@ -82,24 +82,16 @@ export default function Search() {
   );
   const combinedChannelData = [...channelData, ...staticData];
 
-  
-  
+  const handleTagClick = (item: string) => {
+    setSearchQuery(item);
+    // Trigger the search based on the tag
+    // Call your API here with the new search query
+    // fetchSearchResults(tag);
+  };
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
-        <section className="relative">
-          <button className="absolute left-4 top-[10px]">
-            <FiSearch className="text-white w-5 h-5" />
-          </button>
-          <input
-            className="text-white bg-[#545b64] py-2 px-10 w-full rounded-md"
-            type="text"
-            placeholder="Suchen"
-          />
-          <button className="absolute right-3 top-[10px]">
-            <IoClose className="text-white w-5 h-5" />
-          </button>
-        </section>
+       <SearchBar searchQuery={searchQuery} onSearch={setSearchQuery} />
       </div>
       <div className="w-full p-4">
         <h3 className="text-white">Entdecke Hörbücher unter:</h3>
@@ -139,6 +131,8 @@ export default function Search() {
               className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
               href={``}
               key={item.tag} 
+              onClick={() => handleTagClick(item)}
+
             >
               {item.tag}
             </Link>
