@@ -11,6 +11,7 @@ export default function useRole() {
 
   async function check() {
     let userRole = await User.role();
+    console.log(userRole,"userrty======");
     if(userRole){ setRoleData(userRole);}
     setLoading(false);
   }

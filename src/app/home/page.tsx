@@ -9,10 +9,12 @@ import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
+import useRole from "@hooks/useRole";
 
 export default function Album() {
   const { user }: any = useUser();
-
+  const [roleLoading, roleData] = useRole();
+console.log(roleData,roleLoading,"=====")
 
   const fetchData = async () => {
     if (!user) {

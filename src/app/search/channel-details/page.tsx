@@ -102,11 +102,11 @@ const  fetchProductsByCategories=async()=> {
             // Assuming channel.id is the ID to match
             for (let categoryId of channel) {
                 console.log(categoryId,"categoryid")
-                const category = categoriesData.find(cat => cat.id === categoryId);
+                const category = categoriesData.find((cat:any) => cat.id === categoryId);
 
                 if (category) {
                     // Step 5: If the category exists, match the products inside it
-                    const matchedCategoryProducts = category.products.filter(product => 
+                    const matchedCategoryProducts = category.products.filter((product:any) => 
                         channel.categories.includes(product.id)
                     );
 
