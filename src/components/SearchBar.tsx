@@ -12,10 +12,14 @@ import FlieLoader from "./core/FlieLoader";
 interface SearchBarProps {
   searchQuery: { tag: any; id: number };
   onSearch: (query: string) => void;
-  suggestions: any
+  suggestions: any;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestions }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  searchQuery,
+  onSearch,
+  suggestions,
+}) => {
   const router = useRouter();
   const [inputValue, setInputValue] = useState(searchQuery.tag);
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -28,7 +32,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
     const handler = setTimeout(() => {
       if (inputValue) {
         const filtered = suggestions.filter((suggestion: any) =>
-          suggestion?.search_string?.toLowerCase().includes(inputValue.toLowerCase())
+          suggestion?.search_string
+            ?.toLowerCase()
+            .includes(inputValue.toLowerCase())
         );
         setFilteredSuggestions(filtered);
       } else {
@@ -41,11 +47,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
     };
   }, [inputValue, suggestions]);
 
-
   const fetchData = async () => {
     try {
       const response = API.get(
-        `searchProducts?&search=${searchQuery?.id
+        `searchProducts?&search=${
+          searchQuery?.id
         }&type=tags&time=${new Date().toString()}`
       );
 
@@ -70,7 +76,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
     setInputValue("");
     onSearch("");
   };
-
 
   return (
     <div>
@@ -104,14 +109,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
             </button>
           )
         )}
-
       </section>
 
       <div className="mt-4">
-        {filteredSuggestions.length === 0 && inputValue && <p>No results found</p>}
+        {filteredSuggestions.length === 0 && inputValue && (
+          <p>No results found</p>
+        )}
         <ul>
-          {data &&
-            data.length > 0 ?
+          {data && data.length > 0 ? (
             data?.map((item: any) => {
               return (
                 <div className="w-full spaceBorder px-4">
@@ -142,40 +147,49 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
                   </section>
                 </div>
               );
-            }) :
+            })
+          ) : (
             <>
-
               {filteredSuggestions.map((item: any) => (
                 <div className="w-full spaceBorder px-4" key={item.id}>
                   <section>
                     <div
-                      className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
-                      onClick={() => router.push(`/home/album-detail?id=${item.id}`)}
+                      className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
+                      onClick={() =>
+                        router.push(`/home/album-detail?id=${item.id}`)
+                      }
                     >
-                      <span className="min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
-                        {item?.local_image ? <>
-                          <img
-                            src={item?.local_image}
-                            alt="Image"
-                            className="rounded-lg"
-                          />
-                        </> :
+                      <span
+                        className={`${
+                          item?.local_image
+                            ? "min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]"
+                            : ""
+                        } `}
+                      >
+                        {item?.local_image ? (
+                          <>
+                            <img
+                              src={item?.local_image}
+                              alt="Image"
+                              className="rounded-lg"
+                            />
+                          </>
+                        ) : (
                           <div className="flex flex-col justify-between">
-                            <p className="text-[#b5b7bb] text-sm">{item?.typeLabel}</p>
-                          </div>}
+                            <p className="font-bold">{item?.typeLabel}</p>
+                          </div>
+                        )}
                       </span>
                       <div className="flex flex-col justify-between">
-                        <p className="text-[#b5b7bb] text-sm">{item?.title}</p>
+                        <p className="font-thin">{item?.title}</p>
                       </div>
                     </div>
                   </section>
                 </div>
               ))}
-
             </>
-          }
+          )}
         </ul>
-
       </div>
     </div>
   );
