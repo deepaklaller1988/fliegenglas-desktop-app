@@ -16,7 +16,7 @@ const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="bg-white pt-10 px-2">
+    <div className="bg-white pt-10 px-2 paraPadcz">
       <div
         dangerouslySetInnerHTML={{
           __html: (pageData && pageData[0]?.content?.rendered) || "",

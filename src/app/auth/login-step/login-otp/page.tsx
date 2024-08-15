@@ -65,8 +65,8 @@ export default function Loginstep() {
 
   return (
     <>
-      <div id="login-page" className="px-4">
-        <div className="loginInner">
+      <div id="login-page" className="px-4 flex justify-center w-full">
+        <div className="loginInner max-w-[400px]">
           <div className="header">
             <Link href="/auth/login">
               <div className="py-4 pr-4 text-white">

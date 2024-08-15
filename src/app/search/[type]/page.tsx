@@ -3,6 +3,7 @@ import API from '@lib/API';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
+import Link from 'next/link';
 
 export default function TypePage() {
   const { type } :any= useParams();
@@ -52,23 +53,33 @@ export default function TypePage() {
   }, {});
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Nach Autoren suchen</h1>
+    <div className="container mx-auto py-4 listSerachCZ">
+      <h1 className="text-[22px] mb-4 text-white px-4">Nach Autoren suchen</h1>
       {Object.keys(groupedData).map((letter: string) => (
         <div key={letter}>
-          <h2 className="text-lg font-semibold bg-blue-900 text-white p-2">{letter[0]}</h2>
+          <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1">{letter[0]}</h2>
           <ul>
-          <li className="p-2 border-b bg-red-500">
+          <li className="text-white flex flex-col px-4">
               {groupedData[letter].map((item: any, index: number) => (
-                <span key={item.user_lastname + item.user_firstname}>
+                <span className='py-2 border-b border-white/10' key={item.user_lastname + item.user_firstname}>
+                  <b>
                   {item.user_lastname + " " + item.user_firstname}
                   {index < groupedData[letter].length - 1 && ', '}
+                </b>
                 </span>
               ))}
             </li>
           </ul>
         </div>
       ))}
+          <ul id="alphabets" className="display-alphabetic">
+            <li><Link href="">A</Link></li>
+            <li><Link href="">B</Link></li>
+            <li><Link href="">C</Link></li>
+            <li><Link href="">D</Link></li>
+            <li><Link href="">E</Link></li>
+            <li><Link href="">F</Link></li>
+            </ul>
     </div>
   );
 }

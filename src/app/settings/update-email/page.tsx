@@ -7,12 +7,10 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
-
 export default function UpdateEmail() {
   useTitle("Update Email");
   const { user }: any = useUser();
   const [email, setEmail] = useState<string>("");
-
   const mutation :any= useMutation({
     mutationFn: async () => {
       const response = await API.post(`changeEmail/?userID=${user.id}&email=${email}&time=${new Date().toString()}`, {

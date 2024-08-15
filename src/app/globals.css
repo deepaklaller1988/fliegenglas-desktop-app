@@ -391,10 +391,33 @@ h6 {
 .collapseMenu+.rightSideSet {
 	width: calc(100% - 100px);
 }
+.paraPadcz p{    padding: 10px 0;
+    font-size: 17px;
+    line-height: 25px;}
 
+ul#alphabets {
+    position: fixed;
+    width: 28px;
+    right: 0;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    color: white;background: transparent;
+}
+.listSerachCZ ul {
+    background: #030e1c;
+}
+
+ul#alphabets a {
+    display: block;
+    font-size: 12px;
+    font-family: product_sansbold !important;
+}
 /* Menu collapse open css */
 .squareSet {
-	aspect-ratio: 1 /1;
+    aspect-ratio: 1 /1;
+    background: #030e1c;
 }
 .activeSidebarLink{ font-family: product_sansbold !important;}
 .loaderGradient {
