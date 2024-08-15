@@ -228,9 +228,9 @@ export default function AlbumDetail() {
             </div>
           </div>
 
+          <PrivacyPolicyLink/>
 
         </div>
-       <PrivacyPolicyLink/>
       </div>
     </>
   );
