@@ -91,7 +91,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
                                         `/home/album-detail?id=${product?.id}`
                                       );
                                       sessionStorage.setItem(
-                                        "image",
+                                        "page-image",
                                         product?.image
                                       );
                                     }}

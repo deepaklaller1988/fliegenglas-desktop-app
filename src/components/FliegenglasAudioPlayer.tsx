@@ -255,11 +255,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
               <div className="flex sm:flex-row flex-col justify-between items-center ml-5 h-full">
                 <div className="h-full flex sm:justify-center justify-between items-center sm:w-auto w-full">
                   <img
-                    // src={
-                    //   audioDetail?.imageUrl.includes("assets")
-                    //     ? `/${audioDetail?.imageUrl}`
-                    //     : audioDetail?.imageUrl
-                    // }
                     src={imageUrlNew?.playerImage}
                     alt="abc"
                     className="h-14 rounded-lg"
