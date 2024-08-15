@@ -38,8 +38,9 @@ interface GetCounts {
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
-    const imageUrl = sessionStorage.getItem("image");
-    return imageUrl || "";
+    const playerImage = sessionStorage.getItem("player-image");
+    console.log(playerImage, "play");
+    return playerImage || "";
   }
   return "";
 };
@@ -244,7 +245,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
               <div className="absolute inset-0 h-full z-[-1] bg-black">
                 <Image
-                  src={imageUrlNew}
+                  src={imageUrlNew?.playerImage}
                   alt="Background Image"
                   layout="fill"
                   objectFit="cover"
@@ -259,7 +260,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     //     ? `/${audioDetail?.imageUrl}`
                     //     : audioDetail?.imageUrl
                     // }
-                    src={imageUrlNew}
+                    src={imageUrlNew?.playerImage}
                     alt="abc"
                     className="h-14 rounded-lg"
                   />
@@ -340,9 +341,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="w-full flex items-center justify-center h-screen w-screen z-50 fixed top-0 inset-0">
               <div className="w-7/12 sm:w-6/12 md:w-11/12 lg:w-10/12 xl:w-6/12">
                 <div>
-                  <div className="absolute inset-0 h-full z-[-1] bg-black duration-300">
+                  <div className="absolute inset-0 h-full z-[-1] bg-black">
                     <Image
-                      src={imageUrlNew}
+                      src={imageUrlNew?.playerImage}
                       alt="Background Image"
                       layout="fill"
                       objectFit="cover"
@@ -429,7 +430,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                     )}
                     <Image
-                      src={imageUrlNew}
+                      src={imageUrlNew?.playerImage}
                       alt="Audio Thumbnail"
                       height={500}
                       width={500}

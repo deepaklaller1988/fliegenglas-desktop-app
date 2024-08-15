@@ -44,14 +44,18 @@ export default function HomeSlider() {
     queryFn: getFavourites,
   });
 
-    const SkeletonLoader = () => (
-        <div className="animate-pulse space-y-3">
-          <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-        </div>
-      );
+  const SkeletonLoader = () => (
+    <div className="animate-pulse space-y-3">
+      <div className="w-full h-[80vh] bg-gray-300 rounded-md"></div>
+    </div>
+  );
 
   if (isFavourite) {
-    return <FlieLoader />;
+    return (
+      <div className="loaderGradient w-full h-[80vh] inline-block rounded-md overflow-hidden mr-3">
+        {SkeletonLoader()}
+      </div>
+    );
   }
 
   return (
@@ -81,5 +85,4 @@ export default function HomeSlider() {
       </Slide>
     </div>
   );
-
 }

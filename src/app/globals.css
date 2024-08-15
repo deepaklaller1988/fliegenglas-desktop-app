@@ -44,6 +44,11 @@
 	font-style: normal;
 }
 
+/* .margin-calc {
+	width: calc(100% - 10vw);
+	height: 65vh;
+  } */
+
 .range-slider {
 	-webkit-appearance: none; /* Remove default styling in WebKit browsers */
 	width: 100%; /* Full width */
@@ -416,7 +421,7 @@ ul#alphabets a {
 }
 /* Menu collapse open css */
 .squareSet {
-    aspect-ratio: 1 /1;
+    /* aspect-ratio: 1 /1; */
     background: #030e1c;
 }
 .activeSidebarLink{ font-family: product_sansbold !important;}

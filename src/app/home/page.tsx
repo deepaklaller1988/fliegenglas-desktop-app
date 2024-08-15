@@ -18,16 +18,16 @@ export default function Album() {
       return [];
     }
     try {
-      const cachedData = await getData('home-categories');
+      const cachedData = await getData("home-categories");
       if (cachedData) {
         return cachedData;
       }
 
-      const response :any = await API.get(
+      const response: any = await API.get(
         `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
       );
 
-      await saveData('home-categories',response );
+      await saveData("home-categories", response);
       return response;
     } catch (error) {
       console.log(error);
@@ -35,14 +35,10 @@ export default function Album() {
     }
   };
 
-  const {
-    isLoading,
-    data = [],
-  } = useQuery({
+  const { isLoading, data = [] } = useQuery({
     queryKey: ["data", user],
     queryFn: fetchData,
   });
-  
 
   return (
     <>
@@ -53,11 +49,7 @@ export default function Album() {
 
         {/* Main content section */}
         <div className="w-full">
-          <AlbumSection
-            data={data}
-            isLoading={isLoading}
-          />
-
+          <AlbumSection data={data} isLoading={isLoading} />
         </div>
 
         {/* Refresh button section */}

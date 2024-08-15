@@ -15,10 +15,11 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
-    const imageUrl = sessionStorage.getItem("image");
-    return imageUrl || "";
+    const pageImage = sessionStorage.getItem("page-image");
+    const playerImage = sessionStorage.getItem("player-image");
+    return { pageImage, playerImage } || {};
   }
-  return "";
+  return {};
 };
 
 export default function AlbumDetail() {
@@ -68,6 +69,12 @@ export default function AlbumDetail() {
     return <FlieLoader />;
   }
 
+  const SkeletonLoader = () => (
+    <div className="animate-pulse space-y-3">
+      <div className="w-full h-[80vh] bg-gray-300 rounded-md"></div>
+    </div>
+  );
+
   return (
     <>
       <div className="rightSideSet">
@@ -94,17 +101,21 @@ export default function AlbumDetail() {
             <div className="w-full">
               <Image
                 className="block w-full shadow-xl"
-                src={imageUrl}
+                src={imageUrl?.pageImage}
                 alt="Album"
                 width={500}
                 height={500}
+                // loader={SkeletonLoader}
               />
             </div>
 
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
               <button
                 className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                onClick={handleShowPlayer}
+                onClick={() => {
+                  handleShowPlayer();
+                  sessionStorage.setItem("player-image", imageUrl?.pageImage);
+                }}
               >
                 Hörprobe hören
               </button>

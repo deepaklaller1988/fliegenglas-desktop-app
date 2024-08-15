@@ -64,7 +64,7 @@ export default function Homelisting() {
                     className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
                     onClick={() => {
                       router.push(`/home/album-detail?id=${item?.id}`);
-                      sessionStorage.setItem("image", item?.image);
+                      sessionStorage.setItem("page-image", item?.image);
                     }}
                   >
                     <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px] overflow-hidden">
