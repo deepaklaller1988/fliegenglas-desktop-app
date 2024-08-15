@@ -46,7 +46,7 @@ export default function Sidebar() {
             </span>
           </section>
         </div>
-        <section className="text-white/60 flex flex-col gap-4 p-4 pt-0 h-full collapseMenuMain">
+        <section className="text-white/60 flex flex-col gap-4 p-4 pt-0 collapseMenuMain">
           {Menu.list &&
             Menu.list.map((item: any) => (
               <div key={item.id}>

@@ -15,7 +15,6 @@ export default function UpdateEmail() {
   const router = useRouter();
   const { user }: any = useUser();
   const [email, setEmail] = useState<string>("");
-
   const mutation :any= useMutation({
     mutationFn: async () => {
       const response = await API.post(`changeEmail/?userID=${user.id}&email=${email}&time=${new Date().toString()}`, {

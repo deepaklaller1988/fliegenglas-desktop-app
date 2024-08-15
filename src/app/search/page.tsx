@@ -112,7 +112,7 @@ console.log(data,"-daat-");
           ) : combinedChannelData.length > 0 ? (
             combinedChannelData?.map((item: any, index: any) => (
               <div key={index} className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4">
-                <Link href={item.link || `/search/channel-details?id=${item.id}`}>
+                <Link className="w-full" href={item.link || `/search/channel-details?id=${item.id}`}>
                   <Image
                     src={item.banner_image}
                     alt="img"
