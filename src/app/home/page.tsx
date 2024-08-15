@@ -9,6 +9,7 @@ import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
 import { getCookie } from "cookies-next";
+import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 
 export default function Album() {
   const { user }: any = useUser();
@@ -79,14 +80,7 @@ export default function Album() {
         </div>
 
         {/* Privacy policy link */}
-        <div className="w-full text-center mb-2">
-          <Link
-            href="/information/privacy"
-            className="bg-white/0 rounded-md text-white p-2 px-3 text-[14px] inline-block m-auto underline"
-          >
-            Datenschutzerklärung
-          </Link>
-        </div>
+       <PrivacyPolicyLink/>
       </div>
     </>
   );

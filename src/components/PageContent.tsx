@@ -2,16 +2,12 @@
 import useFetchPageData from "@hooks/UseFetchData";
 import React from "react";
 import FlieLoader from "./core/FlieLoader";
-import {useRouter} from "next/navigation";
-import useRole from "@hooks/useRole";
 
 interface PageContentProps {
   slug: string;
 }
 
-
 const PageContent: React.FC<PageContentProps> = ({ slug }) => {
-  const router=useRouter()
   const { pageData, loading, error } = useFetchPageData(slug);
 
 
