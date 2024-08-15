@@ -18,8 +18,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
 
   return (
     <>
-      <div className="w-full playNail p-3 pr-0 py-6 text-white">
-        <label className="text-[12px]">{"EMPFEHLUNG HEUTE"}</label>
+      <div className="">
         {isLoading ? (
           <>
             <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
@@ -40,7 +39,8 @@ const AlbumSection = ({ data, isLoading }: any) => {
           data?.map((item: any, index: number) => {
             return (
               <>
-              <div key={index}>
+              <div className="w-full playNail p-3 pr-0 py-6 text-white" key={index}>
+              <label className="text-[12px]">{"EMPFEHLUNG HEUTE"}</label>
                 <div className="full flex gap-2 justify-between pr-3">
                   <b className="text-[22px] leading-tight">
                     {item?.category?.name}

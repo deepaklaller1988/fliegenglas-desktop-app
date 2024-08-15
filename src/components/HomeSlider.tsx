@@ -70,7 +70,7 @@ export default function HomeSlider() {
                                     <Link
                                         href={`/home/album-detail?id=${item.id}`}>
                                         <img className="w-full" src={item.product_header_graphic} alt="Album" />
-                                        <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1 bg-[#040e1b]">
+                                        <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1">
                                             <FaPlayCircle className="w-5 h-5" /> Jetzt hören
                                         </p>
                                     </Link>
