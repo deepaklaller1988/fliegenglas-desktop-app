@@ -243,7 +243,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         ? `/${audioDetail?.imageUrl}`
                         : audioDetail?.imageUrl
                     }
-                    className="h-14 w-14 rounded-xl"
+                    className="h-14 rounded-lg"
                   />
                   <div className="space-x-2 sm:hidden inline h-full">
                     <button
