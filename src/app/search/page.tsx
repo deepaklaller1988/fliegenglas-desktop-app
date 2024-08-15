@@ -171,7 +171,7 @@ export default function Search() {
           </section>
         </div>
         <div className="w-full mt-4">
-          <HomeSlider />
+          <HomeSlider type="search" />
         </div>
         <div className="w-full p-5 pb-10 flex items-center justify-center">
           <Link

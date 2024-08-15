@@ -46,7 +46,7 @@ export default function Album() {
       {/* Top slideshow section */}
 
       <div className="rightSideSet">
-        <HomeSlider />
+        <HomeSlider type="home" />
 
         {/* Main content section */}
         <div className="w-full">
@@ -72,7 +72,7 @@ export default function Album() {
         </div>
 
         {/* Privacy policy link */}
-       <PrivacyPolicyLink/>
+        <PrivacyPolicyLink />
       </div>
     </>
   );

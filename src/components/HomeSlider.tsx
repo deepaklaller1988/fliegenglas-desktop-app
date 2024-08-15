@@ -8,8 +8,9 @@ import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from "utils/indexDB";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-export default function HomeSlider() {
+export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
   const router = useRouter();
 
@@ -58,6 +59,8 @@ export default function HomeSlider() {
     );
   }
 
+  console.log(type, "type");
+
   return (
     <div className="w-full squareSet" id="top">
       <Slide>
@@ -66,20 +69,46 @@ export default function HomeSlider() {
             key={index}
             className="each-slide-effect w-full flex justify-center items-center"
           >
-            <div className="slider-parent">
-              <div className="card h-full">
+            {type === "home" ? (
+              <div className="slider-parent">
+                <div className="card h-full">
+                  <Link href={`/home/album-detail?id=${item.id}`}>
+                    <img
+                      className="w-full"
+                      src={item.product_header_graphic}
+                      alt="Album"
+                    />
+                    <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1">
+                      <FaPlayCircle className="w-5 h-5" /> Jetzt hören
+                    </p>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div
+                key={index}
+                className="h-80 text flex items-center justify-center"
+              >
                 <Link href={`/home/album-detail?id=${item.id}`}>
-                  <img
-                    className="w-full"
-                    src={item.product_header_graphic}
-                    alt="Album"
-                  />
-                  <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1">
-                    <FaPlayCircle className="w-5 h-5" /> Jetzt hören
-                  </p>
+                  <div>
+                    <div className="w-full h-full absolute z-[-1]">
+                      <img
+                        src={item?.product_header_graphic}
+                        alt="background image"
+                        className="blur-xl"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-60 z-10 bg-black rounded-xl">
+                    <img
+                      className="w-full rounded-xl"
+                      src={item?.product_header_graphic}
+                      alt="Album"
+                    />
+                  </div>
                 </Link>
               </div>
-            </div>
+            )}
           </div>
         ))}
       </Slide>

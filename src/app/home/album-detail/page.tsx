@@ -106,7 +106,6 @@ export default function AlbumDetail() {
                 alt="Album"
                 width={500}
                 height={500}
-                // loader={SkeletonLoader}
               />
             </div>
 
@@ -239,8 +238,7 @@ export default function AlbumDetail() {
             </div>
           </div>
 
-          <PrivacyPolicyLink/>
-
+          <PrivacyPolicyLink />
         </div>
       </div>
     </>
