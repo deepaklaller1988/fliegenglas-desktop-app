@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useRole from "@hooks/useRole";
 import { useRouter } from "next/navigation";
+import ScrollContainer from "react-indiana-drag-scroll";
 
 const AlbumSection = ({ data, isLoading }: any) => {
   const router = useRouter();
@@ -22,6 +23,8 @@ const AlbumSection = ({ data, isLoading }: any) => {
         {isLoading ? (
           <>
             <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
+                     
+
               {Array.from({ length: 8 }).map((_, index) => (
                 <div
                   key={index}
@@ -36,6 +39,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
           data &&
           data?.map((item: any, index: number) => {
             return (
+              <>
               <div key={index}>
                 <div className="full flex gap-2 justify-between pr-3">
                   <b className="text-[22px] leading-tight">
@@ -51,7 +55,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
 
                 {/* Horizontal scrollable album list */}
                 <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
-                  {isLoading
+                   <ScrollContainer className="scroll-container">{isLoading
                     ? Array.from({ length: 8 }).map((_, index) => (
                       <div
                         key={index}
@@ -63,6 +67,8 @@ const AlbumSection = ({ data, isLoading }: any) => {
                     : item?.products
                       ?.slice(0, 8)
                       .map((product: any, index: any) => (
+                        <>
+                                       
                         <div
                           key={index}
                           className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
@@ -77,9 +83,14 @@ const AlbumSection = ({ data, isLoading }: any) => {
                             />
                           </Link>
                         </div>
+                        </>
                       ))}
+                        </ScrollContainer>
                 </div>
               </div>
+
+              </>
+
             );
           })
         )}
