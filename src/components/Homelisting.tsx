@@ -6,7 +6,6 @@ import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
 import FlieLoader from "./core/FlieLoader";
 import Image from "next/image";
-import useRole from "@hooks/useRole";
 
 export default function Homelisting() {
   const searchParams = useSearchParams();
@@ -40,7 +39,7 @@ export default function Homelisting() {
     <>
       {data && data.length > 0 && (
         <div className="header">
-          <a href="/home">
+          <div onClick={()=>router.back()}>
             <div className="py-4 pr-4 text-white flex items-center">
               <HiArrowLeft className="text-lg ml-4" />
               <div className="flex-grow text-center">
@@ -49,7 +48,7 @@ export default function Homelisting() {
                 </h4>
               </div>
             </div>
-          </a>
+          </div>
         </div>
       )}
 
