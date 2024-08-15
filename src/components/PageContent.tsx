@@ -19,8 +19,8 @@ const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   return (
     <div className="bg-white px-2 paraPadcz">
       <div className="header">
-        <a href="/auth/login">
-          <div className="py-4 pr-4 text-white">
+        <a href="/home">
+          <div className="py-4 pr-4 ">
             <HiArrowLeft className="text-lg" />
           </div>
         </a>
