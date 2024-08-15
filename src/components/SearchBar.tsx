@@ -171,7 +171,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                             <img
                               src={item?.local_image}
                               alt="Image"
-                              className="rounded-lg"
+                              className="rounded-lg h-20 w-20 object-cover"
                             />
                           </>
                         ) : (
