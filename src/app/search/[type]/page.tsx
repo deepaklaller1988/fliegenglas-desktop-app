@@ -1,25 +1,26 @@
 "use client"
-import useRole from '@hooks/useRole';
 import API from '@lib/API';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
 import Link from 'next/link';
+import FlieLoader from '@components/core/FlieLoader';
+import { HiArrowLeft } from 'react-icons/hi';
 
 export default function TypePage() {
-  const { type } :any= useParams();
+  const { type }: any = useParams();
   const router = useRouter();
 
   const fetchData = async () => {
     try {
       const role = type === 'nav-author' ? 'Author' : 'Artist';
       const cacheKey = `author-artist-data-${role}`;
-      
+
       const cachedData = await getData(cacheKey);
       if (cachedData) {
         return cachedData;
       }
-      
+
       const response: any = await API.get(`allUserByRole?&role=${role}&time=${new Date().toString()}`);
       await saveData(cacheKey, response);
       return response;
@@ -46,7 +47,7 @@ export default function TypePage() {
   });
 
   const groupedData = sortedData.reduce((acc: any, item: any) => {
-    const firstLetter = item.user_lastname[0]?.toUpperCase(); 
+    const firstLetter = item.user_lastname[0]?.toUpperCase();
     if (!acc[firstLetter]) {
       acc[firstLetter] = [];
     }
@@ -55,35 +56,50 @@ export default function TypePage() {
   }, {});
 
 
+  if (isLoading) {
+    return <FlieLoader />;
+  }
 
   return (
     <div className="w-full py-4 listSerachCZ">
+
+      <div className="header">
+        <div onClick={() => router.push("/search")}>
+          <div className="py-4 pr-4 text-white flex items-center">
+            <HiArrowLeft className="text-lg ml-4" />
+            <div className="flex-grow text-center">
+              <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
+                {data[0]?.catname}
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
       <h1 className="text-[22px] mb-4 text-white px-4">Nach Autoren suchen</h1>
       {Object.keys(groupedData).map((letter: string) => (
         <div key={letter}>
           <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1">{letter[0]}</h2>
           <ul>
-          <li className="text-white flex flex-col px-4">
+            <li className="text-white flex flex-col px-4">
               {groupedData[letter].map((item: any, index: number) => (
                 <span className='py-2 border-b border-white/10' key={item.user_lastname + item.user_firstname}>
                   <b>
-                  {item.user_lastname + " " + item.user_firstname}
-                  {index < groupedData[letter].length - 1 && ', '}
-                </b>
+                    {item.user_lastname + " " + item.user_firstname}
+                    {index < groupedData[letter].length - 1 && ', '}
+                  </b>
                 </span>
               ))}
             </li>
           </ul>
         </div>
       ))}
-          <ul id="alphabets" className="display-alphabetic">
-            <li><Link href="">A</Link></li>
-            <li><Link href="">B</Link></li>
-            <li><Link href="">C</Link></li>
-            <li><Link href="">D</Link></li>
-            <li><Link href="">E</Link></li>
-            <li><Link href="">F</Link></li>
-            </ul>
+      <ul id="alphabets" className="display-alphabetic">
+        {Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map((letter) => (
+          <li key={letter}>
+            <Link href={`#${letter}`}>{letter}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

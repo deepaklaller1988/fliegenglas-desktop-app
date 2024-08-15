@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { getImagePath } from "@lib/getImagePath";
 import { VscHeartFilled } from "react-icons/vsc";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
+import FlieLoader from "./core/FlieLoader";
 
 interface SearchBarProps {
   searchQuery: { tag: any; id: number };
@@ -33,13 +34,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
       } else {
         setFilteredSuggestions([]);
       }
-    }, 300); 
-  
+    }, 300);
+
     return () => {
       clearTimeout(handler);
     };
   }, [inputValue, suggestions]);
-  
+
 
   const fetchData = async () => {
     try {
@@ -70,6 +71,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
     onSearch("");
   };
 
+
   return (
     <div>
       <section className="relative">
@@ -88,18 +90,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
           onChange={handleInputChange}
         />
         {isLoading ? (
-          <div className="w-full h-10 w-10 absolute right-0 top-0">
+          <div className="h-10 w-10 absolute right-0 top-0">
             <FlieLoaderCustom />
           </div>
         ) : (
-          <button
-            type="button"
-            className="absolute right-3 top-[10px]"
-            onClick={handleClear}
-          >
-            <IoClose className="text-white w-5 h-5" />
-          </button>
+          inputValue && (
+            <button
+              type="button"
+              className="absolute right-3 top-[10px]"
+              onClick={handleClear}
+            >
+              <IoClose className="text-white w-5 h-5" />
+            </button>
+          )
         )}
+
       </section>
 
       <div className="mt-4">
@@ -148,16 +153,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestion
                       onClick={() => router.push(`/home/album-detail?id=${item.id}`)}
                     >
                       <span className="min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
-                     {item?.local_image ? <>
-                      <img
-                          src={item?.local_image}
-                          alt="Image"
-                          className="rounded-lg"
-                        />
-                     </>:
-                      <div className="flex flex-col justify-between">
-                      <p className="text-[#b5b7bb] text-sm">{item?.typeLabel  }</p>
-                    </div>}  
+                        {item?.local_image ? <>
+                          <img
+                            src={item?.local_image}
+                            alt="Image"
+                            className="rounded-lg"
+                          />
+                        </> :
+                          <div className="flex flex-col justify-between">
+                            <p className="text-[#b5b7bb] text-sm">{item?.typeLabel}</p>
+                          </div>}
                       </span>
                       <div className="flex flex-col justify-between">
                         <p className="text-[#b5b7bb] text-sm">{item?.title}</p>
