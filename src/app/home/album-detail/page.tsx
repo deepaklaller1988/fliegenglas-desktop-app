@@ -13,11 +13,19 @@ import { getImagePath } from "@lib/getImagePath";
 import { getData, saveData } from "utils/indexDB";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 
+const fetchImageUrlFromSessionStorage = async () => {
+  if (typeof window !== "undefined") {
+    const imageUrl = sessionStorage.getItem("image");
+    return imageUrl || "";
+  }
+  return "";
+};
+
 export default function AlbumDetail() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("id") || "";
   const { user }: any = useUser();
-  const { isVisible, closePlayer, showPlayer } = useAudioPlayer();
+  const { showPlayer } = useAudioPlayer();
 
   const fetchData = async () => {
     try {
@@ -34,6 +42,14 @@ export default function AlbumDetail() {
   const { isLoading, data = {} } = useQuery<any>({
     queryKey: ["album-detail", productId, user?.id],
     queryFn: fetchData,
+  });
+
+  const { isLoading: isImagLoading, data: imageUrl = {} } = useQuery<any>({
+    queryKey: ["image"],
+    queryFn: fetchImageUrlFromSessionStorage,
+    staleTime: 0,
+    enabled: true,
+    refetchInterval: 1000,
   });
 
   const handleShowPlayer = () => {
@@ -78,11 +94,7 @@ export default function AlbumDetail() {
             <div className="w-full">
               <Image
                 className="block w-full shadow-xl"
-                src={
-                  data?.local_image.includes("assets")
-                    ? "/" + data?.local_image
-                    : data?.local_image
-                }
+                src={imageUrl}
                 alt="Album"
                 width={500}
                 height={500}

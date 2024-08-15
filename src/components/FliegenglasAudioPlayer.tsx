@@ -19,6 +19,7 @@ import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
+import { useQuery } from "@tanstack/react-query";
 
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
@@ -35,6 +36,14 @@ interface GetCounts {
   shared: string;
 }
 
+const fetchImageUrlFromSessionStorage = async () => {
+  if (typeof window !== "undefined") {
+    const imageUrl = sessionStorage.getItem("image");
+    return imageUrl || "";
+  }
+  return "";
+};
+
 const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   children,
 }) => {
@@ -48,9 +57,20 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
   const playerRef = useRef<ReactPlayer>(null);
+  // const [imageUrl, setImageUrl] = useState("");
   const { isVisible, audioDetail, closePlayer, mini, miniPlayer } =
     useAudioPlayer();
   const { user }: any = useUser();
+
+  const { isLoading: isImagLoading, data: imageUrlNew = {} } = useQuery<any>({
+    queryKey: ["image"],
+    queryFn: fetchImageUrlFromSessionStorage,
+  });
+
+  // useEffect(() => {
+  //   const storedImage = sessionStorage.getItem("image");
+  //   setImageUrl(storedImage || "");
+  // }, []);
 
   const fetchCountData = async () => {
     try {
@@ -224,25 +244,23 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
               <div className="absolute inset-0 h-full z-[-1] bg-black">
                 <Image
-                  src={
-                    audioDetail?.backgroundImageUrl.includes("assets")
-                      ? `/${audioDetail?.backgroundImageUrl}`
-                      : audioDetail?.backgroundImageUrl
-                  }
+                  src={imageUrlNew}
                   alt="Background Image"
                   layout="fill"
                   objectFit="cover"
-                  className=""
+                  className="blur-2xl opacity-65"
                 />
               </div>
               <div className="flex sm:flex-row flex-col justify-between items-center ml-5 h-full">
                 <div className="h-full flex sm:justify-center justify-between items-center sm:w-auto w-full">
                   <img
-                    src={
-                      audioDetail?.imageUrl.includes("assets")
-                        ? `/${audioDetail?.imageUrl}`
-                        : audioDetail?.imageUrl
-                    }
+                    // src={
+                    //   audioDetail?.imageUrl.includes("assets")
+                    //     ? `/${audioDetail?.imageUrl}`
+                    //     : audioDetail?.imageUrl
+                    // }
+                    src={imageUrlNew}
+                    alt="abc"
                     className="h-14 rounded-lg"
                   />
                   <div className="space-x-2 sm:hidden inline h-full">
@@ -322,17 +340,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="w-full flex items-center justify-center h-screen w-screen z-50 fixed top-0 inset-0">
               <div className="w-7/12 sm:w-6/12 md:w-11/12 lg:w-10/12 xl:w-6/12">
                 <div>
-                  <div className="absolute inset-0 h-full z-[-1] bg-black">
+                  <div className="absolute inset-0 h-full z-[-1] bg-black duration-300">
                     <Image
-                      src={
-                        audioDetail?.backgroundImageUrl.includes("assets")
-                          ? `/${audioDetail?.backgroundImageUrl}`
-                          : audioDetail?.backgroundImageUrl
-                      }
+                      src={imageUrlNew}
                       alt="Background Image"
                       layout="fill"
                       objectFit="cover"
-                      className=""
+                      className="blur-2xl opacity-65"
                     />
                   </div>
                 </div>
@@ -415,11 +429,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                     )}
                     <Image
-                      src={
-                        audioDetail?.imageUrl.includes("assets")
-                          ? `/${audioDetail?.imageUrl}`
-                          : audioDetail?.imageUrl
-                      }
+                      src={imageUrlNew}
                       alt="Audio Thumbnail"
                       height={500}
                       width={500}

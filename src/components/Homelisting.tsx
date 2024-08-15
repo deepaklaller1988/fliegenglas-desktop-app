@@ -32,9 +32,6 @@ export default function Homelisting() {
     queryFn: fetchData,
   });
 
-
-
-
   if (isLoading) {
     return <FlieLoader />;
   }
@@ -65,13 +62,14 @@ export default function Homelisting() {
                 <section className="">
                   <div
                     className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
-                    onClick={() =>
-                      router.push(`/home/album-detail?id=${item?.id}`)
-                    }
+                    onClick={() => {
+                      router.push(`/home/album-detail?id=${item?.id}`);
+                      sessionStorage.setItem("image", item?.image);
+                    }}
                   >
                     <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px] overflow-hidden">
                       <Image
-                        src={"/" + item?.local_image}
+                        src={item?.image}
                         alt={"Image"}
                         width={100}
                         height={100}
