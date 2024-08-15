@@ -45,7 +45,7 @@ export default function Search() {
     isLoading,
     data = [],
   } = useQuery({
-    queryKey: ["data", user],
+    queryKey: ["search-data", user],
     queryFn: fetchData,
   });
 
@@ -81,7 +81,8 @@ export default function Search() {
     </div>
   );
   const combinedChannelData = [...channelData, ...staticData];
-
+console.log(searchQuery.tag,"--");
+console.log(data,"-daat-");
   const handleTagClick = (item: string) => {
     setSearchQuery(item);
     // Trigger the search based on the tag
@@ -93,9 +94,13 @@ export default function Search() {
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
        <SearchBar searchQuery={searchQuery} onSearch={setSearchQuery} />
       </div>
+      {searchQuery.tag?"":<>
       <div className="w-full p-4">
         <h3 className="text-white">Entdecke Hörbücher unter:</h3>
       </div>
+      </>
+      }
+      {searchQuery.tag? "":<>
       <div className="w-full">
         <section className="flex flex-wrap pr-4">
           {isChannelLoading ? (
@@ -150,6 +155,8 @@ export default function Search() {
           Hörbücher aktualisieren
         </Link>
       </div>
+      
+      </>}
     </div>
   );
 }
