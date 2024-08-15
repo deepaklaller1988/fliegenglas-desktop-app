@@ -170,9 +170,11 @@ export default function Search() {
             ))}
           </section>
         </div>
-        <div className="w-full mt-4">
-          <HomeSlider type="search" />
-        </div>
+        {!searchQuery &&
+          <div className="w-full mt-4">
+            <HomeSlider type="search" />
+          </div>
+        }
         <div className="w-full p-5 pb-10 flex items-center justify-center">
           <Link
             className="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md"
