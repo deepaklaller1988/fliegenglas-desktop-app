@@ -1,7 +1,6 @@
 "use client"
 import { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi";
-import Link from "next/link";
 import "./login-step.css";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
@@ -90,7 +89,7 @@ export default function Loginstep() {
             {error && <p className="text-red-500 text-sm mb-2 ">{error}</p>}
             <button
               onClick={handleSubmit}
-              className={`button yellow rounded-md h-[50px] ${mutation.isPending  ? 'flie-loader' : ''}`}
+              className={`button ${isChecked && email ? "yellow":""} rounded-md h-[50px] ${mutation.isPending  ? 'flie-loader yellow' : ''}`}
               disabled={!email || !isChecked || mutation.isPending }
             >
               Anmelde-Link senden

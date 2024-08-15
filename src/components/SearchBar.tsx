@@ -6,27 +6,45 @@ import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { getImagePath } from "@lib/getImagePath";
 import { VscHeartFilled } from "react-icons/vsc";
-import FlieLoader from "./core/FlieLoader";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
 
 interface SearchBarProps {
   searchQuery: { tag: any; id: number };
   onSearch: (query: string) => void;
+  suggestions: any
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch }) => {
-  const [inputValue, setInputValue] = useState(searchQuery.tag);
+const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch, suggestions }) => {
   const router = useRouter();
+  const [inputValue, setInputValue] = useState(searchQuery.tag);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
   useEffect(() => {
     setInputValue(searchQuery?.tag);
   }, [searchQuery.tag]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (inputValue) {
+        const filtered = suggestions.filter((suggestion: any) =>
+          suggestion?.search_string?.toLowerCase().includes(inputValue.toLowerCase())
+        );
+        setFilteredSuggestions(filtered);
+      } else {
+        setFilteredSuggestions([]);
+      }
+    }, 300); 
+  
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, suggestions]);
+  
+
   const fetchData = async () => {
     try {
       const response = API.get(
-        `searchProducts?&search=${
-          searchQuery?.id
+        `searchProducts?&search=${searchQuery?.id
         }&type=tags&time=${new Date().toString()}`
       );
 
@@ -36,19 +54,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch }) => {
       return [];
     }
   };
-
   const { isLoading, data = {} } = useQuery<any>({
     queryKey: ["search-data", searchQuery],
     queryFn: fetchData,
     enabled: !!searchQuery,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
-  };
-
-  const handleSearch = () => {
-    onSearch(inputValue);
+    onSearch(e.target.value);
   };
 
   const handleClear = () => {
@@ -62,7 +76,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch }) => {
         <button
           type="button"
           className="absolute left-4 top-[10px]"
-          onClick={handleSearch}
+          onClick={() => onSearch(inputValue)}
         >
           <FiSearch className="text-white w-5 h-5" />
         </button>
@@ -89,10 +103,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch }) => {
       </section>
 
       <div className="mt-4">
-        {data.length === 0 && !isLoading && <p>No results found</p>}
+        {filteredSuggestions.length === 0 && inputValue && <p>No results found</p>}
         <ul>
           {data &&
-            data.length > 0 &&
+            data.length > 0 ?
             data?.map((item: any) => {
               return (
                 <div className="w-full spaceBorder px-4">
@@ -123,8 +137,40 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearch }) => {
                   </section>
                 </div>
               );
-            })}
+            }) :
+            <>
+
+              {filteredSuggestions.map((item: any) => (
+                <div className="w-full spaceBorder px-4" key={item.id}>
+                  <section>
+                    <div
+                      className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
+                      onClick={() => router.push(`/home/album-detail?id=${item.id}`)}
+                    >
+                      <span className="min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
+                     {item?.local_image ? <>
+                      <img
+                          src={item?.local_image}
+                          alt="Image"
+                          className="rounded-lg"
+                        />
+                     </>:
+                      <div className="flex flex-col justify-between">
+                      <p className="text-[#b5b7bb] text-sm">{item?.typeLabel  }</p>
+                    </div>}  
+                      </span>
+                      <div className="flex flex-col justify-between">
+                        <p className="text-[#b5b7bb] text-sm">{item?.title}</p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              ))}
+
+            </>
+          }
         </ul>
+
       </div>
     </div>
   );

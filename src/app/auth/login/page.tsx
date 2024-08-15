@@ -34,7 +34,7 @@ export default function Login() {
           mainFormData
         );
         setUser(response);
-        sessionStorage.setItem("user", JSON.stringify(response));
+        // sessionStorage.setItem("user", JSON.stringify(response));
         setCookie("user", response);
         router.push("/home");
       } else {

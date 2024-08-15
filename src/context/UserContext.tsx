@@ -1,5 +1,7 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { getCookie, setCookie } from 'cookies-next';
 
 interface User {
     id: number;
@@ -21,24 +23,29 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
+    const router=useRouter()
     const [user, setUser] = useState<User | null>(null);
-    const type = typeof window !== "undefined"
+
     useEffect(() => {
-        if (type) {
-            const storedUser = sessionStorage.getItem("user");
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
+        const storedUser = getCookie('user');
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser as string));
+            } catch (error) {
+                console.error('Error parsing user cookie:', error);
+                router.push("/auth/login");
             }
+        } else {
+            router.push("/auth/login");
         }
-    }, []);
+    }, [])
 
     const clearUser = () => {
         setUser(null);
-        if (type) {
-            sessionStorage.removeItem("user");
-        }
+        setCookie('user', '', { maxAge: -1 }); 
     };
-
+    
     return (
         <UserContext.Provider value={{ user, setUser, clearUser }}>
             {children}

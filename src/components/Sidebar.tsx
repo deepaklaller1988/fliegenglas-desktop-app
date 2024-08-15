@@ -1,5 +1,6 @@
 "use client";
 import Menu from "@lib/SidebarData";
+import { deleteCookie } from "cookies-next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +19,12 @@ export default function Sidebar() {
   const handleClick = () => {
     setIsOn(!isOn);
   };
+
+  const handleLogout=()=>{
+    // sessionStorage.clear();
+    deleteCookie("user");
+    window.location.href = "/auth/login";
+  }
 
   const getLinkClasses = (path: string) =>
     `flex items-center gap-3 hover:text-[#ff9900] transition ${
@@ -92,10 +99,14 @@ export default function Sidebar() {
                             </Link>
                           </>
                         ) : (
-                          <Link href="" className={getLinkClasses(item.path)}>
-                            <div>{item.item}</div>
-                            <item.icon className="w-5 h-5" /> {item.item}
-                          </Link>
+                          <Link
+                          href={"/auth/login"}
+                          className={getLinkClasses(item.path)}
+                          onClick={handleLogout}
+                        >
+                          <div>{item.item}</div>
+                          <item.icon className="w-5 h-5" /> {item.item}
+                        </Link>
                         )}
                       </div>
                     ))}

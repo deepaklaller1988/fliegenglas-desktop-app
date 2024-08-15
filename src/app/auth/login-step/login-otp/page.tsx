@@ -38,7 +38,7 @@ export default function Loginstep() {
         );
       } else {
         setUser(response);
-        sessionStorage.setItem("user", JSON.stringify(response));
+        // sessionStorage.setItem("user", JSON.stringify(response));
         setCookie("user", JSON.stringify(response));
         route.push("/home");
       }

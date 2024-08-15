@@ -1,4 +1,5 @@
 import { handleError } from "../lib/errorHandler"
+import { getCookie } from 'cookies-next';
 
 export interface Res {
   success: boolean;
@@ -15,25 +16,42 @@ class API {
     this.token = token;
   }
 
+  static getTokenFromCookies() {
+    const userCookie = getCookie('user');
+    if (userCookie) {
+      try {
+        const user = JSON.parse(userCookie as string);
+        this.token = user.token;
+      } catch (error) {
+        console.error('Error parsing cookie:', error);
+      }
+    }
+  }
+  
   static async get(
     path: string | string[],
     resent: boolean = false
   ): Promise<Res> {
+    this.getTokenFromCookies();
+
     return new Promise(async (resolve, reject) => {
       if (Array.isArray(path)) path = path.join("/");
-
+      
       let headers = new Headers();
       headers.append("Accept", "application/json");
       // headers.append("Content-Type", "application/json");
       // headers.append("Access-Control-Allow-Headers-Type", "x-requested-with, Content-Type, Origin, Authorization, accept, client-security-token");
 
-      const accessToken = sessionStorage.getItem("user");
-      if (accessToken) {
-        headers.append("Authorization", `Bearer ${accessToken}`);
+      if (this.token) {
+        headers.append("Authorization", `Bearer ${this.token}`);
       }
 
+      const baseUrl =
+      path.includes("search.json")
+        ? process.env.NEXT_PUBLIC_Shop_URL
+        : process.env.NEXT_PUBLIC_API_URL;
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
+        const response = await fetch(baseUrl+ path, {
           method: "GET",
           // credentials: "include",
           headers: headers,
@@ -59,6 +77,8 @@ class API {
     body: any,
     resent: boolean = false
   ): Promise<Res> {
+    this.getTokenFromCookies();
+
     try {
       // Use the environment variable for the base URL
       const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -68,9 +88,8 @@ class API {
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
 
-      const accessToken = sessionStorage.getItem("user");
-      if (accessToken) {
-        headers.append("Authorization", `Bearer ${accessToken}`);
+      if (this.token) {
+        headers.append("Authorization", `Bearer ${this.token}`);
       }
 
       const response = await fetch(fullPath, {
@@ -93,144 +112,6 @@ class API {
     }
   }
 
-
-  static async postFile(
-    path: string | string[],
-    body: any,
-    resent: boolean = false
-  ): Promise<Res> {
-    return new Promise(async (resolve) => {
-      // Join path array
-      if (Array.isArray(path)) path = path.join("/");
-
-      let headers = new Headers();
-
-      if (localStorage.getItem("token")) {
-        headers.append(
-          "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
-        );
-      }
-
-      await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
-        method: "POST",
-        credentials: "include",
-        headers: headers,
-        body: body,
-      })
-        .then(async (res: Response) => {
-          let parsed = await this.parseRes(
-            res,
-            () => this.post(path, body, true),
-            resent,
-            path
-          );
-
-          // if (Process.isDev) console.log("POST", path, "\n", parsed);
-
-          resolve(parsed);
-        })
-        .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
-          console.error(err);
-        });
-    });
-  }
-
-  static async put(
-    path: string | string[],
-    body: any,
-    resent: boolean = false
-  ): Promise<Res> {
-    return new Promise(async (resolve) => {
-      if (Array.isArray(path)) path = path.join("/");
-
-      let headers = new Headers();
-
-      headers.append("Accept", "application/json");
-      headers.append("Content-Type", "application/json");
-      if (localStorage.getItem("token")) {
-        headers.append(
-          "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
-        );
-      }
-
-      await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
-        method: "PUT",
-        credentials: "include",
-        headers: headers,
-        body: JSON.stringify(body),
-      })
-        .then(async (res: Response) => {
-          let parsed = await this.parseRes(
-            res,
-            () => this.post(path, body, true),
-            resent,
-            path
-          );
-
-          // if (Process.isDev) console.log("PUT", path, "\n", parsed);
-
-          resolve(parsed);
-        })
-        .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
-          console.error(err);
-        });
-    });
-  }
-
-  static async delete(
-    path: string | string[],
-    body: any,
-    resent: boolean = false
-  ): Promise<Res> {
-    return new Promise(async (resolve) => {
-      // Join path array
-      if (Array.isArray(path)) path = path.join("/");
-
-      let headers = new Headers();
-
-      headers.append("Accept", "application/json");
-      headers.append("Content-Type", "application/json");
-      if (localStorage.getItem("token")) {
-        headers.append(
-          "Authorization",
-          `Bearer ${localStorage.getItem("token")}`
-        );
-      }
-
-      await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
-        method: "DELETE",
-        credentials: "include",
-        headers: headers,
-        body: JSON.stringify(body),
-      })
-        .then(async (res: Response) => {
-          let parsed = await this.parseRes(
-            res,
-            () => this.post(path, body, true),
-            resent,
-            path
-          );
-
-          // if (Process.isDev) console.log("DELETE", path, "\n", parsed);
-
-          resolve(parsed);
-        })
-        .catch((err: any) => {
-          if (err.status == undefined) {
-            // Route.load("/maintenance");
-          }
-          console.error(err);
-        });
-    });
-  }
 
   static async parseRes(
     raw: Response,

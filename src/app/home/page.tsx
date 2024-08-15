@@ -8,6 +8,7 @@ import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
+import { getCookie } from "cookies-next";
 
 export default function Album() {
   const { user }: any = useUser();
@@ -41,7 +42,7 @@ export default function Album() {
     queryKey: ["data", user],
     queryFn: fetchData,
   });
-
+  
 
   return (
     <>

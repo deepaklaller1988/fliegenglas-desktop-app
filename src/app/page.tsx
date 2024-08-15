@@ -1,12 +1,12 @@
 "use client";
 
+import FlieLoader from "@components/core/FlieLoader";
 import React, { useEffect, useState } from "react";
-import FlieLoader from "@components/core/FlieLoaderCustom";
 
 export default function page() {
 
   return (
-    <div>
+    <div className="w-full">
       <FlieLoader />
     </div>
   );

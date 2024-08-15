@@ -39,7 +39,7 @@ export const AuthContextProvider = ({ children }: any) => {
     signOut(auth)
       .then(() => {
         router.push("/auth/login");
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       })
       .catch((error) => {
         console.error("Failed to sign out", error);

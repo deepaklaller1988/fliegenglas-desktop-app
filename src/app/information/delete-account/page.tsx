@@ -1,15 +1,12 @@
 "use client";
 
 import ErrorPopup from "@components/ErrorPopUp";
-import useRole from "@hooks/useRole";
 import useTitle from "@hooks/useTitle";
 import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function AccountDelete() {
   useTitle("Account Delete");
-  const router = useRouter();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleLogout = () => {
@@ -17,7 +14,7 @@ export default function AccountDelete() {
   };
 
   const confirmLogout = () => {
-    sessionStorage.clear();
+    // sessionStorage.clear();
     deleteCookie("user");
     window.location.href = "/auth/login";
   };
