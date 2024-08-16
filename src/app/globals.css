@@ -445,3 +445,23 @@ a.yellow.button-google {
     align-items: center;
     justify-content: center;
 }
+
+.channel-selected:before {
+    content: '';
+    background:rgba(3, 14, 28, 0.70);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+.channel-selected:after {
+    content: '';
+    background-image: url('/assets/images/check-in.png');
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

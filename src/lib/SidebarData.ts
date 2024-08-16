@@ -94,7 +94,7 @@ export default class Menu {
         {
             id: "categories",
             item: "Lieblingskategorien",
-            path: "/settings/categories",
+            path: "/settings/favourite",
             type: "link",
             icon: BiGridAlt,
             size: 20,

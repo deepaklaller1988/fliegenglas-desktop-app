@@ -7,7 +7,6 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
-import { useRouter } from "next/navigation";
 
 export default function UpdateEmail() {
   useTitle("Update Email");

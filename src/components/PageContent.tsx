@@ -18,13 +18,15 @@ const PageContent: React.FC<PageContentProps> = ({ slug }) => {
 
   return (
     <div className="bg-white px-2 paraPadcz">
-      <div className="header">
-        <a href="/home">
-          <div className="py-4 pr-4 ">
-            <HiArrowLeft className="text-lg" />
-          </div>
-        </a>
-      </div>
+      {slug !== "es-sind-hier-noch-keine-hoerbuecher-vorhanden" &&
+        <div className="header">
+          <a href="/home">
+            <div className="py-4 pr-4 ">
+              <HiArrowLeft className="text-lg" />
+            </div>
+          </a>
+        </div>
+      }
       <div
         dangerouslySetInnerHTML={{
           __html: (pageData && pageData[0]?.content?.rendered) || "",
