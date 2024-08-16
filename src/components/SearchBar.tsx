@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { getImagePath } from "@lib/getImagePath";
 import { VscHeartFilled } from "react-icons/vsc";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
-import FlieLoader from "./core/FlieLoader";
 
 interface SearchBarProps {
   searchQuery: { tag: any; id: number };
@@ -23,6 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const router = useRouter();
   const [inputValue, setInputValue] = useState(searchQuery.tag);
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const [debouncedInputValue, setDebouncedInputValue] = useState(inputValue);
 
   useEffect(() => {
     setInputValue(searchQuery?.tag);
@@ -150,7 +150,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             })
           ) : (
             <>
-              {filteredSuggestions.map((item: any) => (
+              {!searchQuery.tag && filteredSuggestions && filteredSuggestions.map((item: any) => (
                 <div className="w-full spaceBorder px-4" key={item.id}>
                   <section>
                     <div

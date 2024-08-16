@@ -8,7 +8,6 @@ import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
-import { getCookie } from "cookies-next";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 
 export default function Album() {
@@ -44,7 +43,6 @@ export default function Album() {
   return (
     <>
       {/* Top slideshow section */}
-
       <div className="rightSideSet">
         <HomeSlider type="home" />
 

@@ -38,8 +38,7 @@ interface GetCounts {
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
-    const playerImage = sessionStorage.getItem("player-image");
-    console.log(playerImage, "play");
+    const playerImage = sessionStorage?.getItem("player-image");
     return playerImage || "";
   }
   return "";
@@ -63,7 +62,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     useAudioPlayer();
   const { user }: any = useUser();
 
-  const { isLoading: isImagLoading, data: imageUrlNew = {} } = useQuery<any>({
+  const { isLoading: isImagLoading, data: imageUrlNew } = useQuery<any>({
     queryKey: ["image"],
     queryFn: fetchImageUrlFromSessionStorage,
   });
@@ -245,7 +244,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
               <div className="absolute inset-0 h-full z-[-1] bg-black">
                 <Image
-                  src={imageUrlNew?.playerImage}
+                  src={imageUrlNew || audioDetail?.imageUrl}
                   alt="Background Image"
                   layout="fill"
                   objectFit="cover"
@@ -255,7 +254,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
               <div className="flex sm:flex-row flex-col justify-between items-center ml-5 h-full">
                 <div className="h-full flex sm:justify-center justify-between items-center sm:w-auto w-full">
                   <img
-                    src={imageUrlNew?.playerImage}
+                    src={imageUrlNew || audioDetail?.imageUrl}
                     alt="abc"
                     className="h-14 rounded-lg"
                   />
@@ -338,7 +337,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div>
                   <div className="absolute inset-0 h-full z-[-1] bg-black">
                     <Image
-                      src={imageUrlNew?.playerImage}
+                      src={imageUrlNew || audioDetail?.imageUrl}
                       alt="Background Image"
                       layout="fill"
                       objectFit="cover"
@@ -425,7 +424,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                     )}
                     <Image
-                      src={imageUrlNew?.playerImage}
+                      src={imageUrlNew || audioDetail?.imageUrl}
                       alt="Audio Thumbnail"
                       height={500}
                       width={500}

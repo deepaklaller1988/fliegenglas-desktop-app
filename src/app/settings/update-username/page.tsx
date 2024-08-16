@@ -7,13 +7,10 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
-import { useRouter } from "next/navigation";
-import useRole from "@hooks/useRole";
 
 export default function UpdateUsername() {
   useTitle("Update Profile");
   const { user} : any = useUser();
-  const router = useRouter();
 
   const [name,setName] = useState<string>("");
   
@@ -48,8 +45,6 @@ export default function UpdateUsername() {
       console.error("Username is required");
     }
   };
-
-
 
 
   return (

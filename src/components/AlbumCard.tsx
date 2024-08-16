@@ -90,7 +90,7 @@ const AlbumSection = ({ data, isLoading }: any) => {
                                       router.push(
                                         `/home/album-detail?id=${product?.id}`
                                       );
-                                      sessionStorage.setItem(
+                                      sessionStorage?.setItem(
                                         "page-image",
                                         product?.image
                                       );
