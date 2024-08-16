@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import ProductDes from "@components/ProductDes";
 import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
-import { getData, saveData } from "utils/indexDB";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 

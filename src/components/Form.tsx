@@ -35,7 +35,7 @@ const Form: React.FC<FormProps> = ({
       <div className="loginInner">
         <div className="header">
 
-          <Link href="/album">
+          <Link href="/home">
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg" />
             </div>
