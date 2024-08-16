@@ -3,9 +3,11 @@
 import ErrorPopup from "@components/ErrorPopUp";
 import useTitle from "@hooks/useTitle";
 import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function AccountDelete() {
+  const router=useRouter()
   useTitle("Account Delete");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
@@ -16,7 +18,8 @@ export default function AccountDelete() {
   const confirmLogout = () => {
     // sessionStorage.clear();
     deleteCookie("user");
-    window.location.href = "/auth/login";
+    router.push("/delete-account/delete-confirmation")
+    // window.location.href = "/auth/login";
   };
 
   const cancelLogout = () => {

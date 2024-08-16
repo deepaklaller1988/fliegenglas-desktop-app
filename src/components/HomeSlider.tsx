@@ -2,18 +2,14 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import React from "react";
-import FlieLoader from "./core/FlieLoader";
 import { Slide } from "react-slideshow-image";
 import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from "utils/indexDB";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { getImagePath } from "@lib/getImagePath";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
-  const router = useRouter();
 
   const getFavourites = async () => {
     if (!user) {
@@ -59,8 +55,6 @@ export default function HomeSlider({ type }: any) {
       </div>
     );
   }
-
-  console.log(type, "type");
 
   return (
     <div className="w-full squareSet" id="top">

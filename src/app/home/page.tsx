@@ -9,6 +9,7 @@ import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData } from "../../utils/indexDB";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
+import useOnlineStatus from "@hooks/UseOnlineStatus";
 
 export default function Album() {
   const { user }: any = useUser();
@@ -24,7 +25,7 @@ export default function Album() {
       }
 
       const response: any = await API.get(
-        `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+        `/catData.json?&time=${new Date().toString()}`
       );
 
       await saveData("home-categories", response);
@@ -34,6 +35,7 @@ export default function Album() {
       return [];
     }
   };
+  useOnlineStatus()
 
   const { isLoading, data = [] } = useQuery({
     queryKey: ["data", user],

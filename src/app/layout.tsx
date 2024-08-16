@@ -6,6 +6,7 @@ import Provider from "../components/core/Provider";
 import ToastProvider from "@components/core/ToasterProvider";
 import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
 import { AudioPlayerProvider } from "context/AudioPlayerContext";
+import useOnlineStatus from "@hooks/UseOnlineStatus";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   
   return (
     <html lang="en">

@@ -1,0 +1,14 @@
+.confirmation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+    height: calc(100vh - 180px);
+}
+
+.confirmation ion-img {
+    max-width: 60px;
+}
