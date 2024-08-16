@@ -260,13 +260,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   />
                   <div className="space-x-2 sm:hidden inline h-full">
                     <button
-                      className="cursor-pointer p-4 hover:bg-blue-500/40 rounded-full duration-300"
+                      className="cursor-pointer p-4 hover:bg-blue-500/40 rounded-full duration-300 text-white"
                       onClick={miniPlayer}
                     >
                       <FaAngleUp />
                     </button>
                     <button
-                      className="cursor-pointer p-4 bg-red-500 hover:bg-red-600 rounded-bl-2xl duration-300"
+                      className="cursor-pointer p-4 bg-red-500 hover:bg-red-600 rounded-bl-2xl duration-300 text-white"
                       onClick={closePlayer}
                     >
                       <IoMdClose size={22} />
@@ -275,40 +275,40 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 </div>
                 <div className="flex items-center sm:justify-center justify-between w-full">
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl text-white"
                     onClick={seekBackward}
                   >
                     <IoPlaySkipBack size={20} />
                   </button>
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white"
                     onClick={seekBackward}
                   >
                     <TbRewindBackward10 size={20} />
                   </button>
                   {play ? (
                     <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
                       onClick={togglePlayPause}
                     >
                       <FaCirclePause size={50} />
                     </button>
                   ) : (
                     <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw]"
+                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
                       onClick={togglePlayPause}
                     >
                       <FaCirclePlay size={50} />
                     </button>
                   )}
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw]"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
                     onClick={seekForward}
                   >
                     <TbRewindForward10 />
                   </button>
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300"
+                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-white"
                     style={{ fontSize: "10vw" }}
                     onClick={seekForward}
                   >
@@ -317,13 +317,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 </div>
                 <div className="sm:flex hidden gap-2 h-full items-center">
                   <button
-                    className="cursor-pointer p-4 hover:bg-blue-500/40 rounded-full duration-300"
+                    className="cursor-pointer p-4 hover:bg-blue-500/40 rounded-full duration-300 text-white"
                     onClick={miniPlayer}
                   >
                     <FaAngleUp />
                   </button>
                   <button
-                    className="cursor-pointer font-bold p-4 px-6 bg-red-500 hover:bg-red-600 h-full duration-300"
+                    className="cursor-pointer font-bold p-4 px-6 bg-red-500 hover:bg-red-600 h-full duration-300 text-white"
                     onClick={closePlayer}
                   >
                     <IoMdClose size={25} />
