@@ -591,7 +591,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       className="flex flex-col items-center gap-1 hover:bg-white/10 p-5 rounded-full duration-300 sm:text-[3vw] xl:text-[1vw] text-[5vw]"
                       onClick={handleShare}
                     >
-                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
+                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw] text-white">
                         {getCounts?.shares} geteilt
                       </p>
                       <PiShareFatLight className="sm:text-[3vw] xl:text-[2vw] text-[5vw] text-white" />
