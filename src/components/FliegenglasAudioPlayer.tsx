@@ -545,7 +545,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         style={{ width: `calc(${played * 100}% + 0.15%)` }}
                       />
                     </div>
-                    <div className="flex flex-row justify-between text-sm mt-2 pt-7">
+                    <div className="flex flex-row justify-between text-sm mt-2 pt-7 text-white">
                       <p>
                         {new Date(played * duration * 1000)
                           .toISOString()
@@ -566,7 +566,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         getCounts?.liked == "1" ? handleDislike() : handleLike()
                       }
                     >
-                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
+                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw] text-white">
                         {getCounts?.likes} gefällt das
                       </p>
                       {getCounts?.liked == "1" ? (
@@ -574,7 +574,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       ) : (
                         <IoMdHeartEmpty className="sm:text-[3vw] xl:text-[2vw] text-[5vw] text-white" />
                       )}
-                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
+                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw] text-white">
                         Gefällt mir
                       </p>
                     </button>
@@ -594,8 +594,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
                         {getCounts?.shares} geteilt
                       </p>
-                      <PiShareFatLight className="sm:text-[3vw] xl:text-[2vw] text-[5vw]" />
-                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
+                      <PiShareFatLight className="sm:text-[3vw] xl:text-[2vw] text-[5vw] text-white" />
+                      <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw] text-white">
                         Teilen
                       </p>
                     </button>
