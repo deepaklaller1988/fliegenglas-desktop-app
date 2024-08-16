@@ -117,9 +117,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         )}
         <ul>
           {data && data.length > 0 ? (
-            data?.map((item: any) => {
+            data?.map((item: any, index: number) => {
               return (
-                <div className="w-full spaceBorder px-4">
+                <div className="w-full spaceBorder px-4" key={index}>
                   <section>
                     <div
                       className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
@@ -150,43 +150,45 @@ const SearchBar: React.FC<SearchBarProps> = ({
             })
           ) : (
             <>
-              {!searchQuery.tag && filteredSuggestions && filteredSuggestions.map((item: any) => (
-                <div className="w-full spaceBorder px-4" key={item.id}>
-                  <section>
-                    <div
-                      className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
-                      onClick={() =>
-                        router.push(`/home/album-detail?id=${item.id}`)
-                      }
-                    >
-                      <span
-                        className={`${
-                          item?.local_image
-                            ? "min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]"
-                            : ""
-                        } `}
+              {!searchQuery.tag &&
+                filteredSuggestions &&
+                filteredSuggestions.map((item: any) => (
+                  <div className="w-full spaceBorder px-4" key={item.id}>
+                    <section>
+                      <div
+                        className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
+                        onClick={() =>
+                          router.push(`/home/album-detail?id=${item.id}`)
+                        }
                       >
-                        {item?.local_image ? (
-                          <>
-                            <img
-                              src={item?.local_image}
-                              alt="Image"
-                              className="rounded-lg h-20 w-20 object-cover"
-                            />
-                          </>
-                        ) : (
-                          <div className="flex flex-col justify-between">
-                            <p className="font-bold">{item?.typeLabel}</p>
-                          </div>
-                        )}
-                      </span>
-                      <div className="flex flex-col justify-between">
-                        <p className="font-thin">{item?.title}</p>
+                        <span
+                          className={`${
+                            item?.local_image
+                              ? "min-h-[80px] max-h-[80px] min-w-[80px] max-w-[80px]"
+                              : ""
+                          } `}
+                        >
+                          {item?.local_image ? (
+                            <>
+                              <img
+                                src={item?.local_image}
+                                alt="Image"
+                                className="rounded-lg h-20 w-20 object-cover"
+                              />
+                            </>
+                          ) : (
+                            <div className="flex flex-col justify-between">
+                              <p className="font-bold">{item?.typeLabel}</p>
+                            </div>
+                          )}
+                        </span>
+                        <div className="flex flex-col justify-between">
+                          <p className="font-thin">{item?.title}</p>
+                        </div>
                       </div>
-                    </div>
-                  </section>
-                </div>
-              ))}
+                    </section>
+                  </div>
+                ))}
             </>
           )}
         </ul>

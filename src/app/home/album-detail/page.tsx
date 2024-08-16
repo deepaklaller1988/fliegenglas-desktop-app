@@ -217,7 +217,7 @@ export default function AlbumDetail() {
               <span className="min-w-[85px] max-w-[85px]">
                 <Image
                   className="block w-full rounded-lg"
-                  src={getImagePath(data?.artistavatar)}
+                  src={imageUrl || "/" + data?.local_image}
                   alt="Speaker"
                   width={85}
                   height={85}
