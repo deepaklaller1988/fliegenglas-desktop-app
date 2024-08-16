@@ -142,7 +142,6 @@ export default function ChannelDetails() {
         </div>
     );
 
-    console.log(channelData)
 
     return (
         <>

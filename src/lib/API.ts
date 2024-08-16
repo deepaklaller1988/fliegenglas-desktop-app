@@ -27,7 +27,7 @@ class API {
       }
     }
   }
-  
+
   static async get(
     path: string | string[],
     resent: boolean = false
@@ -36,7 +36,7 @@ class API {
 
     return new Promise(async (resolve, reject) => {
       if (Array.isArray(path)) path = path.join("/");
-      
+
       let headers = new Headers();
       headers.append("Accept", "application/json");
       // headers.append("Content-Type", "application/json");
@@ -47,11 +47,11 @@ class API {
       }
 
       const baseUrl =
-      path.includes("search.json")
-        ? process.env.NEXT_PUBLIC_Shop_URL
-        : process.env.NEXT_PUBLIC_API_URL;
+        path.includes("search.json")
+          ? process.env.NEXT_PUBLIC_Shop_URL
+          : process.env.NEXT_PUBLIC_API_URL;
       try {
-        const response = await fetch(baseUrl+ path, {
+        const response = await fetch(baseUrl + path, {
           method: "GET",
           // credentials: "include",
           headers: headers,

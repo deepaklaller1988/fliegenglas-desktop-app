@@ -244,7 +244,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
               <div className="absolute inset-0 h-full z-[-1] bg-black">
                 <Image
-                  src={imageUrlNew || audioDetail?.imageUrl}
+                  src={imageUrlNew || "/" + audioDetail?.imageUrl}
                   alt="Background Image"
                   layout="fill"
                   objectFit="cover"
@@ -254,7 +254,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
               <div className="flex sm:flex-row flex-col justify-between items-center ml-5 h-full">
                 <div className="h-full flex sm:justify-center justify-between items-center sm:w-auto w-full">
                   <img
-                    src={imageUrlNew || audioDetail?.imageUrl}
+                    src={imageUrlNew || "/" + audioDetail?.imageUrl}
                     alt="abc"
                     className="h-14 rounded-lg"
                   />
@@ -337,7 +337,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div>
                   <div className="absolute inset-0 h-full z-[-1] bg-black">
                     <Image
-                      src={imageUrlNew || audioDetail?.imageUrl}
+                      src={imageUrlNew || "/" + audioDetail?.imageUrl}
                       alt="Background Image"
                       layout="fill"
                       objectFit="cover"
@@ -424,7 +424,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                     )}
                     <Image
-                      src={imageUrlNew || audioDetail?.imageUrl}
+                      src={imageUrlNew || "/" + audioDetail?.imageUrl}
                       alt="Audio Thumbnail"
                       height={500}
                       width={500}

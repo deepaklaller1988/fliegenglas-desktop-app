@@ -16,7 +16,6 @@ import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
     const pageImage = sessionStorage?.getItem("page-image");
-    // const playerImage = sessionStorage?.getItem("player-image");
     return pageImage || "";
   }
   return "";
@@ -68,14 +67,6 @@ export default function AlbumDetail() {
   if (isLoading) {
     return <FlieLoader />;
   }
-
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-[80vh] bg-gray-300 rounded-md"></div>
-    </div>
-  );
-
-  console.log(imageUrl, "=");
 
   return (
     <>

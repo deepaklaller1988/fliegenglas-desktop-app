@@ -94,6 +94,9 @@ const AlbumSection = ({ data, isLoading }: any) => {
                                         "page-image",
                                         product?.image
                                       );
+                                      sessionStorage?.removeItem(
+                                        "player-image"
+                                      );
                                     }}
                                   >
                                     <Image

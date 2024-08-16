@@ -59,8 +59,6 @@ export default function HomeSlider({ type }: any) {
     );
   }
 
-  console.log(type, "type");
-
   return (
     <div className="w-full squareSet" id="top">
       <Slide>
@@ -72,7 +70,12 @@ export default function HomeSlider({ type }: any) {
             {type === "home" ? (
               <div className="slider-parent">
                 <div className="card h-full">
-                  <Link href={`/home/album-detail?id=${item.id}`}>
+                  <button
+                    onClick={() => {
+                      router.push(`/home/album-detail?id=${item?.id}`);
+                      sessionStorage.clear();
+                    }}
+                  >
                     <img
                       className="w-full"
                       src={item.product_header_graphic}
@@ -81,7 +84,7 @@ export default function HomeSlider({ type }: any) {
                     <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1">
                       <FaPlayCircle className="w-5 h-5" /> Jetzt hören
                     </p>
-                  </Link>
+                  </button>
                 </div>
               </div>
             ) : (

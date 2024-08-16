@@ -94,29 +94,29 @@ export default function Album() {
               <ScrollContainer className="scroll-container">
                 {loading
                   ? Array.from({ length: show }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                    >
-                      {SkeletonLoader()}
-                    </div>
-                  ))
+                      <div
+                        key={index}
+                        className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                      >
+                        {SkeletonLoader()}
+                      </div>
+                    ))
                   : divOne.slice(0, show).map((item: any, index: any) => (
-                    <div
-                      key={index}
-                      className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
-                    >
-                      <Link href={`/album/album-detail?id=${item.id}`}>
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full block rounded-md"
-                          width={220}
-                          height={220}
-                        />
-                      </Link>
-                    </div>
-                  ))}
+                      <div
+                        key={index}
+                        className=" inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+                      >
+                        <Link href={`/album/album-detail?id=${item.id}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full block rounded-md"
+                            width={220}
+                            height={220}
+                          />
+                        </Link>
+                      </div>
+                    ))}
               </ScrollContainer>
             </div>
           </div>
@@ -133,29 +133,29 @@ export default function Album() {
               <ScrollContainer className="scroll-container">
                 {loading
                   ? Array.from({ length: show }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                    >
-                      {SkeletonLoader()}
-                    </div>
-                  ))
+                      <div
+                        key={index}
+                        className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                      >
+                        {SkeletonLoader()}
+                      </div>
+                    ))
                   : divTwo.slice(0, show).map((item: any, index: any) => (
-                    <div
-                      key={index}
-                      className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
-                    >
-                      <Link href={`/album/album-detail?id=${item.id}`}>
-                        <Image
-                          src={item?.image || ""}
-                          alt={item?.title || ""}
-                          width={265}
-                          height={300}
-                          className="w-full block rounded-md"
-                        />
-                      </Link>
-                    </div>
-                  ))}
+                      <div
+                        key={index}
+                        className="w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                      >
+                        <Link href={`/album/album-detail?id=${item.id}`}>
+                          <Image
+                            src={item?.image || ""}
+                            alt={item?.title || ""}
+                            width={265}
+                            height={300}
+                            className="w-full block rounded-md"
+                          />
+                        </Link>
+                      </div>
+                    ))}
               </ScrollContainer>
             </div>
           </div>
