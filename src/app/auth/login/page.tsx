@@ -6,12 +6,61 @@ import { useRouter } from "next/navigation";
 import "./login.css";
 import { useUser } from "../../../context/UserContext";
 import { setCookie } from "cookies-next";
+import { getData, saveData } from "utils/indexDB";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Login() {
   const router = useRouter();
   const { googleSignIn, appleSignIn } = UserAuth();
   const { setUser }: any = useUser();
 
+  const getChannelData = async () => {
+    try {
+      const cachedData = await getData('channelData');
+      if (cachedData) {
+        return cachedData;
+      }
+      const response: any = await API.get(`getChannels?&user_id=${""}?&time=${new Date().toString()}`);
+      await saveData('channelData', response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const fetchData = async () => {
+
+    try {
+      const cachedData = await getData('tags');
+      if (cachedData) {
+        return cachedData;
+      }
+      const response: any = await API.get(`getTagsearch?&time=${new Date().toString()}`);
+      await saveData('tags', response.tags);
+      return response.tags;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const {
+    isLoading,
+    data = [],
+  } = useQuery({
+    queryKey: ["search-data"],
+    queryFn: fetchData,
+  });
+
+
+  const {
+    isLoading: isChannelLoading,
+    data: channelData = [],
+  } = useQuery({
+    queryKey: ["channel-data"],
+    queryFn: getChannelData,
+  });
   const socialSignIn = async (e: any, platform: string) => {
     e.preventDefault();
     try {

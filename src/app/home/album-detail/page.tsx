@@ -89,10 +89,16 @@ export default function AlbumDetail() {
             alt="Album"
           />
         </div>
-        <div
-          className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: imageUrl || "/" + data.local_image }}
-        >
+        <div className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed">
+          <div className="absolute inset-0 h-full z-[-1] bg-black">
+            <Image
+              src={imageUrl || "/" + data?.local_image}
+              alt="Background Image"
+              layout="fill"
+              objectFit="cover"
+              className="blur-2xl opacity-65"
+            />
+          </div>
           <div className="w-full p-3 relative z-10">
             <Link
               href="../home"
