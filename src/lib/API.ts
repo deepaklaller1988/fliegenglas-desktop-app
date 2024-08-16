@@ -47,9 +47,10 @@ class API {
       }
 
       const baseUrl =
-        path.includes("search.json")
-          ? process.env.NEXT_PUBLIC_Shop_URL
-          : process.env.NEXT_PUBLIC_API_URL;
+      path.includes("search.json") || path.includes("catData.json")
+        ? process.env.NEXT_PUBLIC_Shop_URL
+        : process.env.NEXT_PUBLIC_API_URL;
+    
       try {
         const response = await fetch(baseUrl + path, {
           method: "GET",

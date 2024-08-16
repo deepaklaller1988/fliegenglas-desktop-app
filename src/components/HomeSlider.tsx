@@ -2,17 +2,14 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import React from "react";
-import FlieLoader from "./core/FlieLoader";
 import { Slide } from "react-slideshow-image";
 import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from "utils/indexDB";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { getImagePath } from "@lib/getImagePath";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
-  const router = useRouter();
 
   const getFavourites = async () => {
     if (!user) {
@@ -78,7 +75,7 @@ export default function HomeSlider({ type }: any) {
                   >
                     <img
                       className="w-full"
-                      src={item.product_header_graphic}
+                      src={getImagePath(item.product_header_graphic)}
                       alt="Album"
                     />
                     <p className="pt-3 pb-3 flex items-center justify-center text-white gap-1">
