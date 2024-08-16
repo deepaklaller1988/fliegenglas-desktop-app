@@ -15,11 +15,11 @@ import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
-    const pageImage = sessionStorage.getItem("page-image");
-    const playerImage = sessionStorage.getItem("player-image");
-    return { pageImage, playerImage } || {};
+    const pageImage = sessionStorage?.getItem("page-image");
+    // const playerImage = sessionStorage?.getItem("player-image");
+    return pageImage || "";
   }
-  return {};
+  return "";
 };
 
 export default function AlbumDetail() {
@@ -45,7 +45,7 @@ export default function AlbumDetail() {
     queryFn: fetchData,
   });
 
-  const { isLoading: isImagLoading, data: imageUrl = {} } = useQuery<any>({
+  const { isLoading: isImagLoading, data: imageUrl } = useQuery<any>({
     queryKey: ["image"],
     queryFn: fetchImageUrlFromSessionStorage,
     staleTime: 0,
@@ -75,6 +75,8 @@ export default function AlbumDetail() {
     </div>
   );
 
+  console.log(imageUrl, "=");
+
   return (
     <>
       <div className="rightSideSet">
@@ -89,7 +91,7 @@ export default function AlbumDetail() {
         </div>
         <div
           className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: "/" + data.local_image }}
+          style={{ backgroundImage: imageUrl || "/" + data.local_image }}
         >
           <div className="w-full p-3 relative z-10">
             <Link
@@ -101,25 +103,25 @@ export default function AlbumDetail() {
             <div className="w-full">
               <Image
                 className="block w-full shadow-xl"
-                src={imageUrl?.pageImage}
+                src={imageUrl || "/" + data.local_image}
                 alt="Album"
                 width={500}
                 height={500}
               />
             </div>
-
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-              <button
-                className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                onClick={() => {
-                  handleShowPlayer();
-                  sessionStorage.setItem("player-image", imageUrl?.pageImage);
-                }}
-              >
-                Hörprobe hören
-              </button>
-            </div>
-
+            {data?.user_info && (
+              <div className="w-full bg-white/80 rounded-md p-3 mt-3">
+                <button
+                  className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  onClick={() => {
+                    handleShowPlayer();
+                    sessionStorage?.setItem("player-image", imageUrl);
+                  }}
+                >
+                  Hörprobe hören
+                </button>
+              </div>
+            )}
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
               <Link
                 href=""
