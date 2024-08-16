@@ -368,43 +368,43 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     >
                       <ul className="text-center">
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(0.25)}
                         >
                           0.25
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(0.5)}
                         >
                           0.50
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(1)}
                         >
                           1
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(1.25)}
                         >
                           1.25
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(1.5)}
                         >
                           1.50
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(1.75)}
                         >
                           1.75
                         </li>
                         <li
-                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl"
+                          className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
                           onClick={() => handlePlaybackRateChange(2)}
                         >
                           2
