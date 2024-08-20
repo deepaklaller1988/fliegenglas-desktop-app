@@ -1,3 +1,5 @@
+"use client";
+
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
@@ -7,9 +9,11 @@ import Link from "next/link";
 import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from "utils/indexDB";
 import { getImagePath } from "@lib/getImagePath";
+import { useRouter } from "next/navigation";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
+  const router = useRouter();
 
   const getFavourites = async () => {
     if (!user) {

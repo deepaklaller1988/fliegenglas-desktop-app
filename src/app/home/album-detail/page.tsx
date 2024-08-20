@@ -49,7 +49,7 @@ export default function AlbumDetail() {
     queryFn: fetchImageUrlFromSessionStorage,
     staleTime: 0,
     enabled: true,
-    refetchInterval: 1000,
+    refetchInterval: 10,
   });
 
   const handleShowPlayer = () => {
@@ -106,7 +106,7 @@ export default function AlbumDetail() {
                 height={500}
               />
             </div>
-            {data?.user_info && (
+            {data?.user_info && data?.type !== "subscription" && (
               <div className="w-full bg-white/80 rounded-md p-3 mt-3">
                 <button
                   className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
@@ -121,115 +121,139 @@ export default function AlbumDetail() {
             )}
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
               <Link
-                href=""
+                href={`/home/album-detail?id=${data?.subscriptionProductID}`}
                 className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
               >
                 1 Woche kostenlos hören
               </Link>
-              <div className="w-full border-half-both relative my-2">
-                <p className="block text-center">oder</p>
-              </div>
-              <Link
-                href=""
-                className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-              >
-                Hörbuch ohne Abo kaufen
-              </Link>
-              <div className="w-full flex items-center justify-between gap-1 pt-3">
-                <p className="text-[#232a2c] text-[16px]">
-                  Preis inkl. MWST (7,7%){" "}
-                </p>
-                <b className="text-[#232a2c] text-[16px]">
-                  € {data.preview_price}
-                </b>
-              </div>
+              {data?.type === "subscription" ? (
+                <>
+                  <p className="text-black text-center font-100 mt-5 text-[16px]">
+                    Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong>{" "}
+                    € pro Monat
+                  </p>
+                  <p className="text-black text-center font-100 text-[16px]">
+                    Jederzeit über die App kündbar.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="w-full border-half-both relative my-2">
+                    <p className="block text-center">oder</p>
+                  </div>
+                  <Link
+                    href=""
+                    className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  >
+                    Hörbuch ohne Abo kaufen
+                  </Link>
+                  <div className="w-full flex items-center justify-between gap-1 pt-3">
+                    <p className="text-[#232a2c] text-[16px]">
+                      Preis inkl. MWST (7,7%){" "}
+                    </p>
+                    <b className="text-[#232a2c] text-[16px]">
+                      € {data.preview_price}
+                    </b>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-3">
-              <div className="w-full flex items-center gap-1">
-                <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                  Titel:
-                </b>
-                <p className="text-[#232a2c] text-[16px]">{data.name}</p>
-              </div>
-              <div className="w-full flex items-center gap-1">
-                <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                  Bewertung:
-                </b>
-                <p className="text-[#232a2c] text-[16px] flex gap-1 items-center">
-                  <Image
-                    className="w-[20px]"
-                    src="../assets/images/icon-like-new-filled.svg"
-                    alt="favorite"
-                    width={20}
-                    height={20}
-                  />
-                  {data.likes} gefällt das.
-                </p>
-              </div>
-              <div className="w-full flex items-center gap-1">
-                <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                  Dauer:
-                </b>
-                <p className="text-[#232a2c] text-[16px]">
-                  {data.audiobookDuration}
-                </p>
-              </div>
-              <div className="w-full flex items-center gap-1">
-                <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                  Copyright:
-                </b>
-                <p className="text-[#232a2c] text-[16px]">{data.copyright}</p>
-              </div>
-            </div>
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
-              <span className="min-w-[85px] max-w-[85px]">
-                <Image
-                  className="block w-full rounded-lg"
-                  src={"/" + data.authoravatar}
-                  alt="Author"
-                  width={85}
-                  height={85}
-                />
-              </span>
-              <span className="relative w-full">
-                <b className="text-[#232a2c] text-[16px]">Autor*ln:</b>
-                <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
-                  {data.author}
-                </p>
-                <Link
-                  className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                  href={`/home/artist-details?authorId=${data?.author_id}&role=author`}
-                >
-                  Alle Hörbücher
-                </Link>
-              </span>
-            </div>
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
-              <span className="min-w-[85px] max-w-[85px]">
-                <Image
-                  className="block w-full rounded-lg"
-                  src={imageUrl || "/" + data?.local_image}
-                  alt="Speaker"
-                  width={85}
-                  height={85}
-                />
-              </span>
-              <span className="relative w-full">
-                <b className="text-[#232a2c] text-[16px]">Sprecher*ln:</b>
-                <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
-                  {data?.artist}
-                </p>
-                <Link
-                  className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                  href={`/home/artist-details?artistId=${data?.artist_id}&role=artist`}
-                >
-                  Alle Hörbücher
-                </Link>
-              </span>
-            </div>
+
+            {data?.type !== "subscription" && (
+              <>
+                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-3">
+                  <div className="w-full flex items-center gap-1">
+                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                      Titel:
+                    </b>
+                    <p className="text-[#232a2c] text-[16px]">{data.name}</p>
+                  </div>
+                  <div className="w-full flex items-center gap-1">
+                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                      Bewertung:
+                    </b>
+                    <p className="text-[#232a2c] text-[16px] flex gap-1 items-center">
+                      <Image
+                        className="w-[20px]"
+                        src="../assets/images/icon-like-new-filled.svg"
+                        alt="favorite"
+                        width={20}
+                        height={20}
+                      />
+                      {data.likes} gefällt das.
+                    </p>
+                  </div>
+                  <div className="w-full flex items-center gap-1">
+                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                      Dauer:
+                    </b>
+                    <p className="text-[#232a2c] text-[16px]">
+                      {data.audiobookDuration}
+                    </p>
+                  </div>
+                  <div className="w-full flex items-center gap-1">
+                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                      Copyright:
+                    </b>
+                    <p className="text-[#232a2c] text-[16px]">
+                      {data.copyright}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
+                  <span className="min-w-[85px] max-w-[85px]">
+                    <Image
+                      className="block w-full rounded-lg"
+                      src={"/" + data.authoravatar}
+                      alt="Author"
+                      width={85}
+                      height={85}
+                    />
+                  </span>
+                  <span className="relative w-full">
+                    <b className="text-[#232a2c] text-[16px]">Autor*ln:</b>
+                    <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
+                      {data.author}
+                    </p>
+                    <Link
+                      className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
+                      href={`/home/artist-details?authorId=${data?.author_id}&role=author`}
+                    >
+                      Alle Hörbücher
+                    </Link>
+                  </span>
+                </div>
+                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
+                  <span className="min-w-[85px] max-w-[85px]">
+                    <Image
+                      className="block w-full rounded-lg"
+                      src={imageUrl || "/" + data?.local_image}
+                      alt="Speaker"
+                      width={85}
+                      height={85}
+                    />
+                  </span>
+                  <span className="relative w-full">
+                    <b className="text-[#232a2c] text-[16px]">Sprecher*ln:</b>
+                    <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
+                      {data?.artist}
+                    </p>
+                    <Link
+                      className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
+                      href={`/home/artist-details?artistId=${data?.artist_id}&role=artist`}
+                    >
+                      Alle Hörbücher
+                    </Link>
+                  </span>
+                </div>
+              </>
+            )}
+
             <div className="w-full bg-white/80 rounded-md p-3 py-8 mt-3 flex gap-4 flex-col">
               <h2 className="text-center text-[#232a2c]">
-                Inhalt des Hörbuches
+                {data?.type === "subscription"
+                  ? "Über dieses Hörbuch-Abo"
+                  : "Inhalt des Hörbuches"}
               </h2>
               {/* <p className="text-[#232a2c] leading-6"> </p> */}
               <ProductDes data={data} />

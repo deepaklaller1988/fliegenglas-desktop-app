@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import useRole from "@hooks/useRole";
 import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
 
@@ -35,7 +34,9 @@ const AlbumSection = ({ data, isLoading }: any) => {
           </>
         ) : (
           data &&
-          data?.map((item: any, index: number) => {
+          data
+            .filter((item: any) => item?.category?.name?.toLowerCase() !== "uncategorized")
+            .map((item: any, index: number) => {
             return (
               <>
                 <div

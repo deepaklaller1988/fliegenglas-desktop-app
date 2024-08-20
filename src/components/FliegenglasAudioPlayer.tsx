@@ -65,6 +65,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const { isLoading: isImagLoading, data: imageUrlNew } = useQuery<any>({
     queryKey: ["image"],
     queryFn: fetchImageUrlFromSessionStorage,
+    staleTime: 0,
+    enabled: true,
+    refetchInterval: 10,
   });
 
   // useEffect(() => {

@@ -8,20 +8,25 @@ import { useUser } from "../../../context/UserContext";
 import { setCookie } from "cookies-next";
 import { getData, saveData } from "utils/indexDB";
 import { useQuery } from "@tanstack/react-query";
+import FlieLoaderCustom from "@components/core/FlieLoaderCustom";
+import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const { googleSignIn, appleSignIn } = UserAuth();
   const { setUser }: any = useUser();
 
   const getChannelData = async () => {
     try {
-      const cachedData = await getData('channelData');
+      const cachedData = await getData("channelData");
       if (cachedData) {
         return cachedData;
       }
-      const response: any = await API.get(`getChannels?&user_id=${""}?&time=${new Date().toString()}`);
-      await saveData('channelData', response);
+      const response: any = await API.get(
+        `getChannels?&user_id=${""}?&time=${new Date().toString()}`
+      );
+      await saveData("channelData", response);
       return response;
     } catch (error) {
       console.log(error);
@@ -30,14 +35,15 @@ export default function Login() {
   };
 
   const fetchData = async () => {
-
     try {
-      const cachedData = await getData('tags');
+      const cachedData = await getData("tags");
       if (cachedData) {
         return cachedData;
       }
-      const response: any = await API.get(`getTagsearch?&time=${new Date().toString()}`);
-      await saveData('tags', response.tags);
+      const response: any = await API.get(
+        `getTagsearch?&time=${new Date().toString()}`
+      );
+      await saveData("tags", response.tags);
       return response.tags;
     } catch (error) {
       console.log(error);
@@ -45,19 +51,12 @@ export default function Login() {
     }
   };
 
-  const {
-    isLoading,
-    data = [],
-  } = useQuery({
+  const { isLoading, data = [] } = useQuery({
     queryKey: ["search-data"],
     queryFn: fetchData,
   });
 
-
-  const {
-    isLoading: isChannelLoading,
-    data: channelData = [],
-  } = useQuery({
+  const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
     queryKey: ["channel-data"],
     queryFn: getChannelData,
   });
@@ -76,6 +75,7 @@ export default function Login() {
           firstname: userData?.displayName,
           email: userData?.email,
         };
+        setLoading(true);
         const response = await API.post(
           `social_login/?&email=${
             userData?.email
@@ -87,6 +87,7 @@ export default function Login() {
         setCookie("user", response);
         router.push("/home");
       } else {
+        setLoading(false);
         console.error("User or email is null");
       }
     } catch (error) {
@@ -104,31 +105,43 @@ export default function Login() {
               WIR MACHEN<br></br> WISSEN HÖRBAR.
             </h6>
           </span>
-          <div className="button-splash new-home-buttons">
-            <p>
-              Bitte verwende bei Fliegenglas immer<br></br> die gleiche
-              E-Mail-Adresse.
-            </p>
-            <Link
-              href=""
-              className="button log-set rounded-md"
-              onClick={(e) => socialSignIn(e, "apple")}
-            >
-              <img src="/assets/apple-logo.svg" className="md hydrated" />
-              Mit Apple anmelden
-            </Link>
-            <Link
-              href=""
-              className="button google-set rounded-md"
-              onClick={(e) => socialSignIn(e, "google")}
-            >
-              <img src="/assets/google.svg" className="md hydrated" />
-              Mit Google anmelden
-            </Link>
-            <Link className="button rounded-md" href="/auth/login-step">
-              Mit Deiner E-Mail anmelden
-            </Link>
-          </div>
+
+          {loading ? (
+            <div className="w-full">
+              <img
+                src="\assets\loader-animated-gif.gif"
+                alt="llll"
+                className="w-60 h-60 m-auto"
+              />
+            </div>
+          ) : (
+            <div className="button-splash new-home-buttons">
+              <p>
+                Bitte verwende bei Fliegenglas immer<br></br> die gleiche
+                E-Mail-Adresse.
+              </p>
+
+              <Link
+                href=""
+                className="button log-set rounded-md"
+                onClick={(e) => socialSignIn(e, "apple")}
+              >
+                <img src="/assets/apple-logo.svg" className="md hydrated" />
+                Mit Apple anmelden
+              </Link>
+              <Link
+                href=""
+                className="button google-set rounded-md"
+                onClick={(e) => socialSignIn(e, "google")}
+              >
+                <img src="/assets/google.svg" className="md hydrated" />
+                Mit Google anmelden
+              </Link>
+              <Link className="button rounded-md" href="/auth/login-step">
+                Mit Deiner E-Mail anmelden
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>
