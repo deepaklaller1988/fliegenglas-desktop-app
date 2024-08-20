@@ -25,10 +25,19 @@ export async function saveData(key: string, value: any): Promise<void> {
 export async function getData(key: string): Promise<any> {
   const db = await initDB();
   const data = await db.get(STORE_NAME, key);
-  
+
   try {
     return JSON.parse(data);
   } catch (e) {
     return data;
   }
+}
+
+export async function putData(key: string, value: any): Promise<void> {
+  return saveData(key, value);
+}
+
+export async function deleteData(key: string): Promise<void> {
+  const db = await initDB();
+  await db.delete(STORE_NAME, key);
 }

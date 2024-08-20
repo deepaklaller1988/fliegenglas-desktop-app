@@ -122,7 +122,7 @@ const AlbumSection = ({
           </ScrollContainer>
         ) : (
           data &&
-          data.length > 0 &&
+          data?.length > 0 &&
           data
             ?.filter(
               (item: any) =>

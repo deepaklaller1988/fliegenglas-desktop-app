@@ -51,17 +51,13 @@ export default function Album() {
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
     queryFn: fetchCategoryData,
-    initialData: async () => {
-      return await getData("home-categories") || [];
-    },
+  
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [], refetch: refetchRecentlyPlayed } = useQuery({
     queryKey: ["recently-played", user],
     queryFn: fetchRecentlPlayed,
-    initialData: async () => {
-      return await getData("recently-played") || [];
-    },
+   
   });
 
   const handleRefresh = async () => {

@@ -1,16 +1,22 @@
-"use client";
-import React from "react";
-import "./order-list.css";
-import useTitle from "@hooks/useTitle";
-import PageContent from "@components/PageContent";
-import { getData, saveData } from "utils/indexDB";
-import API from "@lib/API";
-import { useQuery } from "@tanstack/react-query";
-import { useUser } from "context/UserContext";
+"use client"
+import React, { useEffect, useState } from 'react';
+import useTitle from '@hooks/useTitle';
+import API from '@lib/API';
+import { useQuery } from '@tanstack/react-query';
+import { useUser } from 'context/UserContext';
+import { getData ,putData} from 'utils/indexDB';
+import PageContent from '@components/PageContent';
+import ScrollContainer from 'react-indiana-drag-scroll';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { getImagePath } from '@lib/getImagePath';
 
 const OrderList: React.FC = () => {
   useTitle("Meine Hörbücher");
   const { user }: any = useUser();
+  const router = useRouter();
+  const [filteredList, setFilteredList] = useState<any>({});
 
   const getOrderByUser = async () => {
     if (!user) {
@@ -18,8 +24,10 @@ const OrderList: React.FC = () => {
     }
     try {
       const response: any = await API.get(
-        `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
+        `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
       );
+      await putData('order-data', response);
+
       return response;
     } catch (error) {
       console.log(error);
@@ -27,47 +35,155 @@ const OrderList: React.FC = () => {
     }
   };
 
-  const {
-    isLoading,
-    data = [],
-    refetch,
-    isFetching,
-  } = useQuery({
-    queryKey: ["order-data", user],
+  const { isLoading, data: orderList = [], refetch, isFetching } = useQuery({
+    queryKey: ['order-data', user],
     queryFn: getOrderByUser,
     enabled: !!user,
     staleTime: 0,
   });
 
+  const filterOrders = async () => {
+    let newSup: any = {};
+    const categoriesData = await getData('categories');
+    if (categoriesData) {
+      categoriesData.forEach((cat: any) => {
+        newSup[cat] = [];
+      });
+    }
+
+    orderList.forEach((value: any) => {
+      if (value.line_items && value.line_items[0].type !== 'subscription') {
+        let cat = value.line_items[0].primaryCategory;
+        if (!newSup[cat]) {
+          newSup[cat] = [];
+        }
+        newSup[cat].push(value);
+      }
+    });
+
+    setFilteredList(newSup);
+  };
+
+  useEffect(() => {
+    if (orderList.length > 0) {
+      filterOrders();
+    }
+  }, [orderList]);
+
   const handleRefresh = async () => {
     try {
-      console.log("Refetching data...");
       await refetch();
-      console.log("Refetch result:", data);
     } catch (err) {
-      console.log("Error during refetch:", err);
+      console.log('Error during refetch:', err);
     }
   };
 
-  return (
-    <div className="text-white p-8 shadow-lg text-center w-full">
-      <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
-      <p className="mb-6 text-sm">
-        Unter der E-Mail-Adresse, mit der Sie sich in der App angemeldet haben,
-        sind noch keine Hörbücher bestellt worden.
-      </p>
-      <div className="text-black w-96 m-auto">
-        <PageContent slug="es-sind-hier-noch-keine-hoerbuecher-vorhanden" />
+  const SkeletonLoader = () => (
+    <div className="animate-pulse space-y-3">
+      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
+    </div>
+  );
+
+  const renderAlbumItems = (item: any,index:any) => (
+    <div
+      className="w-full playNail p-3 pr-0 py-6 text-white"
+      key={item?.category?.categoryid}
+    >
+        {index== 0 &&  <div className="text-white p-8 shadow-lg text-center w-full">
+       <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
+      </div>}
+      <div className="full flex gap-2 justify-between pr-3">
+        <b className="text-[22px] leading-tight">{item?.category?.name}</b>
+        <Link
+          href={`/home/listing?name=${item?.category?.name}&id=${item?.category?.categoryid}`}
+          className="text-[14px] whitespace-nowrap mt-1"
+        >
+          Alle anzeigen
+        </Link>
       </div>
-      <button
-        onClick={handleRefresh}
-        className={`
-           ${
-             isFetching ? "flie-loader !bg-gray-600 py-2 bg-gray-600" : ""
-           } bg-gray-600 hover:bg-gray-500 text-white py-2 px-10 rounded mt-10`}
-      >
-        Hörbücher aktualisieren
-      </button>
+      {/* Horizontal scrollable album list */}
+      <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
+        <ScrollContainer className="scroll-container">
+          {item?.products?.slice(0, 8)?.map((product: any, index: any) => (
+            <div
+              key={index}
+              className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+            >
+              <button
+                onClick={() => {
+                  router.push(`/home/album-detail?id=${product.line_items[0]?.id}`);
+                  sessionStorage?.setItem("page-image", product.line_items[0]?.local_image);
+                }}
+              >
+                <Image
+                  src={getImagePath(product.line_items[0]?.image) || ""}
+                  alt={product.line_items[0]?.name || ""}
+                  width={150}
+                  height={150}
+                  className="w-full block rounded-md"
+                />
+              </button>
+            </div>
+          ))}
+        </ScrollContainer>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className='rightSideSet'>
+      {isLoading ? (
+        <div className="text-white p-8 shadow-lg text-center w-full">
+          <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
+          <p className="mb-6 text-sm">
+            Daten werden geladen, bitte warten...
+          </p>
+        </div>
+      ) : orderList.length === 0 ? (
+        <div className="text-white p-8 shadow-lg text-center w-full">
+          <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
+          <p className="mb-6 text-sm">
+            Unter der E-Mail-Adresse, mit der Sie sich in der App angemeldet haben,
+            sind noch keine Hörbücher bestellt worden.
+          </p>
+          <div className="text-black w-96 m-auto">
+            <PageContent slug="es-sind-hier-noch-keine-hoerbuecher-vorhanden" />
+          </div>
+          <button
+            onClick={handleRefresh}
+            className={`
+              ${isFetching ? "flie-loader !bg-gray-600 py-2 bg-gray-600" : ""}
+              bg-gray-600 hover:bg-gray-500 text-white py-2 px-10 rounded mt-10`}
+          >
+            Hörbücher aktualisieren
+          </button>
+        </div>
+      ) : (
+        <div>
+          {isLoading ? (
+            <ScrollContainer className="scroll-container">
+              <div className="whitespace-nowrap overflow-none mt-4 scrollSet flex">
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                  >
+                    {SkeletonLoader()}
+                  </div>
+                ))}
+              </div>
+            </ScrollContainer>
+          ) : (
+            Object.keys(filteredList).map((category,index:any) => (
+              filteredList[category].length > 0 &&
+              renderAlbumItems({
+                category: { categoryid: category, name: category },
+                products: filteredList[category],
+              },index)
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };
