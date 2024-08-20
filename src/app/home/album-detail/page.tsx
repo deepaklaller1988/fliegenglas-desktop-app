@@ -12,7 +12,7 @@ import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
-import { saveAudio, getAllAudios, deleteAudio } from "../../../utils/indexeddb";
+import { saveAudio, deleteAudio } from "../../../utils/indexeddb";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
@@ -31,7 +31,8 @@ export default function AlbumDetail() {
   const fetchData = async () => {
     try {
       const response = API.get(
-        `getProductByID?product_id=${productId}&customerID=${user?.id}`
+        // `getProductByID?product_id=${productId}&customerID=${user?.id}`
+        `getProductByID?product_id=${productId}&customerID=50451`
       );
       return response || {};
     } catch (error) {
@@ -55,27 +56,30 @@ export default function AlbumDetail() {
 
   const handleShowPlayer = () => {
     showPlayer({
+      audioID: data?.id,
       audioUrl: data?.preview_url,
       imageUrl: data?.local_image,
       backgroundImageUrl: data?.player_background_image,
-      audioID: data?.appleID,
       artist: data?.artist,
       shareurl: data?.shareurl,
       name: data?.name,
     });
   };
 
-
-
   const handleDownload = async (id: any) => {
     try {
-      const response = await fetch(`/api/download-audio?id=${id}`);
+      const response = await fetch(`${data?.preview_url}`);
       if (!response.ok) {
         throw new Error("Failed to download audio");
       }
       const arrayBuffer = await response.arrayBuffer();
-      const iddd = `audio_${Date.now()}`;
-      await saveAudio(iddd, arrayBuffer);
+      await saveAudio(
+        data?.id,
+        arrayBuffer,
+        data?.local_image,
+        data?.name,
+        data?.shareurl
+      );
     } catch (error) {
       console.error("Failed to download audio", error);
     }

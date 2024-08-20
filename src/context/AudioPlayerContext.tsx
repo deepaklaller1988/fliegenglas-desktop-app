@@ -3,10 +3,10 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface AudioDetail {
+  audioID: string;
   audioUrl: string;
   imageUrl: string;
   backgroundImageUrl: string;
-  audioID: string;
   artist: string;
   shareurl: string;
   name: string;

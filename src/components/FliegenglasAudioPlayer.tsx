@@ -20,7 +20,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
-import { getAllAudios } from "utils/indexeddb";
+import { getAudioByName, saveAudio } from "utils/indexeddb";
 
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
@@ -57,6 +57,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
+  const [downloading, setDownloading] = useState<boolean>(true);
   const playerRef = useRef<ReactPlayer>(null);
   // const [imageUrl, setImageUrl] = useState("");
   const { isVisible, audioDetail, closePlayer, mini, miniPlayer } =
@@ -226,14 +227,87 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-  const fetchOfflineAudios = async () => {
+  // const fetchOfflineAudios = async () => {
+  //   try {
+  //     const allAudios = await getAllAudios();
+  //     // setList(allAudios);
+  //   } catch (error) {
+  //     console.error("Failed to fetch downloaded audios", error);
+  //   }
+  // };
+
+  const handleDownload = async () => {
     try {
-      const allAudios = await getAllAudios();
-      // setList(allAudios);
+      const response = await fetch(
+        `${audioDetail?.audioUrl?.replace("mp3", "m3u8")}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to download audio");
+      }
+      setDownloading(true);
+      const arrayBuffer = await response.arrayBuffer();
+      await saveAudio(
+        audioDetail?.audioID,
+        arrayBuffer,
+        audioDetail?.imageUrl,
+        audioDetail?.name,
+        audioDetail?.shareurl
+      );
+      setDownloading(false);
     } catch (error) {
-      console.error("Failed to fetch downloaded audios", error);
+      setDownloading(false);
+      console.error("Failed to download audio", error);
     }
   };
+
+  // const handleDownload = async (url: string) => {
+  //   try {
+  //     const audio = url;
+
+  //     if (!audio) {
+  //       throw new Error("Audio details not found");
+  //     }
+
+  //     const xhr = new XMLHttpRequest();
+  //     xhr.open("GET", audio, true);
+  //     xhr.responseType = "arraybuffer";
+
+  //     xhr.onprogress = (event) => {
+  //       if (event.lengthComputable) {
+  //         const percentComplete = (event.loaded / event.total) * 100;
+  //         console.log(`Download Progress: ${percentComplete.toFixed(2)}%`);
+  //       }
+  //     };
+
+  //     xhr.onload = async () => {
+  //       if (xhr.status === 200) {
+  //         const arrayBuffer = xhr.response;
+  //         if (arrayBuffer.byteLength === 0) {
+  //           throw new Error("Downloaded audio buffer is empty");
+  //         }
+
+  //         await saveAudio(
+  //           audio.id,
+  //           arrayBuffer,
+  //           audio.local_image,
+  //           audio.name,
+  //           audio.shareurl
+  //         );
+  //         console.log("Audio saved successfully");
+  //       } else {
+  //         throw new Error("Failed to download audio");
+  //       }
+  //     };
+
+  //     xhr.onerror = () => {
+  //       console.error("Failed to download audio");
+  //     };
+
+  //     xhr.send();
+  //   } catch (error) {
+  //     console.error("Failed to handle audio download", error);
+  //   }
+  // };
 
   return (
     <>
@@ -424,7 +498,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </ul>
                     </div>
                   </div>
-                  <button className="p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white">
+                  <button
+                    className="p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white"
+                    onClick={handleDownload}
+                  >
                     <HiDotsHorizontal />
                   </button>
                 </div>

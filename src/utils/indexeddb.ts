@@ -7,7 +7,7 @@ export const openDB = async () => {
 
         request.onupgradeneeded = () => {
             const db = request.result;
-            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+            db.createObjectStore(STORE_NAME, { keyPath: 'name' });
         };
 
         request.onsuccess = () => resolve(request.result);
@@ -15,23 +15,29 @@ export const openDB = async () => {
     });
 };
 
-export const saveAudio = async (id: string, data: ArrayBuffer) => {
+export const saveAudio = async (id: string,
+    data: ArrayBuffer,
+    local_image: string,
+    name: string,
+    shareurl: string) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
-    store.put({ id, data });
+    store.put({
+        id, data, local_image, name, shareurl
+    });
     return new Promise<void>((resolve, reject) => {
         transaction.oncomplete = () => resolve();
         transaction.onerror = () => reject(transaction.error);
     });
 };
 
-export const getAllAudios = async () => {
+export const getAudioByName = async (name: string) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const request = store.getAll();
-    return new Promise<{ id: string; data: ArrayBuffer }[]>((resolve, reject) => {
+    const request = store.get(name);
+    return new Promise<{ id: string; data: ArrayBuffer; local_image: string; name: string; shareurl: string } | undefined>((resolve, reject) => {
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
     });
