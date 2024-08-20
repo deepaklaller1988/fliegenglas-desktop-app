@@ -6,11 +6,41 @@ import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
 import FlieLoader from "./core/FlieLoader";
 import Image from "next/image";
+import { useUser } from "context/UserContext";
+import { getData, saveData } from "utils/indexDB";
 
-export default function Homelisting() {
+export default function Homelisting({list}:any) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const router = useRouter();
+  const { user }: any = useUser();
+
+  const fetchRecentlPlayed = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const cachedData = await getData("recently-played");
+      if (cachedData) {
+        return cachedData;
+      }
+
+      const response: any = await API.get(
+        `recentlyPlayedList/?&user_id=${user?.id}&time=${new Date().toString()}`
+      );
+
+      await saveData("recently-played", response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const { isLoading:fetchRecently, data:recentlyData = [] } = useQuery({
+    queryKey: ["recently-played", user],
+    queryFn: fetchRecentlPlayed,
+  });
 
   const fetchData = async () => {
     if (!id) {
@@ -31,20 +61,23 @@ export default function Homelisting() {
     queryFn: fetchData,
   });
 
-  if (isLoading) {
+  if (isLoading || fetchRecently) {
     return <FlieLoader />;
   }
 
+  const displayData = (list =="recently-viewed" && recentlyData.length > 0) ? recentlyData : data;
+
+
   return (
     <>
-      {data && data.length > 0 && (
+      {displayData && displayData.length > 0 && (
         <div className="header">
           <div onClick={()=>router.back()}>
             <div className="py-4 pr-4 text-white flex items-center">
               <HiArrowLeft className="text-lg ml-4" />
               <div className="flex-grow text-center">
                 <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
-                  {data[0]?.catname}
+                  {displayData[0]?.catname}
                 </h4>
               </div>
             </div>
@@ -52,9 +85,10 @@ export default function Homelisting() {
         </div>
       )}
 
-      {data &&
-        data.length > 0 &&
-        data.map((item: any) => {
+      {displayData &&
+        displayData.length > 0 &&
+        displayData.map((item: any) => {
+          const productId = list == "recently-viewed" ? item?.product_id : item?.id;
           return (
             <div key={item?.id}>
               <div className="w-full spaceBorder px-4">
@@ -62,7 +96,7 @@ export default function Homelisting() {
                   <div
                     className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
                     onClick={() => {
-                      router.push(`/home/album-detail?id=${item?.id}`);
+                      router.push(`/home/album-detail?id=${productId}`);
                       sessionStorage?.setItem("page-image", item?.image);
                     }}
                   >

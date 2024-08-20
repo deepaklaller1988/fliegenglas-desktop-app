@@ -7,8 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { VscHeartFilled } from "react-icons/vsc";
 import { getImagePath } from "@lib/getImagePath";
 import FlieLoader from "./core/FlieLoader";
-import useRole from "@hooks/useRole";
-import Router from "next/router";
 
 export default function AuthorDetails() {
   const searchParams = useSearchParams();

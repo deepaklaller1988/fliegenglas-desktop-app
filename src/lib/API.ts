@@ -1,4 +1,3 @@
-import { handleError } from "../lib/errorHandler"
 import { getCookie } from 'cookies-next';
 
 export interface Res {
@@ -135,7 +134,7 @@ class API {
       return res;
     } catch (error) {
       console.error("Error parsing response:", error);
-      throw handleError(error); // Rethrow the error to propagate it
+      throw error // Rethrow the error to propagate it
 
     }
   }

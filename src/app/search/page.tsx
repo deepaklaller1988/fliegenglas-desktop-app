@@ -115,18 +115,27 @@ export default function Search() {
 
   };
 
+  const handleRefresh=async ()=>{
+    await fetchData()
+    await fecthSearchSuggestions()
+    await getChannelData()
+  }
+
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
         <SearchBar searchQuery={searchQuery} onSearch={setSearchQuery} suggestions={searchData} />
       </div>
       {searchQuery.tag ? "" : <>
+      {!searchQuery &&
         <div className="w-full p-4">
           <h3 className="text-white">Entdecke Hörbücher unter:</h3>
         </div>
+      }
       </>
       }
-      {searchQuery.tag ? "" : <>
+      { searchQuery.tag ? "" : <>
+      {!searchQuery &&<>
         <div className="w-full">
           <section className="flex flex-wrap pr-4">
             {isChannelLoading ? (
@@ -140,7 +149,7 @@ export default function Search() {
                 <div key={index} className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4">
                   <Link className="w-full" href={item.link || `/search/channel-details?id=${item.id}`}>
                     <Image
-                      src={item.banner_image}
+                      src={item.banner_image ? item.banner_image : '\image-placeholder.png'}
                       alt="img"
                       width={265}
                       height={300}
@@ -170,12 +179,11 @@ export default function Search() {
             ))}
           </section>
         </div>
-        {!searchQuery &&
           <div className="w-full mt-4">
             <HomeSlider type="search" />
           </div>
-        }
-        <div className="w-full p-5 pb-10 flex items-center justify-center">
+        
+        <div className="w-full p-5 pb-10 flex items-center justify-center" onClick={handleRefresh}>
           <Link
             className="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md"
             href=""
@@ -183,6 +191,8 @@ export default function Search() {
             Hörbücher aktualisieren
           </Link>
         </div>
+        </>
+}
       </>}
     </div>
   );
