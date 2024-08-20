@@ -36,7 +36,7 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        `recentlyPlayedList/?&user_id=50451&time=${new Date().toString()}`
+        `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
       );
       await saveData("recently-played", response);
       return response;
