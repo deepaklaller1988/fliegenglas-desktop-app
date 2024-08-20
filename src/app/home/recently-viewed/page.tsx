@@ -1,10 +1,12 @@
+
 import Homelisting from '@components/Homelisting'
 import React from 'react'
 
 export default function Listing() {
   return (
     <div className='w-full'>
-        <Homelisting list={"home"}/>
+        <Homelisting list={"recently-viewed"}/>
     </div>
   )
 }
+

@@ -20,6 +20,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
+import { getAllAudios } from "utils/indexeddb";
 
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
@@ -82,7 +83,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           user?.id
         }&time=${new Date().toString()}`
       );
-      // let data = await res.json();
       setGetCounts(res);
     } catch (err) {
       console.error(err);
@@ -223,6 +223,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       }
     } else {
       console.log("Web Share API not supported.");
+    }
+  };
+
+  const fetchOfflineAudios = async () => {
+    try {
+      const allAudios = await getAllAudios();
+      // setList(allAudios);
+    } catch (error) {
+      console.error("Failed to fetch downloaded audios", error);
     }
   };
 
@@ -531,6 +540,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 </div>
                 <div className="md:mt-8 mt-0">
                   <div>
+                    <p className="text-center mb-2 sm:text-xl text-sm">
+                      {audioDetail?.name}
+                    </p>
                     <div className="relative">
                       <input
                         type="range"
@@ -561,7 +573,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </p>
                     </div>
                   </div>
-                  {/* )} */}
                   <div className="flex justify-between mt-2">
                     <button
                       className="flex flex-col items-center gap-1 hover:bg-white/10 p-5 rounded-full duration-300"

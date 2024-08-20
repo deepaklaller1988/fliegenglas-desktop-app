@@ -20,12 +20,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   suggestions,
 }) => {
   const router = useRouter();
-  const [inputValue, setInputValue] = useState(searchQuery.tag);
+  const [inputValue, setInputValue] = useState(searchQuery.tag || "");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  const [debouncedInputValue, setDebouncedInputValue] = useState(inputValue);
 
   useEffect(() => {
-    setInputValue(searchQuery?.tag);
+    setInputValue(searchQuery?.tag || "");
   }, [searchQuery.tag]);
 
   useEffect(() => {
@@ -75,6 +74,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const handleClear = () => {
     setInputValue("");
     onSearch("");
+    setFilteredSuggestions([]);
   };
 
   return (
@@ -113,13 +113,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       <div className="mt-4">
         {filteredSuggestions.length === 0 && inputValue && (
-          <p>No results found</p>
+          <p>Kein Suchresultat gefunden.</p>
         )}
         <ul>
           {data && data.length > 0 ? (
-            data?.map((item: any, index: number) => {
+            data?.map((item: any) => {
               return (
-                <div className="w-full spaceBorder px-4" key={index}>
+                <div key={item.id} className="w-full spaceBorder px-4">
                   <section>
                     <div
                       className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
@@ -129,7 +129,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     >
                       <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
                         <img
-                          src={getImagePath(item?.local_image)}
+                          src={
+                            item?.local_image
+                              ? getImagePath(item?.local_image)
+                              : "image-placeholder.png"
+                          }
                           alt="Image"
                           className="rounded-lg"
                         />
@@ -151,9 +155,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
           ) : (
             <>
               {!searchQuery.tag &&
-                filteredSuggestions &&
-                filteredSuggestions.map((item: any) => (
-                  <div className="w-full spaceBorder px-4" key={item.id}>
+                filteredSuggestions.length > 0 &&
+                filteredSuggestions.map((item: any, index: number) => (
+                  <div className="w-full spaceBorder px-4" key={index}>
                     <section>
                       <div
                         className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
@@ -171,7 +175,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
                           {item?.local_image ? (
                             <>
                               <img
-                                src={item?.local_image}
+                                src={
+                                  item?.local_image
+                                    ? item?.local_image
+                                    : "image-placeholder.png"
+                                }
                                 alt="Image"
                                 className="rounded-lg h-20 w-20 object-cover"
                               />

@@ -12,6 +12,7 @@ import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
+import { saveAudio, getAllAudios, deleteAudio } from "../../../utils/indexeddb";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
@@ -62,6 +63,22 @@ export default function AlbumDetail() {
       shareurl: data?.shareurl,
       name: data?.name,
     });
+  };
+
+
+
+  const handleDownload = async (id: any) => {
+    try {
+      const response = await fetch(`/api/download-audio?id=${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to download audio");
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      const iddd = `audio_${Date.now()}`;
+      await saveAudio(iddd, arrayBuffer);
+    } catch (error) {
+      console.error("Failed to download audio", error);
+    }
   };
 
   if (isLoading) {
@@ -120,14 +137,23 @@ export default function AlbumDetail() {
               </div>
             )}
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-              <Link
-                href={`/home/album-detail?id=${data?.subscriptionProductID}`}
-                className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-              >
-                1 Woche kostenlos hören
-              </Link>
               {data?.type === "subscription" ? (
                 <>
+                  {data?.flag === 1 ? (
+                    <>
+                      <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
+                        Du hast dieses Abo schon gekauft. Die Hörbücher befinden
+                        sich unter «Meine Hörbücher».
+                      </p>
+                    </>
+                  ) : (
+                    <Link
+                      href={``}
+                      className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                    >
+                      1 Woche kostenlos hören
+                    </Link>
+                  )}
                   <p className="text-black text-center font-100 mt-5 text-[16px]">
                     Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong>{" "}
                     € pro Monat
@@ -138,6 +164,12 @@ export default function AlbumDetail() {
                 </>
               ) : (
                 <>
+                  <Link
+                    href={`/home/album-detail?id=${data?.subscriptionProductID}`}
+                    className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  >
+                    1 Woche kostenlos hören
+                  </Link>
                   <div className="w-full border-half-both relative my-2">
                     <p className="block text-center">oder</p>
                   </div>
@@ -249,7 +281,7 @@ export default function AlbumDetail() {
               </>
             )}
 
-            <div className="w-full bg-white/80 rounded-md p-3 py-8 mt-3 flex gap-4 flex-col">
+            <div className="w-full bg-white/80 rounded-md p-3 py-4 mt-3 flex flex-col">
               <h2 className="text-center text-[#232a2c]">
                 {data?.type === "subscription"
                   ? "Über dieses Hörbuch-Abo"
@@ -258,6 +290,33 @@ export default function AlbumDetail() {
               {/* <p className="text-[#232a2c] leading-6"> </p> */}
               <ProductDes data={data} />
             </div>
+
+            {data?.type === "subscription" && (
+              <div className="w-full bg-white/80 rounded-md p-3 py-5 mt-3 flex flex-col text-black text-center">
+                <p>
+                  <strong>Alle Fliegenglas Abos</strong>
+                </p>
+                <p className="text-[16px] mb-4">
+                  Fliegenglas bietet folgende Abos an:
+                </p>
+                <div className="grid grid-rows-2 grid-cols-2 gap-3">
+                  {data?.subscription_products.map(
+                    (item: any, index: number) => (
+                      <Link href={`/home/album-detail?id=${item?.product_id}`}>
+                        <Image
+                          src={item?.image}
+                          alt={`category image ${index}`}
+                          height={500}
+                          width={500}
+                          key={index}
+                          className="w-full h-full cursor-pointer"
+                        />
+                      </Link>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           <PrivacyPolicyLink />
