@@ -1,12 +1,12 @@
-/* .order-details {
-    top-margin {
-        margin-top: 2px;
-    }
 
-    .bottom-margin {
-        margin-bottom: 2px;
-    }
-    .audio-play img {
-        height: auto !important;
-    }
-} */
+.app-page-order-details .top-margin {
+    margin-top: 2px;
+}
+
+.app-page-order-details .bottom-margin {
+    margin-bottom: 2px;
+}
+
+.app-page-order-details .audio-play img {
+    height: auto !important;
+}

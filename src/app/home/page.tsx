@@ -29,6 +29,25 @@ export default function Album() {
       return [];
     }
   };
+  const fetchnewCategories = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const response: any = await API.get(
+        `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+      );
+      const updatedData = response; 
+  
+      await saveData("home-categories", updatedData);
+  
+      return updatedData; 
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+  
 
   const fetchRecentlPlayed = async () => {
     if (!user) {
@@ -51,27 +70,26 @@ export default function Album() {
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
     queryFn: fetchCategoryData,
-  
+
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [], refetch: refetchRecentlyPlayed } = useQuery({
     queryKey: ["recently-played", user],
     queryFn: fetchRecentlPlayed,
-   
+
   });
 
   const handleRefresh = async () => {
     await fetchCategoryData()
     await fetchRecentlPlayed()
+    await fetchnewCategories()
   };
 
   return (
     <>
-      {/* Top slideshow section */}
       <div className="rightSideSet">
         <HomeSlider type="home" />
 
-        {/* Main content section */}
         <div className="w-full">
           <AlbumSection
             data={data}
@@ -81,7 +99,6 @@ export default function Album() {
           />
         </div>
 
-        {/* Refresh button section */}
         <div className="w-full p-5 text-center pb-8" onClick={handleRefresh}>
           <Link
             href="#top"
@@ -91,7 +108,6 @@ export default function Album() {
           </Link>
         </div>
 
-        {/* Footer section */}
         <div className="w-full mb-10">
           <p className="flex items-center justify-center text-[14px] gap-1 text-white">
             Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht
@@ -99,7 +115,6 @@ export default function Album() {
           </p>
         </div>
 
-        {/* Privacy policy link */}
         <PrivacyPolicyLink />
       </div>
     </>
