@@ -18,7 +18,10 @@ export const openDB = async () => {
 export const saveAudios = async (
     categoryID: string,
     categoryName: string,
-    audios: Array<{ id: string; data: ArrayBuffer; local_image: string; name: string; shareurl: string }>,
+    primaryCategory: string,
+    imageUrl: string,
+    shareurl: string,
+    audios: Array<{ id: string; data: ArrayBuffer; name: string; }>,
 ) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
@@ -27,8 +30,9 @@ export const saveAudios = async (
     store.put({
         categoryID,
         categoryName,
-        shareurl: audios[0]?.shareurl,
-        image: audios[0]?.local_image,
+        primaryCategory,
+        shareurl,
+        imageUrl,
         audios,
     });
 

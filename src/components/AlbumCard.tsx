@@ -17,16 +17,7 @@ const AlbumSection = ({
   const { showPlayer } = useAudioPlayer();
 
   const handleShowPlayer = (data: any) => {
-    showPlayer({
-      categoryID: data?.id,
-      categoryName: data?.name,
-      audioUrl: data?.preview_url,
-      imageUrl: data?.local_image,
-      backgroundImageUrl: data?.player_background_image,
-      artist: data?.artist,
-      shareurl: data?.shareurl,
-      list: data?.list,
-    });
+    showPlayer(data);
   };
 
   const openPlayerOrDetails = async (product: any) => {
@@ -42,17 +33,20 @@ const AlbumSection = ({
         }
       });
 
+      console.log(product, orders[index].line_items[0], "PRODUCT");
+
       if (index !== -1) {
         const data = {
-          id: Number(product?.id),
-          preview_url: "",
-          local_image: orders[index].line_items[0].image,
-          player_background_image:
+          categoryID: Number(product?.id),
+          categoryName: orders[index].line_items[0].name,
+          audioUrl: "",
+          imageUrl: orders[index].line_items[0].image,
+          backgroundImageUrl:
             orders[index].line_items[0].player_background_image,
           artist: orders[index].line_items[0].artist,
           shareurl: orders[index].line_items[0].shareurl,
-          name: orders[index].line_items[0].downloads[0].title,
           list: orders[index].line_items[0].downloads,
+          primaryCategory: orders[index].line_items[0].primaryCategory,
         };
         handleShowPlayer(data);
       } else {
