@@ -11,6 +11,8 @@ import "./channel-details.css";
 import { getData, saveData } from "utils/indexDB";
 import Image from "next/image";
 import RefreshButton from "@components/buttons/RefreshButton";
+import ScrollContainer from "react-indiana-drag-scroll";
+import { SkeletonLoader } from "@components/core/SkeletonLoader";
 
 export default function ChannelDetails() {
     const { user }: any = useUser();
@@ -51,18 +53,12 @@ export default function ChannelDetails() {
     });
 
     const getAllCategories = async (channelId: string) => {
-        if (!user) {
-            console.log("No user found, returning empty array.");
-            return [];
-        }
 
         try {
             const cacheKey = `categoriesmatched-${channelId}`;
-            console.log(`Checking cache for key: ${cacheKey}`);
 
             const cachedData = await getData(cacheKey);
             if (cachedData) {
-                console.log(`Matched categories for channel ${channelId} found in IndexedDB.`);
                 return cachedData;
             }
 
@@ -86,30 +82,25 @@ export default function ChannelDetails() {
     };
 
 
-
     const getChannelData = async (channelId: string) => {
         try {
-            console.log("Fetching channel data and categories from IndexedDB.");
             const [cachedData, cachedCategories] = await Promise.all([
                 getData("channelData"),
                 getData("categories"),
             ]);
 
             if (cachedData && cachedCategories) {
-                console.log("Retrieved cached data and categories.");
-
                 const matchSpecifydata = cachedData.find(
-                    (item: any) => item.id == channelId
+                    (item: any) => item?.id == channelId
                 );
 
                 if (matchSpecifydata) {
                     const matchedCategories = cachedCategories.filter((item: any) =>
-                        matchSpecifydata.categories.includes(
-                            item.category.categoryid.toString()
+                        matchSpecifydata?.categories?.includes(
+                            item?.category?.categoryid?.toString()
                         )
                     );
 
-                    console.log(`Matched categories for channel ${channelId}:`, matchedCategories);
                     return matchedCategories;
                 }
             }
@@ -137,11 +128,10 @@ export default function ChannelDetails() {
 
     };
 
-    const SkeletonLoader = () => (
-        <div className="animate-pulse space-y-3">
-            <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-        </div>
-    );
+
+    const handleRefresh = async () => {
+        getAllCategories(channelId)       
+     };
 
 
     return (
@@ -163,7 +153,6 @@ export default function ChannelDetails() {
                     )}
 
                 </div>
-
 
                 <div className="w-full playNail p-3 pr-0 py-6 text-white">
                     <label className="text-[12px]">{"EMPFEHLUNG HEUTE"}</label>
@@ -199,6 +188,7 @@ export default function ChannelDetails() {
 
                                     {/* Horizontal scrollable album list */}
                                     <div className="whitespace-nowrap overflow-auto mt-4 scrollSet flex">
+                                    <ScrollContainer className="scroll-container">
                                         {isLoadingAll
                                             ? Array.from({ length: 8 }).map((_, index) => (
                                                 <div
@@ -226,12 +216,14 @@ export default function ChannelDetails() {
                                                         </Link>
                                                     </div>
                                                 ))}
+                                                </ScrollContainer>
                                     </div>
                                 </div>
                             );
                         })
                     )}
                 </div>
+
                 <div className="w-full p-5 py-20 text-center">
                     <button className="mb-10 bg-white/10 rounded-md p-2 px-5 text-bold text-lg text-white border border-1 border-white/50" onClick={handleAddFav}>
                         {isLiked ? "Als Lieblingskategorie entfernen" : "Als Lieblingskategorie setzen"}
@@ -240,7 +232,7 @@ export default function ChannelDetails() {
                     <p className="text-white text-sm">Diese Hörbuch-Kategories wird direkt auf der App-Startseite angezeigt.</p>
                 </div>              
 
-                <RefreshButton onClick={()=>{}} linkClassName="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto"
+                <RefreshButton onClick={handleRefresh} linkClassName="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto"
                 text={"Hörbücher aktualisieren"} className="w-full p-5 text-center pb-8" />
             </div>
         </>

@@ -1,11 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { HiArrowLeft } from 'react-icons/hi';
 import Image from 'next/image';
 import './order-detail.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getData } from 'utils/indexDB';
 import { getImagePath } from '@lib/getImagePath';
+import HeaderLink from '@components/HiArrowleft';
 
 const OrderDetails = () => {
     const router = useRouter();
@@ -49,18 +49,10 @@ const OrderDetails = () => {
 
         <div className='rightSideSet'>
             {name && (
-                <div className="header">
-                    <div onClick={() => router.back()}>
-                        <div className="py-4 pr-4 text-white flex items-center">
-                            <HiArrowLeft className="text-lg ml-4" />
-                            <div className="flex-grow text-center">
-                                <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
-                                    {name}
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <HeaderLink className='py-4 pr-4 text-white flex items-center'
+                 onClick={() => router.back()}
+                 title={name}
+                 />
             )}
 
             {orderList &&

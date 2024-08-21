@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getImagePath } from '@lib/getImagePath';
+import { SkeletonLoader } from '@components/core/SkeletonLoader';
 
 const OrderList: React.FC = () => {
   useTitle("Meine Hörbücher");
@@ -78,11 +79,6 @@ const OrderList: React.FC = () => {
     }
   };
 
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-    </div>
-  );
 
   const renderAlbumItems = (item: any,index:any) => (
     <div

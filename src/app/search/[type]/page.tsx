@@ -6,6 +6,7 @@ import { getData, saveData } from 'utils/indexDB';
 import Link from 'next/link';
 import FlieLoader from '@components/core/FlieLoader';
 import { HiArrowLeft } from 'react-icons/hi';
+import HeaderLink from '@components/HiArrowleft';
 
 export default function TypePage() {
   const { type }: any = useParams();
@@ -62,19 +63,10 @@ export default function TypePage() {
 
   return (
     <div className="w-full py-4 listSerachCZ">
+      <HeaderLink className='py-4 pr-4 text-white flex items-center'
+       onClick={() => router.push("/search")} title={data[0]?.catname}
+       />
 
-      <div className="header">
-        <div onClick={() => router.push("/search")}>
-          <div className="py-4 pr-4 text-white flex items-center">
-            <HiArrowLeft className="text-lg ml-4" />
-            <div className="flex-grow text-center">
-              <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
-                {data[0]?.catname}
-              </h4>
-            </div>
-          </div>
-        </div>
-      </div>
       <h1 className="text-[22px] mb-4 text-white px-4">Nach Autoren suchen</h1>
       {Object.keys(groupedData).map((letter: string) => (
         <div key={letter}>

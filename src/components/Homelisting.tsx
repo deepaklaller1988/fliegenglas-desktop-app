@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
 
-export default function Homelisting({list}:any) {
+export default function Homelisting({ list }: any) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function Homelisting({list}:any) {
     }
   };
 
-  const { isLoading:fetchRecently, data:recentlyData = [] } = useQuery({
+  const { isLoading: fetchRecently, data: recentlyData = [] } = useQuery({
     queryKey: ["recently-played", user],
     queryFn: fetchRecentlPlayed,
   });
@@ -65,24 +65,14 @@ export default function Homelisting({list}:any) {
     return <FlieLoader />;
   }
 
-  const displayData = (list =="recently-viewed" && recentlyData.length > 0) ? recentlyData : data;
+  const displayData = (list == "recently-viewed" && recentlyData.length > 0) ? recentlyData : data;
 
 
   return (
     <>
       {displayData && displayData.length > 0 && (
-        <div className="header">
-          <div onClick={()=>router.back()}>
-            <div className="py-4 pr-4 text-white flex items-center">
-              <HiArrowLeft className="text-lg ml-4" />
-              <div className="flex-grow text-center">
-                <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
-                  {displayData[0]?.catname}
-                </h4>
-              </div>
-            </div>
-          </div>
-        </div>
+          <HiArrowLeft className="py-4 pr-4 text-white flex items-center" onClick={() => router.back()} 
+          title={displayData[0]?.catname}/>
       )}
 
       {displayData &&

@@ -1,7 +1,6 @@
 "use client";
 import "./album.css";
 import "react-slideshow-image/dist/styles.css";
-import Link from "next/link";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
@@ -89,20 +88,16 @@ export default function Album() {
     queryFn: fetchCategoryData,
   });
 
-  const {
-    isLoading: isRecentlyPlayed,
-    data: recentlyPlayed = [],
-    refetch: refetchRecentlyPlayed,
-  } = useQuery({
+  const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
     queryKey: ["recently-played", user],
     queryFn: fetchRecentlPlayed,
   });
 
   const handleRefresh = async () => {
-    await fetchCategoryData();
-    await fetchRecentlPlayed();
-    await fetchnewCategories();
-    await getOrderByUser();
+    fetchCategoryData();
+    fetchRecentlPlayed();
+    fetchnewCategories();
+    getOrderByUser();
   };
 
   return (
