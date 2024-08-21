@@ -19,8 +19,7 @@ import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
-import { useQuery } from "@tanstack/react-query";
-import { getAudioByName, saveAudio } from "utils/indexeddb";
+import { saveAudios } from "utils/indexeddb";
 
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
@@ -161,14 +160,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     miniPlayer();
   };
 
-  // const handlePlayDownloaded = () => {
-  //   const audioBlob = new Blob([audioDetail.audio?.data], {
-  //     type: "audio/mpeg",
-  //   });
-  //   const audioUrl = URL.createObjectURL(audioBlob);
-  //   setAudio(audioUrl);
-  // };
-
   const handleSeekMouseDown = () => {
     setSeeking(true);
   };
@@ -224,7 +215,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: audioDetail?.name,
+          title: audioDetail?.categoryName,
           text: `By ${audioDetail?.artist}`,
           url: audioDetail?.shareurl,
         });
@@ -247,15 +238,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-  // const fetchOfflineAudios = async () => {
-  //   try {
-  //     const allAudios = await getAllAudios();
-  //     // setList(allAudios);
-  //   } catch (error) {
-  //     console.error("Failed to fetch downloaded audios", error);
-  //   }
-  // };
-
   const handleDownloadAll = async () => {
     if (!audioDetail?.list || audioDetail.list.length === 0) {
       console.log("No audio files to download");
@@ -265,13 +247,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     try {
       setDownloading(true);
 
-      console.log(audioDetail.list, audioDetail, "audioDetail.list");
-
       const downloadPromises = audioDetail.list.map(async (audio: any) => {
         const { m3u8, id, name } = audio;
-        let imageUrl = audioDetail?.imageUrl;
-        let shareurl = audioDetail?.shareurl;
-        let categoryID = audioDetail?.categoryID;
+        const imageUrl = audioDetail?.imageUrl;
+        const shareurl = audioDetail?.shareurl;
+        const categoryID = audioDetail?.categoryID;
+        const categoryName = audioDetail?.categoryName;
 
         try {
           const response = await fetch(m3u8);
@@ -279,78 +260,46 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             throw new Error(`Failed to download audio from ${m3u8}`);
           }
           const arrayBuffer = await response.arrayBuffer();
-          await saveAudio(
+          return {
             id,
-            categoryID,
-            arrayBuffer,
-            imageUrl,
+            data: arrayBuffer,
+            local_image: imageUrl,
             name,
-            shareurl
-          );
+            shareurl,
+          };
         } catch (error) {
           console.error(`Failed to process audio ${m3u8}:`, error);
+          return null;
         }
       });
 
-      // Wait for all download promises to complete
-      await Promise.all(downloadPromises);
+      const results = await Promise.all(downloadPromises);
 
-      setDownloading(false); // Indicate that the download process has completed
-      console.log("All audios have been downloaded successfully");
+      const validAudios = results.filter((audio) => audio !== null);
+
+      if (validAudios.length > 0) {
+        await saveAudios(
+          audioDetail?.categoryID,
+          audioDetail?.categoryName,
+          validAudios as Array<{
+            id: string;
+            data: ArrayBuffer;
+            local_image: string;
+            name: string;
+            shareurl: string;
+          }>
+        );
+      }
+
+      setDownloading(false);
+      console.log(
+        "All valid audios have been downloaded and saved successfully"
+      );
     } catch (error) {
-      setDownloading(false); // Make sure to stop the downloading state even if there's an error
+      setDownloading(false);
       console.error("Failed to download all audios", error);
     }
   };
-
-  // const handleDownload = async (url: string) => {
-  //   try {
-  //     const audio = url;
-
-  //     if (!audio) {
-  //       throw new Error("Audio details not found");
-  //     }
-
-  //     const xhr = new XMLHttpRequest();
-  //     xhr.open("GET", audio, true);
-  //     xhr.responseType = "arraybuffer";
-
-  //     xhr.onprogress = (event) => {
-  //       if (event.lengthComputable) {
-  //         const percentComplete = (event.loaded / event.total) * 100;
-  //         console.log(`Download Progress: ${percentComplete.toFixed(2)}%`);
-  //       }
-  //     };
-
-  //     xhr.onload = async () => {
-  //       if (xhr.status === 200) {
-  //         const arrayBuffer = xhr.response;
-  //         if (arrayBuffer.byteLength === 0) {
-  //           throw new Error("Downloaded audio buffer is empty");
-  //         }
-
-  //         await saveAudio(
-  //           audio.id,
-  //           arrayBuffer,
-  //           audio.local_image,
-  //           audio.name,
-  //           audio.shareurl
-  //         );
-  //         console.log("Audio saved successfully");
-  //       } else {
-  //         throw new Error("Failed to download audio");
-  //       }
-  //     };
-
-  //     xhr.onerror = () => {
-  //       console.error("Failed to download audio");
-  //     };
-
-  //     xhr.send();
-  //   } catch (error) {
-  //     console.error("Failed to handle audio download", error);
-  //   }
-  // };
 
   return (
     <>
@@ -756,7 +705,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div className="md:mt-8 mt-0">
                   <div>
                     <p className="text-center mb-2 sm:text-xl text-sm">
-                      {audioDetail?.name}
+                      {audioDetail?.categoryName}
                     </p>
                     <div className="relative">
                       <input

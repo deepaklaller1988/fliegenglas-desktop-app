@@ -7,7 +7,7 @@ export const openDB = async () => {
 
         request.onupgradeneeded = () => {
             const db = request.result;
-            db.createObjectStore(STORE_NAME, { keyPath: 'name' });
+            db.createObjectStore(STORE_NAME, { keyPath: 'categoryID' });
         };
 
         request.onsuccess = () => resolve(request.result);
@@ -15,42 +15,99 @@ export const openDB = async () => {
     });
 };
 
-export const saveAudio = async (id: string,
+export const saveAudios = async (
     categoryID: string,
-    data: ArrayBuffer,
-    local_image: string,
-    name: string,
-    shareurl: string) => {
+    categoryName: string,
+    audios: Array<{ id: string; data: ArrayBuffer; local_image: string; name: string; shareurl: string }>,
+) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
+
     store.put({
-        id, categoryID, data, local_image, name, shareurl
+        categoryID,
+        categoryName,
+        shareurl: audios[0]?.shareurl,
+        image: audios[0]?.local_image,
+        audios,
     });
+
     return new Promise<void>((resolve, reject) => {
         transaction.oncomplete = () => resolve();
         transaction.onerror = () => reject(transaction.error);
     });
 };
 
-export const getAudioByName = async (name: string) => {
-    const db = await openDB();
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.get(name);
-    return new Promise<{ id: string; data: ArrayBuffer; local_image: string; name: string; shareurl: string } | undefined>((resolve, reject) => {
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-    });
+export const getAudioByID = async (categoryID: string) => {
+    try {
+        const db = await openDB();
+        const transaction = db.transaction(STORE_NAME, 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const request = store.get(categoryID);
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (error) {
+        console.error('Failed to get audio by ID', error);
+        throw error;
+    }
 };
 
-export const deleteAudio = async (id: string) => {
-    const db = await openDB();
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    store.delete(id);
-    return new Promise<void>((resolve, reject) => {
-        transaction.oncomplete = () => resolve();
-        transaction.onerror = () => reject(transaction.error);
-    });
+export const getAll = async () => {
+    try {
+        const db = await openDB();
+        const transaction = db.transaction(STORE_NAME, 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+
+        // Use the getAll method to retrieve all records
+        const request = store.getAll();
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    } catch (error) {
+        console.error('Failed to get all records', error);
+        throw error;
+    }
+};
+
+export const deleteAudioByID = async (categoryID: string) => {
+    try {
+        const db = await openDB();
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const request = store.delete(categoryID);
+
+        return new Promise<void>((resolve, reject) => {
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    } catch (error) {
+        console.error('Failed to delete audio by ID', error);
+        throw error;
+    }
+};
+
+export const deleteAll = async () => {
+    try {
+        const db = await openDB();
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        // Use the clear method to delete all records
+        const request = store.clear();
+
+        return new Promise<void>((resolve, reject) => {
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    } catch (error) {
+        console.error('Failed to delete all records', error);
+        throw error;
+    }
 };

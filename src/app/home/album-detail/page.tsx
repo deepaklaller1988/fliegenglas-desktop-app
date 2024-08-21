@@ -12,7 +12,6 @@ import FlieLoader from "@components/core/FlieLoader";
 import { getImagePath } from "@lib/getImagePath";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
-import { saveAudio, deleteAudio } from "../../../utils/indexeddb";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
@@ -57,12 +56,12 @@ export default function AlbumDetail() {
   const handleShowPlayer = () => {
     showPlayer({
       categoryID: data?.id,
+      categoryName: data?.name,
       audioUrl: data?.preview_url,
       imageUrl: data?.local_image,
       backgroundImageUrl: data?.player_background_image,
       artist: data?.artist,
       shareurl: data?.shareurl,
-      name: data?.name,
     });
   };
 

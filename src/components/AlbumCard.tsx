@@ -19,19 +19,18 @@ const AlbumSection = ({
   const handleShowPlayer = (data: any) => {
     showPlayer({
       categoryID: data?.id,
+      categoryName: data?.name,
       audioUrl: data?.preview_url,
       imageUrl: data?.local_image,
       backgroundImageUrl: data?.player_background_image,
       artist: data?.artist,
       shareurl: data?.shareurl,
-      name: data?.name,
       list: data?.list,
     });
   };
 
   const openPlayerOrDetails = async (product: any) => {
     const orders: any[] = await getData("order-data");
-    console.log(orders, product, "ORDERSs");
 
     if (orders && orders.length > 0) {
       let index: number = -1;
@@ -43,7 +42,6 @@ const AlbumSection = ({
         }
       });
 
-      console.log(index, orders[index].line_items[0].downloads, "index");
       if (index !== -1) {
         const data = {
           id: Number(product?.id),

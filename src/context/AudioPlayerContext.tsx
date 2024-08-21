@@ -4,12 +4,12 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface AudioDetail {
   categoryID: string;
+  categoryName: string;
   audioUrl: string;
   imageUrl: string;
   backgroundImageUrl: string;
   artist: string;
   shareurl: string;
-  name: string;
   list?: any;
 }
 
