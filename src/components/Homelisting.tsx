@@ -3,11 +3,12 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import { HiArrowLeft } from "react-icons/hi";
 import FlieLoader from "./core/FlieLoader";
 import Image from "next/image";
 import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
+import HeaderLink from "./HiArrowleft";
+
 
 export default function Homelisting({ list }: any) {
   const searchParams = useSearchParams();
@@ -71,7 +72,7 @@ export default function Homelisting({ list }: any) {
   return (
     <>
       {displayData && displayData.length > 0 && (
-          <HiArrowLeft className="py-4 pr-4 text-white flex items-center" onClick={() => router.back()} 
+          <HeaderLink className="py-4 pr-4 ml-2 text-white flex items-center" onClick={() => router.back()} 
           title={displayData[0]?.catname}/>
       )}
 

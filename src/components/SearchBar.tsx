@@ -77,6 +77,28 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setFilteredSuggestions([]);
   };
 
+  const redirectFromSearch = (type:any, id:any) => {
+    switch (type) {
+      case 'author':
+        router.push(`/home/artist-details?authorId=${id}&role=author`);
+        break;
+      case 'artist':
+        router.push(`/home/artist-details?artistId=${id}&role=artist`);
+        break;
+      case 'category':
+        router.push(`/home/listing?id=${id}`);
+        break;
+      case 'product':
+        console.log(`Invoke commonService.canPlay(${id})`);
+        break;
+      case 'channel':
+        router.push(`/search/channel-details?id=${id}`);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       <section className="relative">
@@ -157,13 +179,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {!searchQuery.tag &&
                 filteredSuggestions.length > 0 &&
                 filteredSuggestions.map((item: any, index: number) => (
+                  console.log(item,"item"),
                   <div className="w-full spaceBorder px-4" key={index}>
                     <section>
                       <div
                         className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
-                        onClick={() =>
-                          router.push(`/home/album-detail?id=${item.id}`)
-                        }
+                          onClick={() => redirectFromSearch(item.type, item.id)}
                       >
                         <span
                           className={`${

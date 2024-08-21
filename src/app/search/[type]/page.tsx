@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { getData, saveData } from 'utils/indexDB';
 import Link from 'next/link';
 import FlieLoader from '@components/core/FlieLoader';
-import { HiArrowLeft } from 'react-icons/hi';
 import HeaderLink from '@components/HiArrowleft';
 
 export default function TypePage() {
@@ -63,7 +62,7 @@ export default function TypePage() {
 
   return (
     <div className="w-full py-4 listSerachCZ">
-      <HeaderLink className='py-4 pr-4 text-white flex items-center'
+      <HeaderLink className='py-4 pr-4 ml-2 text-white flex items-center'
        onClick={() => router.push("/search")} title={data[0]?.catname}
        />
 

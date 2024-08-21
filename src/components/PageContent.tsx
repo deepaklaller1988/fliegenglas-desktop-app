@@ -20,7 +20,7 @@ const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   return (
     <div className="bg-white px-2 paraPadcz">
       {slug !== "es-sind-hier-noch-keine-hoerbuecher-vorhanden" && (
-        <HeaderLink className="text-lg" onClick={() => router.push("/home")} />
+        <HeaderLink className="text-lg mb-2 mt-1" onClick={() => router.push("/home")} />
       )}
       <div
         dangerouslySetInnerHTML={{
