@@ -20,6 +20,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import { saveAudios } from "utils/indexeddb";
+import AudioPlayerOptions from "./AudioPlayerOptions";
 
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
@@ -49,6 +50,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
   const [downloading, setDownloading] = useState<boolean>(true);
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
+
   const playerRef = useRef<ReactPlayer>(null);
   // const [imageUrl, setImageUrl] = useState("");
   const {
@@ -72,8 +77,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const fetchCountData = async () => {
     try {
       let res: any = await API.get(
-        `getCounts?&post_id=${audioDetail?.categoryID}&user_id=${
-          user?.id
+        `getCounts?&post_id=${audioDetail?.categoryID}&user_id=${user?.id
         }&time=${new Date().toString()}`
       );
       setGetCounts(res);
@@ -178,8 +182,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const handleLike = async () => {
     try {
       await API.post(
-        `likeAudioBook?&id=${audioDetail?.categoryID}&user_id=${
-          user?.id
+        `likeAudioBook?&id=${audioDetail?.categoryID}&user_id=${user?.id
         }&value=like&time=${new Date().toString()}`,
         {
           id: audioDetail?.categoryID,
@@ -196,8 +199,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const handleDislike = async () => {
     try {
       await API.post(
-        `dislikeAudioBook?&id=${audioDetail?.categoryID}&user_id=${
-          user?.id
+        `dislikeAudioBook?&id=${audioDetail?.categoryID}&user_id=${user?.id
         }&value=dislike&time=${new Date().toString()}`,
         {
           id: audioDetail?.categoryID,
@@ -220,8 +222,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           url: audioDetail?.shareurl,
         });
         await API.post(
-          `share?&id=${audioDetail?.categoryID}&user_id=${
-            user?.id
+          `share?&id=${audioDetail?.categoryID}&user_id=${user?.id
           }&value=like&time=${new Date().toString()}`,
           {
             id: audioDetail?.categoryID,
@@ -303,13 +304,22 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   const handleMoreDetails = (audioDetail: any) => {
-    console.log(audioDetail);
+    console.log("Clicked button with audioDetail:", audioDetail);
+    setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
+    setShowPopup(true); // Show the popup
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false); // Hide the popup
+  };
+
+  console.log(showPopup, "showPopup")
   return (
     <>
       {isVisible ? (
         <>
+
+
           <ReactPlayer
             ref={playerRef}
             url={`${audioDetail?.list[currentAudio].m3u8}`}
@@ -364,13 +374,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center sm:justify-center justify-between w-full px-10">
+                <div className="flex items-center sm:justify-center justify-between w-full">
                   <button
-                    className={`rounded-full duration-300 text-2xl p-4 ${
-                      currentAudio === 0
-                        ? "text-white/50"
-                        : "text-white hover:bg-white/10 cursor-pointer"
-                    }`}
+                    className={`rounded-full duration-300 text-2xl p-4 ${currentAudio === 0
+                      ? "text-white/50"
+                      : "text-white hover:bg-white/10 cursor-pointer"
+                      }`}
                     onClick={handlePreviousAudio}
                     disabled={currentAudio === 0 ? true : false}
                   >
@@ -404,11 +413,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     <TbRewindForward10 />
                   </button>
                   <button
-                    className={`p-4 rounded-full duration-300 ${
-                      audioDetail?.list.length > currentAudio + 1
-                        ? "text-white hover:bg-white/10 cursor-pointer"
-                        : "text-white/50"
-                    }`}
+                    className={`p-4 rounded-full duration-300 ${audioDetail?.list.length > currentAudio + 1
+                      ? "text-white hover:bg-white/10 cursor-pointer"
+                      : "text-white/50"
+                      }`}
                     style={{ fontSize: "10vw" }}
                     onClick={handleNextAudio}
                     disabled={
@@ -530,6 +538,21 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                     </div>
                   )}
+
+                  {showPopup && (
+                    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+                      <div className="bg-white p-5 rounded-lg shadow-lg">
+                        <button
+                          className="bg-red-500 text-white p-2 rounded"
+                          onClick={handleClosePopup}
+                        >
+                          Close
+                        </button>
+                        {/* Render the AudioPlayerOptions component and pass the selectedProductId */}
+                        <AudioPlayerOptions audioDetail={audioDetail} />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-row justify-between items-center mb-10 w-full">
@@ -548,9 +571,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     </button>
 
                     <div
-                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
-                        open ? "" : "hidden"
-                      }`}
+                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${open ? "" : "hidden"
+                        }`}
                     >
                       <ul className="text-center">
                         <li
@@ -609,7 +631,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div className="flex md:flex-row flex-col h-full">
                   <div className="w-full h-96 relative">
                     {buffering && (
-                      <div className="absolute bg-black/50 h-full flex items-center justify-center text-white rounded-xl">
+                      <div className="absolute bg-black/50 h-full flex items-center justify-center text-white">
                         <FlieLoaderCustom />
                       </div>
                     )}
@@ -661,22 +683,20 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                       <div className="flex flex-row justify-between">
                         <button
-                          className={`p-4 rounded-full duration-300 ${
-                            currentAudio === 0
-                              ? "text-white/50"
-                              : "text-white hover:bg-white/10 cursor-pointer"
-                          }`}
+                          className={`p-4 rounded-full duration-300 ${currentAudio === 0
+                            ? "text-white/50"
+                            : "text-white hover:bg-white/10 cursor-pointer"
+                            }`}
                           disabled={currentAudio === 0 ? true : false}
                           onClick={handlePreviousAudio}
                         >
                           <IoPlaySkipBack size={40} />
                         </button>
                         <button
-                          className={`p-4 rounded-full duration-300 ${
-                            audioDetail?.list.length > currentAudio + 1
-                              ? "text-white hover:bg-white/10 cursor-pointer"
-                              : "text-white/50"
-                          }`}
+                          className={`p-4 rounded-full duration-300 ${audioDetail?.list.length > currentAudio + 1
+                            ? "text-white hover:bg-white/10 cursor-pointer"
+                            : "text-white/50"
+                            }`}
                           disabled={
                             audioDetail?.list.length > currentAudio + 1
                               ? false
@@ -692,18 +712,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   <div className="w-full flex items-center justify-center md:hidden block">
                     <div className="mt-10 flex flex-row justify-between mx-5">
                       <button
-                        className={`p-4 rounded-full duration-300 text-2xl ${
-                          currentAudio === 0
-                            ? "text-white/50"
-                            : "text-white hover:bg-white/10 cursor-pointer"
-                        }`}
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl text-white"
                         disabled={currentAudio === 0 ? true : false}
-                        onClick={handlePreviousAudio}
+                        onClick={seekBackward}
                       >
                         <IoPlaySkipBack size={20} />
                       </button>
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white text-2xl"
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white"
                         onClick={seekBackward}
                       >
                         <TbRewindBackward10 size={20} />
@@ -724,24 +740,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         </button>
                       )}
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl text-white"
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
                         onClick={seekForward}
                       >
                         <TbRewindForward10 />
                       </button>
                       <button
-                        className={`p-4 rounded-full duration-300 text-2xl ${
-                          audioDetail?.list.length > currentAudio + 1
-                            ? "text-white hover:bg-white/10 cursor-pointer"
-                            : "text-white/50"
-                        }`}
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-white"
                         style={{ fontSize: "10vw" }}
-                        onClick={handleNextAudio}
-                        disabled={
-                          audioDetail?.list.length > currentAudio + 1
-                            ? false
-                            : true
-                        }
+                        onClick={seekForward}
                       >
                         <IoPlaySkipForward />
                       </button>
@@ -828,6 +835,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
               </div>
             </div>
           )}
+
+
+
         </>
       ) : (
         { children }
