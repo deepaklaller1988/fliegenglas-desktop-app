@@ -179,7 +179,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
               {!searchQuery.tag &&
                 filteredSuggestions.length > 0 &&
                 filteredSuggestions.map((item: any, index: number) => (
-                  console.log(item,"item"),
                   <div className="w-full spaceBorder px-4" key={index}>
                     <section>
                       <div
