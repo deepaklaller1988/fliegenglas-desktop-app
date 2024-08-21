@@ -9,9 +9,10 @@ import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
 import ProductDes from "@components/ProductDes";
 import FlieLoader from "@components/core/FlieLoader";
-import { getImagePath } from "@lib/getImagePath";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
+import AudioDetailCard from "@components/AudioDetailCard";
+import InfoCard from "@components/InfoCard";
 
 const fetchImageUrlFromSessionStorage = async () => {
   if (typeof window !== "undefined") {
@@ -176,91 +177,9 @@ export default function AlbumDetail() {
 
             {data?.type !== "subscription" && (
               <>
-                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-3">
-                  <div className="w-full flex items-center gap-1">
-                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                      Titel:
-                    </b>
-                    <p className="text-[#232a2c] text-[16px]">{data.name}</p>
-                  </div>
-                  <div className="w-full flex items-center gap-1">
-                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                      Bewertung:
-                    </b>
-                    <p className="text-[#232a2c] text-[16px] flex gap-1 items-center">
-                      <Image
-                        className="w-[20px]"
-                        src="../assets/images/icon-like-new-filled.svg"
-                        alt="favorite"
-                        width={20}
-                        height={20}
-                      />
-                      {data.likes} gefällt das.
-                    </p>
-                  </div>
-                  <div className="w-full flex items-center gap-1">
-                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                      Dauer:
-                    </b>
-                    <p className="text-[#232a2c] text-[16px]">
-                      {data.audiobookDuration}
-                    </p>
-                  </div>
-                  <div className="w-full flex items-center gap-1">
-                    <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
-                      Copyright:
-                    </b>
-                    <p className="text-[#232a2c] text-[16px]">
-                      {data.copyright}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
-                  <span className="min-w-[85px] max-w-[85px]">
-                    <Image
-                      className="block w-full rounded-lg"
-                      src={"/" + data.authoravatar}
-                      alt="Author"
-                      width={85}
-                      height={85}
-                    />
-                  </span>
-                  <span className="relative w-full">
-                    <b className="text-[#232a2c] text-[16px]">Autor*ln:</b>
-                    <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
-                      {data.author}
-                    </p>
-                    <Link
-                      className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                      href={`/home/artist-details?authorId=${data?.author_id}&role=author`}
-                    >
-                      Alle Hörbücher
-                    </Link>
-                  </span>
-                </div>
-                <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
-                  <span className="min-w-[85px] max-w-[85px]">
-                    <Image
-                      className="block w-full rounded-lg"
-                      src={imageUrl || "/" + data?.local_image}
-                      alt="Speaker"
-                      width={85}
-                      height={85}
-                    />
-                  </span>
-                  <span className="relative w-full">
-                    <b className="text-[#232a2c] text-[16px]">Sprecher*ln:</b>
-                    <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
-                      {data?.artist}
-                    </p>
-                    <Link
-                      className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-                      href={`/home/artist-details?artistId=${data?.artist_id}&role=artist`}
-                    >
-                      Alle Hörbücher
-                    </Link>
-                  </span>
-                </div>
+                <InfoCard title={data.name} likes={data.likes}  audiobookDuration={data.audiobookDuration} copyright={data.copyright}/>
+                <AudioDetailCard linkHref={`/home/artist-details?authorId=${data?.author_id}&role=author`} imageSrc={"/" + data.authoravatar} title ={"Autor*ln"} name={data.author}/>
+                <AudioDetailCard linkHref={`/home/artist-details?artistId=${data?.artist_id}&role=artist`} imageSrc={imageUrl || "/" + data?.local_image} title ={"Sprecher*ln"} name={data.artist}/>
               </>
             )}
 
@@ -270,7 +189,6 @@ export default function AlbumDetail() {
                   ? "Über dieses Hörbuch-Abo"
                   : "Inhalt des Hörbuches"}
               </h2>
-              {/* <p className="text-[#232a2c] leading-6"> </p> */}
               <ProductDes data={data} />
             </div>
 
@@ -301,7 +219,6 @@ export default function AlbumDetail() {
               </div>
             )}
           </div>
-
           <PrivacyPolicyLink />
         </div>
       </div>
