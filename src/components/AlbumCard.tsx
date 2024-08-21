@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { useAudioPlayer } from "context/AudioPlayerContext";
+import { getData } from "utils/indexDB";
 
 const AlbumSection = ({
   data,
@@ -11,12 +13,60 @@ const AlbumSection = ({
   isRecentlyPlayed,
 }: any) => {
   const router = useRouter();
+  const { showPlayer } = useAudioPlayer();
 
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-3">
       <div className="w-full h-56 bg-gray-300 rounded-md"></div>
     </div>
   );
+
+  const handleShowPlayer = (data: any) => {
+    showPlayer({
+      audioID: data?.id,
+      audioUrl: data?.preview_url,
+      imageUrl: data?.local_image,
+      backgroundImageUrl: data?.player_background_image,
+      artist: data?.artist,
+      shareurl: data?.shareurl,
+      name: data?.name,
+      list: data?.list,
+    });
+  };
+
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    console.log(orders, product, "ORDERSs");
+
+    if (orders && orders.length > 0) {
+      let index: number = -1;
+      orders.forEach((value: any, ind: number) => {
+        if (value.line_items && value.line_items[0].type !== "subscription") {
+          if (Number(value.line_items[0].id) === Number(product?.id)) {
+            index = ind;
+          }
+        }
+      });
+
+      console.log(index, orders[index].line_items[0].downloads, "index");
+      if (index !== -1) {
+        const data = {
+          id: Number(product?.id),
+          preview_url: "",
+          local_image: orders[index].line_items[0].image,
+          player_background_image:
+            orders[index].line_items[0].player_background_image,
+          artist: orders[index].line_items[0].artist,
+          shareurl: orders[index].line_items[0].shareurl,
+          name: orders[index].line_items[0].downloads[0].title,
+          list: orders[index].line_items[0].downloads,
+        };
+        handleShowPlayer(data);
+      } else {
+        router.push(`/home/album-detail?id=${product?.id}`);
+      }
+    }
+  };
 
   const renderAlbumItems = (item: any) => (
     <div
@@ -41,10 +91,10 @@ const AlbumSection = ({
               className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
             >
               <button
-                onClick={() => {
-                  router.push(`/home/album-detail?id=${product?.id}`);
-                  sessionStorage?.setItem("page-image", product?.image);
-                }}
+                onClick={() => openPlayerOrDetails(product)}
+                // onClick={() => {
+                //   router.push(`/home/album-detail?id=${product?.id}`);
+                // }}
               >
                 <Image
                   src={product?.image || ""}
@@ -89,7 +139,6 @@ const AlbumSection = ({
                     <button
                       onClick={() => {
                         router.push(`/home/album-detail?id=${item?.id}`);
-                        sessionStorage?.setItem("page-image", item?.image);
                       }}
                     >
                       <Image

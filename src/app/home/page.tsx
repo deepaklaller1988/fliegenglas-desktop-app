@@ -39,17 +39,17 @@ export default function Album() {
       const response: any = await API.get(
         `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
       );
-      const updatedData = response; 
-  
+      const updatedData = response;
+
       await saveData("home-categories", updatedData);
-  
-      return updatedData; 
+
+      return updatedData;
     } catch (error) {
       console.log(error);
       return [];
     }
   };
-  
+
   const fetchRecentlPlayed = async () => {
     if (!user) {
       return [];
@@ -73,7 +73,7 @@ export default function Album() {
       const response: any = await API.get(
         `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
       );
-      await putData('order-data', response);
+      await putData("order-data", response);
 
       return response;
     } catch (error) {
@@ -87,46 +87,52 @@ export default function Album() {
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
     queryFn: fetchCategoryData,
-
   });
 
-  const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [], refetch: refetchRecentlyPlayed } = useQuery({
+  const {
+    isLoading: isRecentlyPlayed,
+    data: recentlyPlayed = [],
+    refetch: refetchRecentlyPlayed,
+  } = useQuery({
     queryKey: ["recently-played", user],
     queryFn: fetchRecentlPlayed,
-
   });
 
   const handleRefresh = async () => {
-    await fetchCategoryData()
-    await fetchRecentlPlayed()
-    await fetchnewCategories()
-    await getOrderByUser()
+    await fetchCategoryData();
+    await fetchRecentlPlayed();
+    await fetchnewCategories();
+    await getOrderByUser();
   };
 
   return (
-      <div className="rightSideSet">
-        <HomeSlider type="home" />
+    <div className="rightSideSet">
+      <HomeSlider type="home" />
 
-        <div className="w-full">
-          <AlbumSection
-            data={data}
-            recentlyPlayed={recentlyPlayed}
-            isRecentlyPlayed={isRecentlyPlayed}
-            isLoading={isLoading}
-          />
-        </div>
-
-        <RefreshButton onClick={handleRefresh} linkClassName="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto" text="Hörbücher aktualisieren" 
-         className="w-full p-5 text-center pb-8"/>
-
-        <div className="w-full mb-10">
-          <p className="flex items-center justify-center text-[14px] gap-1 text-white">
-            Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht
-            in Zürich
-          </p>
-        </div>
-
-        <PrivacyPolicyLink />
+      <div className="w-full">
+        <AlbumSection
+          data={data}
+          recentlyPlayed={recentlyPlayed}
+          isRecentlyPlayed={isRecentlyPlayed}
+          isLoading={isLoading}
+        />
       </div>
+
+      <RefreshButton
+        onClick={handleRefresh}
+        linkClassName="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto"
+        text="Hörbücher aktualisieren"
+        className="w-full p-5 text-center pb-8"
+      />
+
+      <div className="w-full mb-10">
+        <p className="flex items-center justify-center text-[14px] gap-1 text-white">
+          Mit <img src="./assets/images/heart.svg" alt="favorite" /> gemacht in
+          Zürich
+        </p>
+      </div>
+
+      <PrivacyPolicyLink />
+    </div>
   );
 }

@@ -10,6 +10,7 @@ interface AudioDetail {
   artist: string;
   shareurl: string;
   name: string;
+  list?: any;
 }
 
 interface AudioPlayerContextType {
@@ -19,6 +20,8 @@ interface AudioPlayerContextType {
   closePlayer: () => void;
   mini: boolean;
   miniPlayer: () => void;
+  currentAudio: number;
+  handleCurrentAudio: (index: number) => void;
 }
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(
@@ -30,6 +33,7 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [mini, setMini] = useState<boolean>(false);
+  const [currentAudio, setCurrentAudio] = useState(0);
   const [audioDetail, setAudioDetail] = useState<AudioDetail | undefined>(
     undefined
   );
@@ -47,6 +51,10 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     setMini(!mini);
   };
 
+  const handleCurrentAudio = (index: number) => {
+    setCurrentAudio(index);
+  };
+
   return (
     <AudioPlayerContext.Provider
       value={{
@@ -56,6 +64,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
         closePlayer,
         mini,
         miniPlayer,
+        currentAudio,
+        handleCurrentAudio,
       }}
     >
       {children}
