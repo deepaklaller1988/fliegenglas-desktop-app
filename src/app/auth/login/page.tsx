@@ -8,10 +8,11 @@ import { useUser } from "../../../context/UserContext";
 import { setCookie } from "cookies-next";
 import { getData, saveData } from "utils/indexDB";
 import { useQuery } from "@tanstack/react-query";
-import FlieLoaderCustom from "@components/core/FlieLoaderCustom";
 import { useState } from "react";
+import useTitle from "@hooks/useTitle";
 
 export default function Login() {
+  
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { googleSignIn, appleSignIn } = UserAuth();

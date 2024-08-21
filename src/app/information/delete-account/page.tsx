@@ -16,10 +16,8 @@ export default function AccountDelete() {
   };
 
   const confirmLogout = () => {
-    // sessionStorage.clear();
     deleteCookie("user");
     router.push("/delete-account/delete-confirmation")
-    // window.location.href = "/auth/login";
   };
 
   const cancelLogout = () => {

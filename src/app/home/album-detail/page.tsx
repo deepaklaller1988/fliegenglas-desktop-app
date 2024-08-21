@@ -90,7 +90,6 @@ export default function AlbumDetail() {
   }
 
   return (
-    <>
       <div className="rightSideSet">
         <div className="loaderSet w-full h-full items-center justify-center hidden">
           <Image
@@ -326,6 +325,5 @@ export default function AlbumDetail() {
           <PrivacyPolicyLink />
         </div>
       </div>
-    </>
   );
 }

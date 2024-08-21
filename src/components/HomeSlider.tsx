@@ -46,7 +46,7 @@ export default function HomeSlider({ type }: any) {
     queryKey: ["sliderData", user],
     queryFn: getFavourites,
   });
-
+console.log(sliderData);
 
   if (isFavourite) {
     return (
@@ -93,7 +93,7 @@ export default function HomeSlider({ type }: any) {
                   <div>
                     <div className="w-full h-full absolute z-[-1]">
                       <img
-                        src={item?.product_header_graphic}
+                        src={getImagePath(item?.product_header_graphic)}
                         alt="background image"
                         className="blur-xl"
                       />
@@ -102,7 +102,7 @@ export default function HomeSlider({ type }: any) {
                   <div className="w-60 z-10 bg-black rounded-xl">
                     <img
                       className="w-full rounded-xl"
-                      src={item?.product_header_graphic}
+                      src={getImagePath(item?.product_header_graphic)}
                       alt="Album"
                     />
                   </div>
