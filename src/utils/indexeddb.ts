@@ -16,6 +16,7 @@ export const openDB = async () => {
 };
 
 export const saveAudio = async (id: string,
+    categoryID: string,
     data: ArrayBuffer,
     local_image: string,
     name: string,
@@ -24,7 +25,7 @@ export const saveAudio = async (id: string,
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
     store.put({
-        id, data, local_image, name, shareurl
+        id, categoryID, data, local_image, name, shareurl
     });
     return new Promise<void>((resolve, reject) => {
         transaction.oncomplete = () => resolve();

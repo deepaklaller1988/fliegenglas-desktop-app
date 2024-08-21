@@ -56,7 +56,7 @@ export default function AlbumDetail() {
 
   const handleShowPlayer = () => {
     showPlayer({
-      audioID: data?.id,
+      categoryID: data?.id,
       audioUrl: data?.preview_url,
       imageUrl: data?.local_image,
       backgroundImageUrl: data?.player_background_image,
@@ -64,25 +64,6 @@ export default function AlbumDetail() {
       shareurl: data?.shareurl,
       name: data?.name,
     });
-  };
-
-  const handleDownload = async (id: any) => {
-    try {
-      const response = await fetch(`${data?.preview_url}`);
-      if (!response.ok) {
-        throw new Error("Failed to download audio");
-      }
-      const arrayBuffer = await response.arrayBuffer();
-      await saveAudio(
-        data?.id,
-        arrayBuffer,
-        data?.local_image,
-        data?.name,
-        data?.shareurl
-      );
-    } catch (error) {
-      console.error("Failed to download audio", error);
-    }
   };
 
   if (isLoading) {

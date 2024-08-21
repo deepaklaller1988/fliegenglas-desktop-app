@@ -18,7 +18,7 @@ const AlbumSection = ({
 
   const handleShowPlayer = (data: any) => {
     showPlayer({
-      audioID: data?.id,
+      categoryID: data?.id,
       audioUrl: data?.preview_url,
       imageUrl: data?.local_image,
       backgroundImageUrl: data?.player_background_image,

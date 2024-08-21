@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface AudioDetail {
-  audioID: string;
+  categoryID: string;
   audioUrl: string;
   imageUrl: string;
   backgroundImageUrl: string;
@@ -22,6 +22,8 @@ interface AudioPlayerContextType {
   miniPlayer: () => void;
   currentAudio: number;
   handleCurrentAudio: (index: number) => void;
+  showList: boolean;
+  handleShowList: () => void;
 }
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(
@@ -33,6 +35,7 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [mini, setMini] = useState<boolean>(false);
+  const [showList, setShowList] = useState<boolean>(false);
   const [currentAudio, setCurrentAudio] = useState(0);
   const [audioDetail, setAudioDetail] = useState<AudioDetail | undefined>(
     undefined
@@ -55,6 +58,10 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     setCurrentAudio(index);
   };
 
+  const handleShowList = () => {
+    setShowList(!showList);
+  };
+
   return (
     <AudioPlayerContext.Provider
       value={{
@@ -66,6 +73,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
         miniPlayer,
         currentAudio,
         handleCurrentAudio,
+        showList,
+        handleShowList,
       }}
     >
       {children}
