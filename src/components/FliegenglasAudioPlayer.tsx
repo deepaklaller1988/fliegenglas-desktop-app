@@ -364,7 +364,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center sm:justify-center justify-between w-full">
+                <div className="flex items-center sm:justify-center justify-between w-full px-10">
                   <button
                     className={`rounded-full duration-300 text-2xl p-4 ${
                       currentAudio === 0
@@ -609,7 +609,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div className="flex md:flex-row flex-col h-full">
                   <div className="w-full h-96 relative">
                     {buffering && (
-                      <div className="absolute bg-black/50 h-full flex items-center justify-center text-white">
+                      <div className="absolute bg-black/50 h-full flex items-center justify-center text-white rounded-xl">
                         <FlieLoaderCustom />
                       </div>
                     )}
@@ -692,14 +692,18 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   <div className="w-full flex items-center justify-center md:hidden block">
                     <div className="mt-10 flex flex-row justify-between mx-5">
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl text-white"
+                        className={`p-4 rounded-full duration-300 text-2xl ${
+                          currentAudio === 0
+                            ? "text-white/50"
+                            : "text-white hover:bg-white/10 cursor-pointer"
+                        }`}
                         disabled={currentAudio === 0 ? true : false}
-                        onClick={seekBackward}
+                        onClick={handlePreviousAudio}
                       >
                         <IoPlaySkipBack size={20} />
                       </button>
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white"
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white text-2xl"
                         onClick={seekBackward}
                       >
                         <TbRewindBackward10 size={20} />
@@ -720,15 +724,24 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         </button>
                       )}
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
+                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-2xl text-white"
                         onClick={seekForward}
                       >
                         <TbRewindForward10 />
                       </button>
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-white"
+                        className={`p-4 rounded-full duration-300 text-2xl ${
+                          audioDetail?.list.length > currentAudio + 1
+                            ? "text-white hover:bg-white/10 cursor-pointer"
+                            : "text-white/50"
+                        }`}
                         style={{ fontSize: "10vw" }}
-                        onClick={seekForward}
+                        onClick={handleNextAudio}
+                        disabled={
+                          audioDetail?.list.length > currentAudio + 1
+                            ? false
+                            : true
+                        }
                       >
                         <IoPlaySkipForward />
                       </button>
