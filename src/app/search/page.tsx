@@ -12,110 +12,72 @@ import Image from "next/image";
 import SearchBar from "@components/SearchBar";
 import { useState } from "react";
 import RefreshButton from "@components/buttons/RefreshButton";
+import { staticData } from "@lib/SearchBannerData";
 
 export default function Search() {
   const { user }: any = useUser();
   const [searchQuery, setSearchQuery] = useState<any>("");
 
-  const staticData = [
-    {
-      banner_image: "/assets/images/search-icon-neu.png",
-      link: "/home/listing?id=106",
-    },
-    {
-      banner_image: "/assets/images/search-icon-kostenlos.png",
-      link: "/home/listing?id=43",
-    },
-    {
-      banner_image: "/assets/images/search-icon-autor.png",
-      link: "/search/nav-author",
-    },
-    {
-      banner_image: "/assets/images/search-icon-sprecher.png",
-      link: "/search/nav-artist",
-    },
-  ];
-
-  const fetchData = async () => {
-    if (!user) {
-      return [];
-    }
-    try {
+  const fetchTagData = async (refresh = false) => {
+    if (!user) return [];
+    
+    if (!refresh) {
       const cachedData = await getData("tags");
-      if (cachedData) {
-        return cachedData;
-      }
-      const response: any = await API.get(
-        `getTagsearch?&time=${new Date().toString()}`
-      );
-      await saveData("tags", response.tags);
-      return response.tags;
-    } catch (error) {
-      console.log(error);
-      return [];
+      if (cachedData) return cachedData;
     }
+
+    const response: any = await API.get(
+      `getTagsearch?&time=${new Date().toString()}`
+    );
+    await saveData("tags", response.tags);
+    return response.tags;
   };
 
-  const fecthSearchSuggestions = async () => {
-    if (!user) {
-      return [];
-    }
-    try {
+  const fecthSearchSuggestions = async (refresh = false) => {
+    if (!user) return [];
+    
+    if (!refresh) {
       const cachedData = await getData("search-suggestions");
-      if (cachedData) {
-        return cachedData;
-      }
-      const response: any = await API.get(
-        `/search.json?&time=${new Date().toString()}`
-      );
-      await saveData("search-suggestions", response);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return [];
+      if (cachedData) return cachedData;
     }
+
+    const response: any = await API.get(
+      `/search.json?&time=${new Date().toString()}`
+    );
+    await saveData("search-suggestions", response);
+    return response;
   };
 
-  const getChannelData = async () => {
-    if (!user) {
-      return [];
-    }
-    try {
+  const getChannelData = async (refresh = false) => {
+    if (!user) return [];
+    
+    if (!refresh) {
       const cachedData = await getData("channelData");
-      if (cachedData) {
-        return cachedData;
-      }
-      const response: any = await API.get(
-        `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
-      );
-      await saveData("channelData", response);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return [];
+      if (cachedData) return cachedData;
     }
+
+    const response: any = await API.get(
+      `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
+    );
+    await saveData("channelData", response);
+    return response;
   };
 
   const { isLoading, data = [] } = useQuery({
     queryKey: ["search-data", user],
-    queryFn: fetchData,
+    queryFn: () => fetchTagData(),
   });
 
   const { isLoading: isSearchedSuggestion, data: searchData = [] } = useQuery({
     queryKey: ["search-suggestions", user],
-    queryFn: fecthSearchSuggestions,
+    queryFn: () => fecthSearchSuggestions(),
   });
 
   const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
     queryKey: ["channel-data", user],
-    queryFn: getChannelData,
+    queryFn: () => getChannelData(),
   });
 
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-    </div>
-  );
   const combinedChannelData = [...channelData, ...staticData];
 
   const handleTagClick = (item: string) => {
@@ -123,11 +85,10 @@ export default function Search() {
   };
 
   const handleRefresh = async () => {
-    await fetchData();
-    await fecthSearchSuggestions();
-    await getChannelData();
+     fetchTagData(true);
+     fecthSearchSuggestions(true);
+     getChannelData(true);
   };
-
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">

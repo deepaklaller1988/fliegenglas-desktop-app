@@ -1,6 +1,8 @@
 import React from "react";
 import { HiArrowLeft } from "react-icons/hi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import HeaderLink from "./HiArrowleft";
 
 interface FormProps {
   title: string;
@@ -29,19 +31,11 @@ const Form: React.FC<FormProps> = ({
   additionalContent,
   isPending
 }) => {
-
+const router=useRouter()
   return (
     <div id="login-page" className="px-4 w-full">
       <div className="loginInner">
-        <div className="header">
-
-          <Link href="/home">
-            <div className="py-4 pr-4 text-white">
-              <HiArrowLeft className="text-lg" />
-            </div>
-          </Link>
-        </div>
-
+        <HeaderLink className="py-4 pr-4 text-white" onClick={()=>router.push("/home")}/>
         <div className="w-full">
           <div className="form-view max-w-[400px] m-auto">
             <div className="w-full">

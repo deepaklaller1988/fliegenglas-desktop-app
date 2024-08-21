@@ -10,6 +10,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { getData, saveData } from "utils/indexDB";
 import { getImagePath } from "@lib/getImagePath";
 import { useRouter } from "next/navigation";
+import { SkeletonLoader } from "./core/SkeletonLoader";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
@@ -46,11 +47,6 @@ export default function HomeSlider({ type }: any) {
     queryFn: getFavourites,
   });
 
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-[80vh] bg-gray-300 rounded-md"></div>
-    </div>
-  );
 
   if (isFavourite) {
     return (

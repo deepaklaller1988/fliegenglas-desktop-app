@@ -1,20 +1,15 @@
 "use client"
 
-import { HiArrowLeft } from "react-icons/hi";
-import Link from "next/link";
+import HeaderLink from "@components/HiArrowleft";
+import { useRouter } from "next/navigation";
 
 export default function Downloads() {
+    const router=useRouter()
 
     return (<>
         <div id="login-page" className="px-4 w-full">
             <div className="loginInner">
-                <div className="header">
-                    <Link href="/album">
-                        <div className="py-4 pr-4 text-white">
-                            <HiArrowLeft className="text-lg" />
-                        </div>
-                    </Link>
-                </div>
+                <HeaderLink onClick={()=>router.push("/home")} className={"py-4 pr-4 text-white"} />
                 <div className="w-full">
                     <div className="form-view">
                         <div className="w-full">

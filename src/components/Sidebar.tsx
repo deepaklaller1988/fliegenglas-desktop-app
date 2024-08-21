@@ -5,11 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
-  TbBellRinging2Filled,
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarRightCollapseFilled,
 } from "react-icons/tb";
-import { TiUserDelete } from "react-icons/ti";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -21,16 +19,16 @@ export default function Sidebar() {
   };
 
   const handleLogout=()=>{
-    // sessionStorage.clear();
     deleteCookie("user");
     window.location.href = "/auth/login";
   }
-
-  const getLinkClasses = (path: string) =>
-    `flex items-center gap-3 hover:text-[#ff9900] transition ${
-      pathname === path ? "text-[#ff9900] activeSidebarLink " : ""
+  const getLinkClasses = (path: string) => {
+    const isActive = pathname.includes(path);
+    return `flex items-center gap-3 hover:text-[#ff9900] transition ${
+      isActive ? "text-[#ff9900] activeSidebarLink" : ""
     }`;
-
+  };
+  
   return (
     <div
       className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${

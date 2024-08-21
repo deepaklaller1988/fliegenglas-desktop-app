@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { SkeletonLoader } from "./core/SkeletonLoader";
 
 const AlbumSection = ({
   data,
@@ -12,11 +13,6 @@ const AlbumSection = ({
 }: any) => {
   const router = useRouter();
 
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-3">
-      <div className="w-full h-56 bg-gray-300 rounded-md"></div>
-    </div>
-  );
 
   const renderAlbumItems = (item: any) => (
     <div

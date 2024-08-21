@@ -1,11 +1,11 @@
 "use client"
 import { useState } from "react";
-import { HiArrowLeft } from "react-icons/hi";
 import "./login-step.css";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import useTitle from "@hooks/useTitle";
 import API from "@lib/API";
+import HeaderLink from "@components/HiArrowleft";
 
 export default function Loginstep() {
   useTitle("Login Step")
@@ -51,13 +51,7 @@ export default function Loginstep() {
   return (
     <div id="login-page" className="px-4 w-full flex items-center justify-center">
       <div className="loginInner">
-        <div className="header">
-          <a href="/auth/login">
-            <div className="py-4 pr-4 text-white">
-              <HiArrowLeft className="text-lg" />
-            </div>
-          </a>
-        </div>
+        <HeaderLink className="py-4 pr-4 text-white" onClick={()=>route.push("/auth/login")}/>
         <div className="container">
           <div className="form">
             <label>Deine E-Mail-Addresse:</label>

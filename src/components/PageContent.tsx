@@ -1,8 +1,9 @@
 "use client";
 import useFetchPageData from "@hooks/UseFetchData";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { HiArrowLeft } from "react-icons/hi";
 import FlieLoader from "./core/FlieLoader";
+import HeaderLink from "./HiArrowleft";
 
 interface PageContentProps {
   slug: string;
@@ -10,7 +11,8 @@ interface PageContentProps {
 
 const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   const { pageData, loading, error } = useFetchPageData(slug);
-
+  const router = useRouter()
+  
   if (loading) {
     return <FlieLoader />;
   }
@@ -18,13 +20,7 @@ const PageContent: React.FC<PageContentProps> = ({ slug }) => {
   return (
     <div className="bg-white px-2 paraPadcz">
       {slug !== "es-sind-hier-noch-keine-hoerbuecher-vorhanden" && (
-        <div className="header">
-          <a href="/home">
-            <div className="py-4 pr-4 ">
-              <HiArrowLeft className="text-lg" />
-            </div>
-          </a>
-        </div>
+        <HeaderLink className="text-lg" onClick={() => router.push("/home")} />
       )}
       <div
         dangerouslySetInnerHTML={{
