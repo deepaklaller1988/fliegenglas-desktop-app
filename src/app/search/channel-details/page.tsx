@@ -10,6 +10,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import "./channel-details.css";
 import { getData, saveData } from "utils/indexDB";
 import Image from "next/image";
+import RefreshButton from "@components/buttons/RefreshButton";
 
 export default function ChannelDetails() {
     const { user }: any = useUser();
@@ -237,16 +238,10 @@ export default function ChannelDetails() {
 
                     </button>
                     <p className="text-white text-sm">Diese Hörbuch-Kategories wird direkt auf der App-Startseite angezeigt.</p>
-                </div>
-                {/* Refresh button section */}
-                <div className="w-full p-5 text-center pb-8">
-                    <Link
-                        href="#top"
-                        className="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto"
-                    >
-                        Hörbücher aktualisieren
-                    </Link>
-                </div>
+                </div>              
+
+                <RefreshButton onClick={()=>{}} linkClassName="refreshBtn bg-white/80 rounded-md text-[#232a2c] p-2 px-3 text-[18px] inline-block m-auto"
+                text={"Hörbücher aktualisieren"} className="w-full p-5 text-center pb-8" />
             </div>
         </>
     );

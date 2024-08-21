@@ -11,6 +11,7 @@ import { getData, saveData } from "utils/indexDB";
 import Image from "next/image";
 import SearchBar from "@components/SearchBar";
 import { useState } from "react";
+import RefreshButton from "@components/buttons/RefreshButton";
 
 export default function Search() {
   const { user }: any = useUser();
@@ -215,17 +216,8 @@ export default function Search() {
                 <HomeSlider type="search" />
               </div>
 
-              <div
-                className="w-full p-5 pb-10 flex items-center justify-center"
-                onClick={handleRefresh}
-              >
-                <Link
-                  className="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md"
-                  href=""
-                >
-                  Hörbücher aktualisieren
-                </Link>
-              </div>
+              <RefreshButton onClick={handleRefresh} text="Hörbücher aktualisieren"
+                className="w-full p-5 pb-10 flex items-center justify-center" linkClassName="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md" />
             </>
           )}
         </>
