@@ -38,19 +38,16 @@ export default function Album() {
     }
   };
 
-  const fetchCategoryData = async (refresh:boolean) => {
+  const fetchCategoryData = async () => {
     if (!user) {
       return [];
     }
     try {
-      const cachedData = await getData("home-categories");
-      if (cachedData && !refresh) {
-        return cachedData;
-      }
+     
       const response: any = await API.get(
         `/catData.json?&time=${new Date().toString()}`
       );
-      await saveData("home-categories", response);
+      // await saveData("home-categories", response);
       return response;
     } catch (error) {
       console.log(error);
@@ -63,12 +60,17 @@ export default function Album() {
       return [];
     }
     try {
+      const cachedData = await getData("home-categories");
+      if (cachedData && !refresh) {
+        return cachedData;
+      }
       const response: any = await API.get(
-        `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+        // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+        `getCategories?&user_id=${50451}&time=${new Date().toString()}`
       );
       const updatedData = response;
 
-      await saveData("home-categories", updatedData);
+      await saveData("home-json", updatedData);
 
       return updatedData;
     } catch (error) {
@@ -93,6 +95,7 @@ export default function Album() {
       return [];
     }
   };
+
   const getOrderByUser = async () => {
     if (!user) {
       return [];
@@ -112,10 +115,21 @@ export default function Album() {
 
   useOnlineStatus();
 
-  const { isLoading, data = [] } = useQuery<any>({
-    queryKey: ["categories-data", user,refresh],
-    queryFn:() =>fetchCategoryData(refresh),
+  // const { isLoading, data = [] } = useQuery<any>({
+  //   queryKey: ["categories-data", user],
+  //   queryFn:fetchCategoryData,
     
+  // });
+
+  const { isLoading, data = [] } = useQuery<any>({
+    queryKey: ["categories-data", user],
+    queryFn: async () => {
+      const cachedData = await getData("home-categories");
+      if (cachedData) {
+        return cachedData; 
+      }
+      return fetchCategoryData(); 
+    },
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
@@ -124,21 +138,14 @@ export default function Album() {
   });
 
 
-  const { isLoading: isOrder, data: orderData = [] } = useQuery({
-    queryKey: ["order-data", user],
-    queryFn: getOrderByUser,
-  });
-  useEffect(() => {
-    if (refresh) {
-      setRefresh(false);
-    }
-  }, [data]); 
+  // const { isLoading: isOrder, data: orderData = [] } = useQuery({
+  //   queryKey: ["order-data", user],
+  //   queryFn: getOrderByUser,
+  // });
 
   const handleRefresh = async () => {
-    await fetchnewCategories();
-    setRefresh(true);
-    queryClient.invalidateQueries(["categories-data", user]);
-    // fetchCategoryData();
+     fetchnewCategories();
+    fetchCategoryData();
     fetchRecentlPlayed();
     ;
     // fetchAllCategories()
