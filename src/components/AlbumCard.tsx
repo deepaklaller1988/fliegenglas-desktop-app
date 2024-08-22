@@ -16,26 +16,26 @@ const AlbumSection = ({
   const router = useRouter();
   const { showPlayer, handleCurrentAudio } = useAudioPlayer();
 
-  const handleShowPlayer = (data: any) => {
-    showPlayer(data);
-  };
-
   const openPlayerOrDetails = async (product: any) => {
+    console.log(product);
     const orders: any[] = await getData("order-data");
 
     if (orders && orders.length > 0) {
       let index: number = -1;
       orders.forEach((value: any, ind: number) => {
         if (value.line_items && value.line_items[0].type !== "subscription") {
-          if (Number(value.line_items[0].id) === Number(product?.id)) {
+          if (
+            Number(value.line_items[0].id) ===
+            Number(product?.id || product?.product_id)
+          ) {
             index = ind;
           }
         }
       });
 
       if (index !== -1) {
-        const data = {
-          categoryID: Number(product?.id),
+        const data: any = {
+          categoryID: Number(product?.id || product?.product_id),
           categoryName: orders[index].line_items[0].name,
           audioUrl: "",
           imageUrl: orders[index].line_items[0].image,
@@ -47,9 +47,11 @@ const AlbumSection = ({
           primaryCategory: orders[index].line_items[0].primaryCategory,
         };
         handleCurrentAudio(0);
-        handleShowPlayer(data);
+        showPlayer(data);
       } else {
-        router.push(`/home/album-detail?id=${product?.id}`);
+        router.push(
+          `/home/album-detail?id=${product?.id || product?.product_id}`
+        );
       }
     }
   };
@@ -76,12 +78,7 @@ const AlbumSection = ({
               key={index}
               className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
             >
-              <button
-                onClick={() => openPlayerOrDetails(product)}
-                // onClick={() => {
-                //   router.push(`/home/album-detail?id=${product?.id}`);
-                // }}
-              >
+              <button onClick={() => openPlayerOrDetails(product)}>
                 <Image
                   src={product?.image || ""}
                   alt={product?.name || ""}
@@ -122,11 +119,7 @@ const AlbumSection = ({
                     key={index}
                     className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
                   >
-                    <button
-                      onClick={() => {
-                        router.push(`/home/album-detail?id=${item?.id}`);
-                      }}
-                    >
+                    <button onClick={() => openPlayerOrDetails(item)}>
                       <Image
                         src={item?.image || ""}
                         alt={item?.name || ""}

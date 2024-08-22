@@ -1,23 +1,25 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import useTitle from '@hooks/useTitle';
-import API from '@lib/API';
-import { useQuery } from '@tanstack/react-query';
-import { useUser } from 'context/UserContext';
-import { getData ,putData} from 'utils/indexDB';
-import PageContent from '@components/PageContent';
-import ScrollContainer from 'react-indiana-drag-scroll';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { getImagePath } from '@lib/getImagePath';
-import { SkeletonLoader } from '@components/core/SkeletonLoader';
+"use client";
+import React, { useEffect, useState } from "react";
+import useTitle from "@hooks/useTitle";
+import API from "@lib/API";
+import { useQuery } from "@tanstack/react-query";
+import { useUser } from "context/UserContext";
+import { getData, putData } from "utils/indexDB";
+import PageContent from "@components/PageContent";
+import ScrollContainer from "react-indiana-drag-scroll";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { getImagePath } from "@lib/getImagePath";
+import { SkeletonLoader } from "@components/core/SkeletonLoader";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 const OrderList: React.FC = () => {
   useTitle("Meine Hörbücher");
   const { user }: any = useUser();
   const router = useRouter();
   const [filteredList, setFilteredList] = useState<any>({});
+  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
 
   const getOrderByUser = async () => {
     if (!user) {
@@ -27,7 +29,7 @@ const OrderList: React.FC = () => {
       const response: any = await API.get(
         `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
       );
-      await putData('order-data', response);
+      await putData("order-data", response);
 
       return response;
     } catch (error) {
@@ -36,8 +38,13 @@ const OrderList: React.FC = () => {
     }
   };
 
-  const { isLoading, data: orderList = [], refetch, isFetching } = useQuery({
-    queryKey: ['order-data', user],
+  const {
+    isLoading,
+    data: orderList = [],
+    refetch,
+    isFetching,
+  } = useQuery({
+    queryKey: ["order-data", user],
     queryFn: getOrderByUser,
     enabled: !!user,
     staleTime: 0,
@@ -45,7 +52,7 @@ const OrderList: React.FC = () => {
 
   const filterOrders = async () => {
     let newSup: any = {};
-    const categoriesData = await getData('categories');
+    const categoriesData = await getData("categories");
     if (categoriesData) {
       categoriesData.forEach((cat: any) => {
         newSup[cat] = [];
@@ -53,15 +60,16 @@ const OrderList: React.FC = () => {
     }
 
     orderList.forEach((value: any) => {
-      if (value.line_items && value.line_items[0].type !== 'subscription') {
+      if (value.line_items && value.line_items[0].type !== "subscription") {
         let cat = value.line_items[0].primaryCategory;
-        if (!newSup[cat]) {
-          newSup[cat] = [];
+        if (typeof cat === "string") {
+          if (!newSup[cat]) {
+            newSup[cat] = [];
+          }
+          newSup[cat].push(value);
         }
-        newSup[cat].push(value);
       }
     });
-
     setFilteredList(newSup);
   };
 
@@ -75,19 +83,36 @@ const OrderList: React.FC = () => {
     try {
       await refetch();
     } catch (err) {
-      console.log('Error during refetch:', err);
+      console.log("Error during refetch:", err);
     }
   };
 
+  const openPlayerOrDetails = async (product: any) => {
+    const data: any = {
+      categoryID: Number(product?.line_items[0].id),
+      categoryName: product?.line_items[0].name,
+      audioUrl: "",
+      imageUrl: product?.line_items[0].image,
+      backgroundImageUrl: product?.line_items[0].player_background_image,
+      artist: product?.line_items[0].artist,
+      shareurl: product?.line_items[0].shareurl,
+      list: product?.line_items[0].downloads,
+      primaryCategory: product?.line_items[0].primaryCategory,
+    };
+    handleCurrentAudio(0);
+    showPlayer(data);
+  };
 
-  const renderAlbumItems = (item: any,index:any) => (
+  const renderAlbumItems = (item: any, index: any) => (
     <div
       className="w-full playNail p-3 pr-0 py-6 text-white"
       key={item?.category?.categoryid}
     >
-        {index== 0 &&  <div className="text-white p-8 shadow-lg text-center w-full">
-       <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
-      </div>}
+      {/* {index == 0 && (
+        <div className="text-white p-8 shadow-lg text-center w-full">
+          <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
+        </div>
+      )} */}
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
@@ -105,12 +130,7 @@ const OrderList: React.FC = () => {
               key={index}
               className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
             >
-              <button
-                onClick={() => {
-                  router.push(`/home/album-detail?id=${product.line_items[0]?.id}`);
-                  sessionStorage?.setItem("page-image", product.line_items[0]?.local_image);
-                }}
-              >
+              <button onClick={() => openPlayerOrDetails(product)}>
                 <Image
                   src={getImagePath(product.line_items[0]?.image) || ""}
                   alt={product.line_items[0]?.name || ""}
@@ -127,20 +147,18 @@ const OrderList: React.FC = () => {
   );
 
   return (
-    <div className='rightSideSet'>
+    <div className="rightSideSet">
       {isLoading ? (
         <div className="text-white p-8 shadow-lg text-center w-full">
           <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
-          <p className="mb-6 text-sm">
-            Daten werden geladen, bitte warten...
-          </p>
+          <p className="mb-6 text-sm">Daten werden geladen, bitte warten...</p>
         </div>
       ) : orderList.length === 0 ? (
         <div className="text-white p-8 shadow-lg text-center w-full">
           <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
           <p className="mb-6 text-sm">
-            Unter der E-Mail-Adresse, mit der Sie sich in der App angemeldet haben,
-            sind noch keine Hörbücher bestellt worden.
+            Unter der E-Mail-Adresse, mit der Sie sich in der App angemeldet
+            haben, sind noch keine Hörbücher bestellt worden.
           </p>
           <div className="text-black w-96 m-auto">
             <PageContent slug="es-sind-hier-noch-keine-hoerbuecher-vorhanden" />
@@ -170,13 +188,22 @@ const OrderList: React.FC = () => {
               </div>
             </ScrollContainer>
           ) : (
-            Object.keys(filteredList).map((category,index:any) => (
-              filteredList[category].length > 0 &&
-              renderAlbumItems({
-                category: { categoryid: category, name: category },
-                products: filteredList[category],
-              },index)
-            ))
+            <div>
+              <div className="text-white p-8 shadow-lg text-center w-full">
+                <h2 className="text-xl font-semibold mb-4">Meine Hörbücher</h2>
+              </div>
+              {Object.keys(filteredList).map(
+                (category, index: any) =>
+                  filteredList[category].length > 0 &&
+                  renderAlbumItems(
+                    {
+                      category: { categoryid: category, name: category },
+                      products: filteredList[category],
+                    },
+                    index
+                  )
+              )}
+            </div>
           )}
         </div>
       )}

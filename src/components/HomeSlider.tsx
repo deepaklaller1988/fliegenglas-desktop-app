@@ -11,10 +11,12 @@ import { getData, saveData } from "utils/indexDB";
 import { getImagePath } from "@lib/getImagePath";
 import { useRouter } from "next/navigation";
 import { SkeletonLoader } from "./core/SkeletonLoader";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
   const router = useRouter();
+  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
 
   const getFavourites = async () => {
     if (!user) {
@@ -47,6 +49,41 @@ export default function HomeSlider({ type }: any) {
     queryFn: getFavourites,
   });
 
+  const openPlayerOrDetails = async (product: any) => {
+    console.log(product);
+    const orders: any[] = await getData("order-data");
+
+    if (orders && orders.length > 0) {
+      let index: number = -1;
+      orders.forEach((value: any, ind: number) => {
+        if (value.line_items && value.line_items[0].type !== "subscription") {
+          if (Number(value.line_items[0].id) === Number(product?.id)) {
+            index = ind;
+          }
+        }
+      });
+
+      if (index !== -1) {
+        const data: any = {
+          categoryID: Number(product?.id),
+          categoryName: orders[index].line_items[0].name,
+          audioUrl: "",
+          imageUrl: orders[index].line_items[0].image,
+          backgroundImageUrl:
+            orders[index].line_items[0].player_background_image,
+          artist: orders[index].line_items[0].artist,
+          shareurl: orders[index].line_items[0].shareurl,
+          list: orders[index].line_items[0].downloads,
+          primaryCategory: orders[index].line_items[0].primaryCategory,
+        };
+        handleCurrentAudio(0);
+        showPlayer(data);
+      } else {
+        router.push(`/home/album-detail?id=${product?.id}`);
+      }
+    }
+  };
+
   if (isFavourite) {
     return (
       <div className="loaderGradient w-full h-[80vh] inline-block rounded-md overflow-hidden mr-3">
@@ -66,12 +103,7 @@ export default function HomeSlider({ type }: any) {
             {type === "home" ? (
               <div className="slider-parent">
                 <div className="card h-full">
-                  <button
-                    onClick={() => {
-                      router.push(`/home/album-detail?id=${item?.id}`);
-                      sessionStorage.clear();
-                    }}
-                  >
+                  <button onClick={() => openPlayerOrDetails(item)}>
                     <img
                       className="w-full"
                       src={getImagePath(item.product_header_graphic)}

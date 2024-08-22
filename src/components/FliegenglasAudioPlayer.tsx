@@ -55,7 +55,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
 
   const playerRef = useRef<ReactPlayer>(null);
-  // const [imageUrl, setImageUrl] = useState("");
   const {
     isVisible,
     audioDetail,
@@ -69,11 +68,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   } = useAudioPlayer();
   const { user }: any = useUser();
 
-  // useEffect(() => {
-  //   const storedImage = sessionStorage.getItem("image");
-  //   setImageUrl(storedImage || "");
-  // }, []);
-
   const fetchCountData = async () => {
     try {
       let res: any = await API.get(
@@ -86,8 +80,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       console.error(err);
     }
   };
-
-  console.log(audioDetail, currentAudio, "audioDetail");
 
   useEffect(() => {
     if (isVisible) {
@@ -318,24 +310,27 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   console.log(
-    audioDetail,
-    showPopup,
-    audioDetail?.imageUrl.includes("assets"),
-    audioDetail?.imageUrl.includes("assets")
-      ? "/" + audioDetail?.imageUrl
-      : audioDetail?.imageUrl,
-    "showPopup"
+    {
+      buffering,
+      seeking,
+      open,
+      duration,
+      play,
+      played,
+      playedSeconds,
+      audioDetail,
+      currentAudio,
+      playbackRate,
+    },
+    "AUDIO"
   );
+
   return (
     <>
       {isVisible ? (
         <>
           <ReactPlayer
             ref={playerRef}
-            // url={
-            //   audioDetail?.audioUrl.replace("mp3", "m3u8") ||
-            //   `${audioDetail?.list[currentAudio].m3u8}`
-            // }
             url={audioDetail?.list[currentAudio].m3u8}
             playing={play}
             onBuffer={() => setBuffering(true)}
@@ -476,7 +471,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     />
                   </div>
                   {showList && (
-                    <div className="absolute inset-0 bg-black z-20 h-full">
+                    <div className="absolute inset-0 bg-black z-20 h-full ">
                       <div className="absolute inset-0 h-full z-[-1] bg-black">
                         <Image
                           src={
@@ -490,7 +485,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           className="blur-2xl opacity-65"
                         />
                       </div>
-                      <div className="max-h-screen w-full h-full">
+                      <div className="max-h-screen md:w-9/12 w-11/12 h-full m-auto">
                         <div className="lg:mx-20 flex flex-col">
                           <div className="flex flex-row justify-between items-center h-1/12 pt-8 mx-10 mb-5">
                             <Image
@@ -522,7 +517,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                                   >
                                     <div
                                       className="w-full py-3"
-                                      onClick={() => handleCurrentAudio(index)}
+                                      onClick={() => {
+                                        handleCurrentAudio(index);
+                                        handleShowList();
+                                      }}
                                     >
                                       <h1 className="font-semibold text-lg">
                                         {item?.title}
@@ -556,15 +554,42 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   )}
 
                   {showPopup && (
-                    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
-                      <div className="bg-white p-5 rounded-lg shadow-lg">
-                        <button
-                          className="bg-red-500 text-white p-2 rounded"
-                          onClick={handleClosePopup}
-                        >
-                          Close
-                        </button>
-                        {/* Render the AudioPlayerOptions component and pass the selectedProductId */}
+                    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 h-screen w-full flex justify-center items-center">
+                      <div className="absolute inset-0 h-full z-[-1] bg-black">
+                        <Image
+                          src={
+                            audioDetail?.imageUrl.includes("assets")
+                              ? "/" + audioDetail?.imageUrl
+                              : audioDetail?.imageUrl
+                          }
+                          alt="Background Image"
+                          layout="fill"
+                          objectFit="cover"
+                          className="blur-2xl opacity-65"
+                        />
+                      </div>
+
+                      <div className="p-5 h-full md:w-8/12 w-11/12">
+                        <div className="flex flex-row justify-between items-center h-1/12 pt-8 mb-5 px-10 w-full">
+                          <Image
+                            src={
+                              audioDetail?.imageUrl.includes("assets")
+                                ? "/" + audioDetail?.imageUrl
+                                : audioDetail?.imageUrl
+                            }
+                            alt="Audio Thumbnail"
+                            height={200}
+                            width={200}
+                            className="rounded-xl shadow-lg h-40 w-auto"
+                          />
+                          <button
+                            className="flex flex-row items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
+                            onClick={handleClosePopup}
+                          >
+                            <IoMdClose size={25} />
+                            Schließen
+                          </button>
+                        </div>
                         <AudioPlayerOptions audioDetail={audioDetail} />
                       </div>
                     </div>
@@ -578,6 +603,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   >
                     <FaAngleDown />
                   </button>
+
                   <div className="flex justify-center relative">
                     <button
                       className="p-5 rounded-full hover:bg-white/10 duration-300 text-white"

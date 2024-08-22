@@ -9,7 +9,6 @@ import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
 import HeaderLink from "./HiArrowleft";
 
-
 export default function Homelisting({ list }: any) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
@@ -67,20 +66,24 @@ export default function Homelisting({ list }: any) {
     return <FlieLoader />;
   }
 
-  const displayData = (list == "recently-viewed" && recentlyData.length > 0) ? recentlyData : data;
-
+  const displayData =
+    list == "recently-viewed" && recentlyData.length > 0 ? recentlyData : data;
 
   return (
     <>
       {displayData && displayData.length > 0 && (
-          <HeaderLink className="py-4 pr-4 ml-2 text-white flex items-center" onClick={() => router.back()} 
-          title={displayData[0]?.catname}/>
+        <HeaderLink
+          className="py-4 pr-4 ml-2 text-white flex items-center"
+          onClick={() => router.back()}
+          title={displayData[0]?.catname}
+        />
       )}
 
       {displayData &&
         displayData.length > 0 &&
         displayData.map((item: any) => {
-          const productId = list == "recently-viewed" ? item?.product_id : item?.id;
+          const productId =
+            list == "recently-viewed" ? item?.product_id : item?.id;
           return (
             <div key={item?.id}>
               <div className="w-full spaceBorder px-4">
@@ -89,7 +92,6 @@ export default function Homelisting({ list }: any) {
                     className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
                     onClick={() => {
                       router.push(`/home/album-detail?id=${productId}`);
-                      sessionStorage?.setItem("page-image", item?.image);
                     }}
                   >
                     <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px] overflow-hidden">

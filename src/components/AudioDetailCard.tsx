@@ -1,7 +1,13 @@
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
 
-const AudioDetailCard = ({ imageSrc, title, name, linkHref }:any) => {
+import { useAudioPlayer } from "context/AudioPlayerContext";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+const AudioDetailCard = ({ imageSrc, title, name, linkHref }: any) => {
+  const router = useRouter();
+  const { showPlayer, miniPlayer } = useAudioPlayer();
   return (
     <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
       <span className="min-w-[85px] max-w-[85px]">
@@ -18,12 +24,15 @@ const AudioDetailCard = ({ imageSrc, title, name, linkHref }:any) => {
         <p className="text-[#232a2c] text-[16px] opacity-60 leading-none">
           {name}
         </p>
-        <Link
+        <button
           className="absolute bottom-0 right-0 bg-[#6c7279] text-white w-[128px] p-[5px] px-2 rounded-md text-sm text-center"
-          href={linkHref}
+          onClick={() => {
+            router.push(linkHref);
+            miniPlayer();
+          }}
         >
           Alle Hörbücher
-        </Link>
+        </button>
       </span>
     </div>
   );
