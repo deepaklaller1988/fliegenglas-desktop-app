@@ -46,7 +46,6 @@ export default function HomeSlider({ type }: any) {
     queryKey: ["sliderData", user],
     queryFn: getFavourites,
   });
-console.log(sliderData);
 
   if (isFavourite) {
     return (

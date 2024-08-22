@@ -61,7 +61,7 @@ export default class Menu {
         // 8
         {
             id: "settings",
-            item: "Einstellungen",
+            item: "Abonnements verwalten",
             path: "/settings/subscriptions",
             type: "link",
             icon: IoSettingsOutline,
