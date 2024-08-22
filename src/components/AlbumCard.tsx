@@ -14,7 +14,7 @@ const AlbumSection = ({
   isRecentlyPlayed,
 }: any) => {
   const router = useRouter();
-  const { showPlayer } = useAudioPlayer();
+  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
 
   const handleShowPlayer = (data: any) => {
     showPlayer(data);
@@ -33,8 +33,6 @@ const AlbumSection = ({
         }
       });
 
-      console.log(product, orders[index].line_items[0], "PRODUCT");
-
       if (index !== -1) {
         const data = {
           categoryID: Number(product?.id),
@@ -48,6 +46,7 @@ const AlbumSection = ({
           list: orders[index].line_items[0].downloads,
           primaryCategory: orders[index].line_items[0].primaryCategory,
         };
+        handleCurrentAudio(0);
         handleShowPlayer(data);
       } else {
         router.push(`/home/album-detail?id=${product?.id}`);

@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 interface AudioDetail {
   categoryID: string;
   categoryName: string;
-  audioUrl?: string;
+  audioUrl?: any;
   imageUrl: string;
   backgroundImageUrl: string;
   artist: string;
@@ -45,6 +45,7 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
   const showPlayer = (detail: AudioDetail) => {
     setAudioDetail(detail);
     setIsVisible(true);
+    setMini(false);
   };
 
   const closePlayer = () => {
