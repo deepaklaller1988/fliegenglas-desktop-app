@@ -19,6 +19,7 @@ export default function AlbumDetail() {
   const productId = searchParams.get("id") || "";
   const { user }: any = useUser();
   const { showPlayer } = useAudioPlayer();
+  
 
   const fetchData = async () => {
     try {

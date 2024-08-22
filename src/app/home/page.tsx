@@ -2,7 +2,7 @@
 import "./album.css";
 import "react-slideshow-image/dist/styles.css";
 import API from "@lib/API";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
@@ -10,15 +10,24 @@ import { saveData, getData, putData } from "../../utils/indexDB";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 import useOnlineStatus from "@hooks/UseOnlineStatus";
 import RefreshButton from "@components/buttons/RefreshButton";
+import { useEffect, useState } from "react";
 
 export default function Album() {
   const { user }: any = useUser();
+  const [refresh, setRefresh] = useState(false);
+  const queryClient:any = useQueryClient();
 
-  const fetchCategoryData = async () => {
+
+
+  const fetchCategoryData = async (refresh:boolean) => {
     if (!user) {
       return [];
     }
     try {
+      const cachedData = await getData("home-categories");
+      if (cachedData && !refresh) {
+        return cachedData;
+      }
       const response: any = await API.get(
         `/catData.json?&time=${new Date().toString()}`
       );
@@ -84,8 +93,9 @@ export default function Album() {
   useOnlineStatus();
 
   const { isLoading, data = [] } = useQuery<any>({
-    queryKey: ["categories-data", user],
-    queryFn: fetchCategoryData,
+    queryKey: ["categories-data", user,refresh],
+    queryFn:() =>fetchCategoryData(refresh),
+    
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
@@ -93,10 +103,18 @@ export default function Album() {
     queryFn: fetchRecentlPlayed,
   });
 
+  useEffect(() => {
+    if (refresh) {
+      setRefresh(false);
+    }
+  }, [data]); 
+
   const handleRefresh = async () => {
-    fetchCategoryData();
+    await fetchnewCategories();
+    setRefresh(true);
+    queryClient.invalidateQueries(["categories-data", user]);
+    // fetchCategoryData();
     fetchRecentlPlayed();
-    fetchnewCategories();
     getOrderByUser();
   };
 
