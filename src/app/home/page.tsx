@@ -17,7 +17,26 @@ export default function Album() {
   const [refresh, setRefresh] = useState(false);
   const queryClient:any = useQueryClient();
 
-
+  const fetchAllCategories = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const cachedData = await getData("categories");
+      if (cachedData && !refresh) {
+        return cachedData;
+      }
+      const response: any = await API.get(
+        // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+        `getCategories?&time=${new Date().toString()}`
+      );
+      await saveData("categories", response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
 
   const fetchCategoryData = async (refresh:boolean) => {
     if (!user) {
@@ -64,7 +83,8 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
+        // `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
+        `recentlyPlayedList/?&user_id=${50451}&time=${new Date().toString()}`
       );
       await saveData("recently-played", response);
       return response;
@@ -103,6 +123,11 @@ export default function Album() {
     queryFn: fetchRecentlPlayed,
   });
 
+
+  const { isLoading: isOrder, data: orderData = [] } = useQuery({
+    queryKey: ["order-data", user],
+    queryFn: getOrderByUser,
+  });
   useEffect(() => {
     if (refresh) {
       setRefresh(false);
@@ -115,7 +140,8 @@ export default function Album() {
     queryClient.invalidateQueries(["categories-data", user]);
     // fetchCategoryData();
     fetchRecentlPlayed();
-    getOrderByUser();
+    ;
+    // fetchAllCategories()
   };
 
   return (
