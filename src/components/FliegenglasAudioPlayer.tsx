@@ -500,7 +500,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                               className="rounded-xl shadow-lg h-40 w-auto"
                             />
                             <button
-                              className="flex flex-row items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
+                              className="flex flex-row items-center gap-2 text-white hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
                               onClick={handleShowList}
                             >
                               <IoMdClose size={25} />
@@ -802,7 +802,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 </div>
                 <div className="md:mt-8 mt-0">
                   <div>
-                    <p className="text-center mb-2 sm:text-xl text-sm">
+                    <p className="text-center mb-2 sm:text-xl text-sm text-white">
                       {audioDetail?.list[currentAudio]?.title}
                     </p>
                     <div className="relative">
@@ -859,9 +859,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         className="flex flex-col items-center gap-1 hover:bg-white/10 xs:p-5 p-2 rounded-full duration-300 sm:text-[3vw] xl:text-[1vw] text-[5vw]"
                         onClick={handleShowList}
                       >
-                        <MdFormatListBulleted className="sm:text-[3vw] xl:text-[2vw] text-[5vw]" />
-                        <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw]">
-                          List
+                        <MdFormatListBulleted className="sm:text-[3vw] xl:text-[2vw] text-[5vw] text-white" />
+                        <p className="sm:text-[1.5vw] xl:text-[1vw] text-[3vw] text-white">
+                          Kapitel
                         </p>
                       </button>
                     )}
