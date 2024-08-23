@@ -70,7 +70,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   } = useAudioPlayer();
   const { user }: any = useUser();
   console.log(play,"play");
-  const autoSleepTime=sessionStorage.getItem("autosleeptime")
+  const autoSleepTime=typeof window !== "undefined" && sessionStorage.getItem("autosleeptime")
 
   const fetchCountData = async () => {
     try {
@@ -104,16 +104,16 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   }, [isVisible, mini]);
 
 
-  useEffect(() => {
-    if(play==true)
-    handleAutoSleepMode();
-  }, [play]);
+  // useEffect(() => {
+  //   if(play==true)
+  //   handleAutoSleepMode();
+  // }, [play]);
   
-  const handleAutoSleepMode=()=>{
-    if(play==true && autoSleepTime){
-      console.log("first")
-    }
-  }
+  // const handleAutoSleepMode=()=>{
+  //   if(onPlay && autoSleepTime){
+  //     console.log("first")
+  //   }
+  // }
 
 
   if (!isVisible || !audioDetail) return null;
