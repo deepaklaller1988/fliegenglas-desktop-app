@@ -69,7 +69,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
-  console.log(play,"play");
   const autoSleepTime=typeof window !== "undefined" && sessionStorage.getItem("autosleeptime")
 
   const fetchCountData = async () => {
@@ -104,16 +103,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   }, [isVisible, mini]);
 
 
-  // useEffect(() => {
-  //   if(play==true)
-  //   handleAutoSleepMode();
-  // }, [play]);
-  
-  // const handleAutoSleepMode=()=>{
-  //   if(onPlay && autoSleepTime){
-  //     console.log("first")
-  //   }
-  // }
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleAutoSleepMode = () => {
+    if (isPlaying) {
+    } else {
+    }
+  };
 
 
   if (!isVisible || !audioDetail) return null;
@@ -126,7 +122,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     played: number;
     playedSeconds: number;
   }) => {
-    console.log(progress,"progress");
     if (!seeking) {
       setPlayed(progress.played);
       setPlayedSeconds(progress.playedSeconds);
@@ -255,7 +250,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
 
 
   const handleMoreDetails = (audioDetail: any) => {
-    console.log("Clicked button with audioDetail:", audioDetail);
     setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
     setShowPopup(true); // Show the popup
   };
@@ -266,10 +260,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
 
   const handleEnded = () => {
     if (audioDetail?.list.length > currentAudio + 1) {
-      // Move to the next audio
       handleCurrentAudio(currentAudio + 1);
     } else {
-      // Optionally handle the case when there are no more audios
       console.log("No more audios to play.");
     }
   };
@@ -292,8 +284,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             width="0"
             height="0"
             onError={(error) => console.log("Error:", error)}
-            onPlay={() => console.log("Playing")}
-            onPause={() => console.log("Paused")}
+            onPlay={() => {
+              setIsPlaying(true); 
+              handleAutoSleepMode();
+            }}
+            onPause={() => {
+              setIsPlaying(false); 
+              handleAutoSleepMode();
+                        }}
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
