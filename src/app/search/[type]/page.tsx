@@ -55,25 +55,60 @@ export default function TypePage() {
     return acc;
   }, {});
 
+  const itemsWithoutLastName = Object.keys(groupedData).reduce((acc: any[], letter: string) => {
+    const filteredItems = groupedData[letter].filter((item: any) => !item.user_lastname);
+    return [...acc, ...filteredItems];
+  }, []);
 
   if (isLoading) {
     return <FlieLoader />;
   }
 
+
   return (
     <div className="w-full py-4 listSerachCZ">
-      <HeaderLink className='py-4 pr-4 ml-2 text-white flex items-center'
-       onClick={() => router.push("/search")} title={data[0]?.catname}
-       />
+      <HeaderLink
+        className="py-4 pr-4 ml-2 text-white flex items-center"
+        onClick={() => router.push("/search")}
+        title={data[0]?.catname}
+      />
 
       <h1 className="text-[22px] mb-4 text-white px-4">Nach Autoren suchen</h1>
-      {Object.keys(groupedData).map((letter: string) => (
-        <div key={letter}>
-          <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1">{letter[0]}</h2>
+
+
+      {itemsWithoutLastName.length > 0 && (
+        <div key="no-lastname" id="no-lastname">
+          <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1"></h2>
           <ul>
             <li className="text-white flex flex-col px-4">
-              {groupedData[letter].map((item: any, index: number) => (
-                <span className='py-2 border-b border-white/10' key={item.user_lastname + item.user_firstname}>
+              {itemsWithoutLastName.map((item: any, index: number) => (
+                <span
+                  className="py-2 border-b border-white/10"
+                  key={item.user_firstname}
+                >
+                  <b>
+                    {item.user_firstname}
+                    {index < itemsWithoutLastName.length - 1 && ', '}
+                  </b>
+                </span>
+              ))}
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {Object.keys(groupedData).map((letter: string) => (
+        <div key={letter} id={letter}>
+          <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1">
+            {letter !=="undefined" ? letter[0]:""}
+          </h2>
+          <ul>
+            <li className="text-white flex flex-col px-4">
+              {groupedData[letter].filter((item: any) => item.user_lastname).map((item: any, index: number) => (
+                <span
+                  className="py-2 border-b border-white/10"
+                  key={item.user_lastname + item.user_firstname}
+                >
                   <b>
                     {item.user_lastname + " " + item.user_firstname}
                     {index < groupedData[letter].length - 1 && ', '}
@@ -84,11 +119,23 @@ export default function TypePage() {
           </ul>
         </div>
       ))}
+
+
       <ul id="alphabets" className="display-alphabetic">
         {Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map((letter) => (
-          <li key={letter}>
-            <Link href={`#${letter}`}>{letter}</Link>
-          </li>
+          groupedData[letter] && groupedData[letter].length > 0 ? (
+            <li key={letter} className="text-white opacity-50">
+              <Link href={`#${letter}`} legacyBehavior>
+                {letter}
+              </Link>
+            </li>
+          ) : (
+            <li key={letter} className="text-white opacity-50">
+              <Link href={""} legacyBehavior>
+               {letter}
+              </Link>
+            </li>
+          )
         ))}
       </ul>
     </div>
