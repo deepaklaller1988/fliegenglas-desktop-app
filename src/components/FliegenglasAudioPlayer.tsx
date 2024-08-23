@@ -54,7 +54,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
-
   const playerRef = useRef<ReactPlayer>(null);
   const {
     isVisible,
@@ -70,6 +69,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
+  console.log(play,"play");
+  const autoSleepTime=sessionStorage.getItem("autosleeptime")
 
   const fetchCountData = async () => {
     try {
@@ -82,6 +83,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       console.error(err);
     }
   };
+
+
+  const handleAutoSleepMode=()=>{
+    if(play==true && autoSleepTime){
+      console.log("first")
+    }
+  }
+
 
   useEffect(() => {
     // setPlay(true);
@@ -102,6 +111,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   }, [isVisible, mini]);
 
+
+  useEffect(() => {
+    if(play==true)
+    handleAutoSleepMode();
+  }, [play]);
+
   if (!isVisible || !audioDetail) return null;
 
   const togglePlayPause = () => {
@@ -112,6 +127,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     played: number;
     playedSeconds: number;
   }) => {
+    console.log(progress,"progress");
     if (!seeking) {
       setPlayed(progress.played);
       setPlayedSeconds(progress.playedSeconds);
@@ -238,6 +254,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
+
   const handleMoreDetails = (audioDetail: any) => {
     console.log("Clicked button with audioDetail:", audioDetail);
     setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
@@ -258,8 +275,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-  console.log(audioDetail?.list[currentAudio].m3u8, "AUDIO");
-
   return (
     <>
       {isVisible ? (
@@ -277,6 +292,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             controls={true}
             width="0"
             height="0"
+            
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">

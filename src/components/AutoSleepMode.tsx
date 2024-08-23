@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function AutoSleepMode() {
-  const [selectedButton, setSelectedButton] = useState<string>("0");
+  const [selectedButton, setSelectedButton] = useState("0");
 
   useEffect(() => {
     const storedSleepTime = sessionStorage.getItem("autosleeptime");
@@ -10,26 +10,17 @@ export default function AutoSleepMode() {
     }
   }, []);
 
-  const autoSleepTime = (buttonId: string) => {
+  const autoSleepTime = (buttonId: any) => {
     setSelectedButton(buttonId);
-    sessionStorage.setItem("autosleeptime", buttonId);
-    autoSleep(buttonId);
-  };
 
-  const autoSleep = async (sleepTime: string) => {
-    if (sleepTime === "60000" || sleepTime === "1800000" || sleepTime === "-1") {
-      if (sleepTime !== "-1") {
-        await sleep(parseInt(sleepTime));
-        sessionStorage.removeItem("autosleeptime");
-      }
-    } else {
-      sessionStorage.removeItem("autosleeptime");
+    {
+      buttonId === "0" ?
+      sessionStorage.removeItem("autosleeptime")
+      :
+      sessionStorage.setItem("autosleeptime", buttonId);
     }
   };
 
-  const sleep = (time: number) => {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  };
 
   return (
     <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-2">
@@ -38,11 +29,7 @@ export default function AutoSleepMode() {
         <button
           className={`${selectedButton === "0" ? "bg-[#182e49]" : "bg-[#6c7279]"
             } p-5 py-1 text-white text-sm block rounded-md absolute right-14`}
-          onClick={() => {
-            setSelectedButton("0");
-            sessionStorage.removeItem("autosleeptime");
-            autoSleep("0");
-          }}
+          onClick={() => autoSleepTime("0")}
         >
           Off
         </button>
