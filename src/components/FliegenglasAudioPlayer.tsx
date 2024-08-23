@@ -252,11 +252,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     if (audioDetail?.list.length > currentAudio + 1) {
       handleCurrentAudio(currentAudio + 1);
     } else {
+      setPlay(false);
       console.log("No more audios to play.");
     }
   };
 
-  console.log(isVisible, audioDetail, "AUDIO");
+  // console.log(isVisible, audioDetail, "AUDIO");
 
   if (!isVisible || !audioDetail) return null;
 
@@ -266,10 +267,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
         <>
           <ReactPlayer
             ref={playerRef}
-            // url={audioDetail?.list[currentAudio]?.m3u8}
-            url={
-              "https://fliegenglas.app/wp-content/uploads/2023/05/11skompakt23schoen00.m3u8"
-            }
+            url={audioDetail?.list[currentAudio]?.m3u8}
+            // url={
+            //   "https://fliegenglas.app/wp-content/uploads/2023/05/11skompakt23schoen00.m3u8"
+            // }
             playing={play}
             onBuffer={() => setBuffering(true)}
             onBufferEnd={() => setBuffering(false)}
@@ -280,6 +281,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             controls={true}
             width="0"
             height="0"
+            onError={(error) => console.log("Error:", error)}
+            onPlay={() => console.log("Playing")}
+            onPause={() => console.log("Paused")}
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
@@ -580,7 +584,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 <div className="flex md:flex-row flex-col h-full">
                   <div className="w-full h-96 relative">
                     {buffering && (
-                      <div className="absolute bg-black/50 h-full flex items-center justify-center text-white rounded-2xl">
+                      <div className="absolute bg-black/50 h-full p-20 flex items-center justify-center text-white rounded-2xl">
                         <FlieLoaderCustom />
                       </div>
                     )}

@@ -139,10 +139,10 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
               Internetverbindung.
             </p>
             <button
-              className={`w-full bg-${
+              className={`w-full ${
                 downloading || alreadyDownloaded
-                  ? "[#182f4a]"
-                  : "[#6c7279] hover:bg-[#555a61]"
+                  ? "bg-[#182f4a]"
+                  : "bg-[#6c7279] hover:bg-[#555a61]"
               } text-white p-3 rounded-md text-sm text-center duration-300`}
               onClick={handleDownloadAll}
               disabled={downloading || alreadyDownloaded ? true : false}
