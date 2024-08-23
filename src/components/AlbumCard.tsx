@@ -17,8 +17,8 @@ const AlbumSection = ({
   const { showPlayer, handleCurrentAudio } = useAudioPlayer();
 
   const openPlayerOrDetails = async (product: any) => {
-    console.log(product);
     const orders: any[] = await getData("order-data");
+    console.log(product, orders, "CHECK");
 
     if (orders && orders.length > 0) {
       let index: number = -1;
@@ -32,7 +32,7 @@ const AlbumSection = ({
           }
         }
       });
-
+      console.log(index, "INDEX");
       if (index !== -1) {
         const data: any = {
           categoryID: Number(product?.id || product?.product_id),
