@@ -77,11 +77,10 @@ export default function HomeSlider({ type }: any) {
           primaryCategory: orders[index].line_items[0].primaryCategory,
         };
         if (!isVisible) {
-          // You might need to reset state variables here if you have them in the context
-          handleCurrentAudio(0); // Reset current audio index
+          handleCurrentAudio(0);
         }
 
-        showPlayer(data); // Update context with new player details
+        showPlayer(data);
       } else {
         router.push(`/home/album-detail?id=${product?.id}`);
       }

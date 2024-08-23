@@ -100,11 +100,10 @@ const OrderList: React.FC = () => {
       primaryCategory: product?.line_items[0].primaryCategory,
     };
     if (!isVisible) {
-      // You might need to reset state variables here if you have them in the context
-      handleCurrentAudio(0); // Reset current audio index
+      handleCurrentAudio(0);
     }
 
-    showPlayer(data); // Update context with new player details
+    showPlayer(data);
   };
 
   const renderAlbumItems = (item: any, index: any) => (

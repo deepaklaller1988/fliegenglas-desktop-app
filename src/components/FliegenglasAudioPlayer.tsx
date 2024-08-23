@@ -84,14 +84,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-
-  const handleAutoSleepMode=()=>{
-    if(play==true && autoSleepTime){
-      console.log("first")
-    }
-  }
-
-
   useEffect(() => {
     // setPlay(true);
     if (isVisible) {
@@ -116,6 +108,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     if(play==true)
     handleAutoSleepMode();
   }, [play]);
+  
+  const handleAutoSleepMode=()=>{
+    if(play==true && autoSleepTime){
+      console.log("first")
+    }
+  }
+
 
   if (!isVisible || !audioDetail) return null;
 
@@ -292,7 +291,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             controls={true}
             width="0"
             height="0"
-            
+            onError={(error) => console.log("Error:", error)}
+            onPlay={() => console.log("Playing")}
+            onPause={() => console.log("Paused")}
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
@@ -652,10 +653,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           <IoPlaySkipBack size={40} />
                         </button>
                         <button
-                          className={`p-4 rounded-full duration-300 ${audioDetail?.list.length > currentAudio + 1
-                            ? "text-white hover:bg-white/10 cursor-pointer"
-                            : "text-white/50"
-                            }`}
+                          className={`p-4 rounded-full duration-300 ${
+                            audioDetail?.list.length > currentAudio + 1
+                              ? "text-white hover:bg-white/10 cursor-pointer"
+                              : "text-white/50"
+                          }`}
                           disabled={
                             audioDetail?.list.length > currentAudio + 1
                               ? false
