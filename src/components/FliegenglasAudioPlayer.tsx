@@ -19,7 +19,6 @@ import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
-import { saveAudios } from "utils/indexeddb";
 import AudioPlayerOptions from "./AudioPlayerOptions";
 
 interface FliegenglasAudioPlayerProps {
@@ -49,7 +48,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
-  const [downloading, setDownloading] = useState<boolean>(true);
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
@@ -93,6 +91,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
     if (user) {
       fetchCountData();
+    }
+    if (mini) {
+      setShowPopup(false);
     }
   }, [isVisible, mini]);
 
@@ -232,70 +233,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       }
     } else {
       console.log("Web Share API not supported.");
-    }
-  };
-
-  const handleDownloadAll = async () => {
-    if (!audioDetail?.list || audioDetail.list.length === 0) {
-      console.log("No audio files to download");
-      return;
-    }
-
-    try {
-      setDownloading(true);
-
-      const downloadPromises = audioDetail.list.map(async (audio: any) => {
-        const { m3u8, id, name } = audio;
-        const imageUrl = audioDetail?.imageUrl;
-        const shareurl = audioDetail?.shareurl;
-        const primaryCategory = audioDetail?.primaryCategory;
-
-        try {
-          const response = await fetch(m3u8);
-          if (!response.ok) {
-            throw new Error(`Failed to download audio from ${m3u8}`);
-          }
-          const arrayBuffer = await response.arrayBuffer();
-          return {
-            id,
-            data: arrayBuffer,
-            local_image: imageUrl,
-            name,
-            shareurl,
-            primaryCategory,
-          };
-        } catch (error) {
-          console.error(`Failed to process audio ${m3u8}:`, error);
-          return null;
-        }
-      });
-
-      const results = await Promise.all(downloadPromises);
-
-      const validAudios = results.filter((audio) => audio !== null);
-
-      if (validAudios.length > 0) {
-        await saveAudios(
-          audioDetail?.categoryID,
-          audioDetail?.categoryName,
-          audioDetail?.primaryCategory,
-          audioDetail?.imageUrl,
-          audioDetail?.shareurl,
-          validAudios as Array<{
-            id: string;
-            data: ArrayBuffer;
-            name: string;
-          }>
-        );
-      }
-
-      setDownloading(false);
-      console.log(
-        "All valid audios have been downloaded and saved successfully"
-      );
-    } catch (error) {
-      setDownloading(false);
-      console.error("Failed to download all audios", error);
     }
   };
 
