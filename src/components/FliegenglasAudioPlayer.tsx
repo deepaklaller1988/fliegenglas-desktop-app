@@ -39,7 +39,7 @@ interface GetCounts {
 const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   children,
 }) => {
-  const [play, setPlay] = useState(true);
+  // const [play, setPlay] = useState(true);
   const [played, setPlayed] = useState(0);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -63,6 +63,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     handleCurrentAudio,
     showList,
     handleShowList,
+    play,
+    setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
 
@@ -80,6 +82,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   useEffect(() => {
+    // setPlay(true);
     if (isVisible) {
       if (mini) {
         document.body.style.overflow = "auto";
@@ -246,21 +249,17 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setShowPopup(false); // Hide the popup
   };
 
-  console.log(
-    {
-      buffering,
-      seeking,
-      open,
-      duration,
-      play,
-      played,
-      playedSeconds,
-      audioDetail,
-      currentAudio,
-      playbackRate,
-    },
-    "AUDIO"
-  );
+  const handleEnded = () => {
+    if (audioDetail?.list.length > currentAudio + 1) {
+      // Move to the next audio
+      handleCurrentAudio(currentAudio + 1);
+    } else {
+      // Optionally handle the case when there are no more audios
+      console.log("No more audios to play.");
+    }
+  };
+
+  console.log(audioDetail?.list[currentAudio].m3u8, "AUDIO");
 
   return (
     <>
@@ -268,13 +267,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
         <>
           <ReactPlayer
             ref={playerRef}
-            url={audioDetail?.list[currentAudio].m3u8}
+            url={audioDetail?.list[currentAudio]?.m3u8}
             playing={play}
             onBuffer={() => setBuffering(true)}
             onBufferEnd={() => setBuffering(false)}
             onProgress={handleProgress}
             onDuration={handleDuration}
             playbackRate={playbackRate}
+            onEnded={handleEnded}
             controls={true}
             width="0"
             height="0"

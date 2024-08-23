@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,11 +16,10 @@ const AlbumSection = ({
   isRecentlyPlayed,
 }: any) => {
   const router = useRouter();
-  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const openPlayerOrDetails = async (product: any) => {
     const orders: any[] = await getData("order-data");
-    console.log(product, orders, "CHECK");
 
     if (orders && orders.length > 0) {
       let index: number = -1;
@@ -32,12 +33,11 @@ const AlbumSection = ({
           }
         }
       });
-      console.log(index, "INDEX");
+
       if (index !== -1) {
         const data: any = {
           categoryID: Number(product?.id || product?.product_id),
           categoryName: orders[index].line_items[0].name,
-          audioUrl: "",
           imageUrl: orders[index].line_items[0].image,
           backgroundImageUrl:
             orders[index].line_items[0].player_background_image,
@@ -46,8 +46,12 @@ const AlbumSection = ({
           list: orders[index].line_items[0].downloads,
           primaryCategory: orders[index].line_items[0].primaryCategory,
         };
-        handleCurrentAudio(0);
-        showPlayer(data);
+        if (!isVisible) {
+          // You might need to reset state variables here if you have them in the context
+          handleCurrentAudio(0); // Reset current audio index
+        }
+
+        showPlayer(data); // Update context with new player details
       } else {
         router.push(
           `/home/album-detail?id=${product?.id || product?.product_id}`

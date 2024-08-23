@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 export default function Album() {
   const { user }: any = useUser();
   const [refresh, setRefresh] = useState(false);
-  const queryClient:any = useQueryClient();
+  const queryClient: any = useQueryClient();
 
   const fetchAllCategories = async () => {
     if (!user) {
@@ -43,7 +43,6 @@ export default function Album() {
       return [];
     }
     try {
-     
       const response: any = await API.get(
         `/catData.json?&time=${new Date().toString()}`
       );
@@ -118,7 +117,7 @@ export default function Album() {
   // const { isLoading, data = [] } = useQuery<any>({
   //   queryKey: ["categories-data", user],
   //   queryFn:fetchCategoryData,
-    
+
   // });
 
   const { isLoading, data = [] } = useQuery<any>({
@@ -126,9 +125,9 @@ export default function Album() {
     queryFn: async () => {
       const cachedData = await getData("home-categories");
       if (cachedData) {
-        return cachedData; 
+        return cachedData;
       }
-      return fetchCategoryData(); 
+      return fetchCategoryData();
     },
   });
 
@@ -137,17 +136,15 @@ export default function Album() {
     queryFn: fetchRecentlPlayed,
   });
 
-
-  // const { isLoading: isOrder, data: orderData = [] } = useQuery({
-  //   queryKey: ["order-data", user],
-  //   queryFn: getOrderByUser,
-  // });
+  const { isLoading: isOrder, data: orderData = [] } = useQuery({
+    queryKey: ["order-data", user],
+    queryFn: getOrderByUser,
+  });
 
   const handleRefresh = async () => {
-     fetchnewCategories();
+    fetchnewCategories();
     fetchCategoryData();
     fetchRecentlPlayed();
-    ;
     // fetchAllCategories()
   };
 
