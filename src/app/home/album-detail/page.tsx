@@ -13,13 +13,13 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 import AudioDetailCard from "@components/AudioDetailCard";
 import InfoCard from "@components/InfoCard";
+import { getData } from "utils/indexDB";
 
 export default function AlbumDetail() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("id") || "";
   const { user }: any = useUser();
   const { showPlayer } = useAudioPlayer();
-  
 
   const fetchData = async () => {
     try {
@@ -38,6 +38,39 @@ export default function AlbumDetail() {
     queryKey: ["album-detail", productId, user?.id],
     queryFn: fetchData,
   });
+
+  const checkPurchase = async () => {
+    const orders: any[] = await getData("order-data");
+
+    if (orders && orders.length > 0) {
+      let index: number = -1;
+      orders.forEach((value: any, ind: number) => {
+        if (value.line_items && value.line_items[0].type !== "subscription") {
+          if (Number(value.line_items[0].id) === Number(productId)) {
+            index = ind;
+          }
+        }
+      });
+
+      if (index !== -1) {
+        return {
+          imageUrl: orders[index].line_items[0].image,
+          flag: 1,
+        };
+      } else {
+        return {
+          imageUrl: "/" + data?.local_image,
+          flag: 0,
+        };
+      }
+    }
+  };
+
+  const { isLoading: isLoadingCheckPurchase, data: checkPurchaseData = {} } =
+    useQuery<any>({
+      queryKey: ["check-purchase", productId],
+      queryFn: checkPurchase,
+    });
 
   const handleShowPlayer = () => {
     showPlayer({
@@ -71,7 +104,12 @@ export default function AlbumDetail() {
       <div className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image
-            src={"/" + data?.local_image}
+            src={
+              checkPurchaseData?.imageUrl === "/undefined" ||
+              checkPurchaseData?.imageUrl === undefined
+                ? `/${data?.local_image}`
+                : checkPurchaseData?.imageUrl
+            }
             alt="Background Image"
             layout="fill"
             objectFit="cover"
@@ -88,52 +126,75 @@ export default function AlbumDetail() {
           <div className="w-full">
             <Image
               className="block w-full shadow-xl"
-              src={"/" + data.local_image}
+              src={
+                checkPurchaseData?.imageUrl === "/undefined" ||
+                checkPurchaseData?.imageUrl === undefined
+                  ? `/${data?.local_image}`
+                  : checkPurchaseData?.imageUrl
+              }
               alt="Album"
               width={500}
               height={500}
             />
           </div>
-          {data?.user_info && data?.type !== "subscription" && (
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-              <button
-                className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                onClick={() => {
-                  handleShowPlayer();
-                }}
-              >
-                Hörprobe hören
-              </button>
-            </div>
-          )}
           <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-            {data?.type === "subscription" ? (
-              <>
-                {data?.flag === 1 ? (
-                  <>
-                    <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
-                      Du hast dieses Abo schon gekauft. Die Hörbücher befinden
-                      sich unter «Meine Hörbücher».
-                    </p>
-                  </>
-                ) : (
-                  <Link
-                    href={``}
-                    className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                  >
-                    1 Woche kostenlos hören
-                  </Link>
-                )}
-                <p className="text-black text-center font-100 mt-5 text-[16px]">
-                  Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong> €
-                  pro Monat
-                </p>
-                <p className="text-black text-center font-100 text-[16px]">
-                  Jederzeit über die App kündbar.
-                </p>
-              </>
-            ) : (
-              <>
+            {data?.type !== "subscription" &&
+              (checkPurchaseData?.flag === 1 ? (
+                <>
+                  <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
+                    Du hast dieses Abo schon gekauft. Die Hörbücher befinden
+                    sich unter «Meine Hörbücher».
+                  </p>
+                  <p className="text-black text-center font-100 mt-5 text-[16px]">
+                    Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong>{" "}
+                    € pro Monat
+                  </p>
+                  <p className="text-black text-center font-100 text-[16px]">
+                    Jederzeit über die App kündbar.
+                  </p>
+                </>
+              ) : (
+                <button
+                  className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  onClick={() => {
+                    handleShowPlayer();
+                  }}
+                >
+                  Hörprobe hören
+                </button>
+              ))}
+          </div>
+
+          {data?.type === "subscription" ? (
+            <div className="w-full bg-white/80 rounded-md p-3 mt-3">
+              {isLoadingCheckPurchase ? (
+                <FlieLoader />
+              ) : checkPurchaseData?.flag === 1 ? (
+                <>
+                  <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
+                    Du hast dieses Abo schon gekauft. Die Hörbücher befinden
+                    sich unter «Meine Hörbücher».
+                  </p>
+                </>
+              ) : (
+                <Link
+                  href={``}
+                  className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                >
+                  1 Woche kostenlos hören
+                </Link>
+              )}
+              <p className="text-black text-center font-100 mt-5 text-[16px]">
+                Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong> €
+                pro Monat
+              </p>
+              <p className="text-black text-center font-100 text-[16px]">
+                Jederzeit über die App kündbar.
+              </p>
+            </div>
+          ) : (
+            checkPurchaseData?.flag !== 1 && (
+              <div className="w-full bg-white/80 rounded-md p-3 mt-3">
                 <Link
                   href={`/home/album-detail?id=${data?.subscriptionProductID}`}
                   className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
@@ -157,9 +218,9 @@ export default function AlbumDetail() {
                     € {data.preview_price}
                   </b>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+            )
+          )}
 
           {data?.type !== "subscription" && (
             <>
