@@ -19,7 +19,7 @@ const OrderList: React.FC = () => {
   const { user }: any = useUser();
   const router = useRouter();
   const [filteredList, setFilteredList] = useState<any>({});
-  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const getOrderByUser = async () => {
     if (!user) {
@@ -99,8 +99,12 @@ const OrderList: React.FC = () => {
       list: product?.line_items[0].downloads,
       primaryCategory: product?.line_items[0].primaryCategory,
     };
-    handleCurrentAudio(0);
-    showPlayer(data);
+    if (!isVisible) {
+      // You might need to reset state variables here if you have them in the context
+      handleCurrentAudio(0); // Reset current audio index
+    }
+
+    showPlayer(data); // Update context with new player details
   };
 
   const renderAlbumItems = (item: any, index: any) => (

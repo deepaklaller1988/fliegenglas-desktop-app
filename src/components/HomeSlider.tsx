@@ -16,7 +16,7 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
   const router = useRouter();
-  const { showPlayer, handleCurrentAudio } = useAudioPlayer();
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const getFavourites = async () => {
     if (!user) {
@@ -76,8 +76,12 @@ export default function HomeSlider({ type }: any) {
           list: orders[index].line_items[0].downloads,
           primaryCategory: orders[index].line_items[0].primaryCategory,
         };
-        handleCurrentAudio(0);
-        showPlayer(data);
+        if (!isVisible) {
+          // You might need to reset state variables here if you have them in the context
+          handleCurrentAudio(0); // Reset current audio index
+        }
+
+        showPlayer(data); // Update context with new player details
       } else {
         router.push(`/home/album-detail?id=${product?.id}`);
       }
