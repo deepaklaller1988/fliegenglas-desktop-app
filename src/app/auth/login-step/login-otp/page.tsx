@@ -1,7 +1,5 @@
 "use client";
 import "./login-otp.css";
-import { HiArrowLeft } from "react-icons/hi";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "../../../../context/UserContext";
@@ -39,7 +37,6 @@ export default function Loginstep() {
         );
       } else {
         setUser(response);
-        // sessionStorage.setItem("user", JSON.stringify(response));
         setCookie("user", JSON.stringify(response));
         route.push("/home");
       }

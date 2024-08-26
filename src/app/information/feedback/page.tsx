@@ -7,14 +7,11 @@ import API from "@lib/API";
 import { useUser } from "context/UserContext";
 import Form from "@components/Form";
 import { toasterSuccess } from "@components/core/Toaster";
-import { useRouter } from "next/navigation";
-import useRole from "@hooks/useRole";
 
 export default function Feedback() {
   useTitle("Feedback");
   const [feedback, setFeedback] = useState("");
   const { user }: any = useUser();
-  const router = useRouter();
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await API.get(`sendFeedback/?email=${user.email}&feedback=${feedback}&time=${new Date().toString()}`);

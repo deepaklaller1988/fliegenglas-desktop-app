@@ -107,7 +107,6 @@ const OrderList: React.FC = () => {
   };
 
   const renderAlbumItems = (item: any, index: any) => (
-    console.log(item, "item"),
     <div
       className="w-full playNail p-3 pr-0 py-6 text-white"
       key={item?.category?.categoryid || `item-${index}`}

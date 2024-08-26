@@ -8,8 +8,9 @@ import React, { useState } from "react";
 import { removeIndexDbData } from "utils/indexDB";
 
 export default function AccountDelete() {
+  useTitle("Konto löschen");
   const router=useRouter()
-  useTitle("Account Delete");
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleLogout = () => {

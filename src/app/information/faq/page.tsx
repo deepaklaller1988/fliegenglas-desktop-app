@@ -5,7 +5,6 @@ import React from 'react';
 
 const FAQPage: React.FC = () => {
   useTitle("FAQ");
-
   return <PageContent slug="faq" />;
 };
 

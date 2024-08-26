@@ -9,7 +9,6 @@ export default function InternetStatus() {
   const handleRefresh = () => {
     window.location.reload(); 
   };
-  console.log(isOnline);
 
   useEffect(() => {
   }, [isOnline]);

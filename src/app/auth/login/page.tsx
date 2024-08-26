@@ -12,7 +12,7 @@ import { useState } from "react";
 import useTitle from "@hooks/useTitle";
 
 export default function Login() {
-  
+  useTitle("Login")
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { googleSignIn, appleSignIn } = UserAuth();
@@ -61,6 +61,7 @@ export default function Login() {
     queryKey: ["channel-data"],
     queryFn: getChannelData,
   });
+  
   const socialSignIn = async (e: any, platform: string) => {
     e.preventDefault();
     try {

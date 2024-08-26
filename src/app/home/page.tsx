@@ -2,7 +2,7 @@
 import "./album.css";
 import "react-slideshow-image/dist/styles.css";
 import API from "@lib/API";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
@@ -10,11 +10,12 @@ import { saveData, getData, putData } from "../../utils/indexDB";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 import RefreshButton from "@components/buttons/RefreshButton";
 import {  useState } from "react";
+import useTitle from "@hooks/useTitle";
 
 export default function Album() {
+  useTitle("Home")
   const { user }: any = useUser();
   const [refresh, setRefresh] = useState(false);
-  const queryClient: any = useQueryClient();
 
   const fetchAllCategories = async () => {
     if (!user) {
@@ -147,6 +148,7 @@ export default function Album() {
 
   return (
     <div className="rightSideSet">
+      
       <HomeSlider type="home" />
 
       <div className="w-full">

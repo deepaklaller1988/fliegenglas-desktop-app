@@ -89,6 +89,7 @@ export default function Search() {
      fecthSearchSuggestions(true);
      getChannelData(true);
   };
+  
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
