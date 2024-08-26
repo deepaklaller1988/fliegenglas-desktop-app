@@ -77,21 +77,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setFilteredSuggestions([]);
   };
 
-  const redirectFromSearch = (type:any, id:any) => {
+  const redirectFromSearch = (type: any, id: any) => {
     switch (type) {
-      case 'author':
+      case "author":
         router.push(`/home/artist-details?authorId=${id}&role=author`);
         break;
-      case 'artist':
+      case "artist":
         router.push(`/home/artist-details?artistId=${id}&role=artist`);
         break;
-      case 'category':
+      case "category":
         router.push(`/home/listing?id=${id}`);
         break;
-      case 'product':
+      case "product":
         console.log(`Invoke commonService.canPlay(${id})`);
         break;
-      case 'channel':
+      case "channel":
         router.push(`/search/channel-details?id=${id}`);
         break;
       default:
@@ -135,7 +135,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       <div className="mt-4">
         {filteredSuggestions.length === 0 && inputValue && (
-          <p>Kein Suchresultat gefunden.</p>
+          <p className="text-black p-4 bg-white/80 rounded-md">
+            Kein Suchresultat gefunden.
+          </p>
         )}
         <ul>
           {data && data.length > 0 ? (
@@ -183,7 +185,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     <section>
                       <div
                         className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
-                          onClick={() => redirectFromSearch(item.type, item.id)}
+                        onClick={() => redirectFromSearch(item.type, item.id)}
                       >
                         <span
                           className={`${

@@ -112,8 +112,7 @@ export default function AlbumDetail() {
                 : checkPurchaseData?.imageUrl
             }
             alt="Background Image"
-            layout="fill"
-            // objectFit="cover"
+            fill={true}
             className="blur-2xl opacity-65 object-cover"
           />
         </div>
@@ -138,9 +137,9 @@ export default function AlbumDetail() {
               height={500}
             />
           </div>
-          <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-            {data?.type !== "subscription" &&
-              (checkPurchaseData?.flag === 1 ? (
+          {data?.type !== "subscription" && (
+            <div className="w-full bg-white/80 rounded-md p-3 mt-3">
+              {checkPurchaseData?.flag === 1 ? (
                 <>
                   <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
                     Du hast dieses Abo schon gekauft. Die Hörbücher befinden
@@ -161,8 +160,9 @@ export default function AlbumDetail() {
                 >
                   Hörprobe hören
                 </button>
-              ))}
-          </div>
+              )}
+            </div>
+          )}
 
           {data?.type === "subscription" ? (
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">

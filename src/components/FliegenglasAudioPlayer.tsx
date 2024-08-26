@@ -128,8 +128,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-  if (!isVisible || !audioDetail) return null;
-
   const togglePlayPause = () => {
     setPlay(!play);
   };
@@ -268,12 +266,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   const handleMoreDetails = (audioDetail: any) => {
-    setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
-    setShowPopup(true); // Show the popup
+    setSelectedAudioDetail(audioDetail);
+    setShowPopup(true);
   };
 
   const handleClosePopup = () => {
-    setShowPopup(false); // Hide the popup
+    setShowPopup(false);
   };
 
   const handleEnded = () => {
@@ -283,6 +281,48 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       console.log("No more audios to play.");
     }
   };
+
+  const [audioUrl, setAudioUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (audioDetail?.list[currentAudio]?.data) {
+      const blobUrl = getAudioFromOfflineItem(
+        audioDetail.list[currentAudio].data
+      );
+      console.log("Generated Blob URL:", blobUrl);
+      setAudioUrl(blobUrl);
+
+      return () => {
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+        }
+      };
+    }
+  }, [audioDetail, currentAudio]);
+
+  const getAudioFromOfflineItem = (data: any) => {
+    if (!data || data.byteLength === 0) return "";
+    const audioBlob = new Blob([data], { type: "audio/mpeg" });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    return audioUrl;
+  };
+
+  // const getAudioFromOfflineItem = (data: any) => {
+  //   const audioBlob = new Blob([data], {
+  //     type: "audio/mpeg",
+  //   });
+  //   const audioUrl = URL.createObjectURL(audioBlob);
+  //   console.log(audioUrl, data, "00000");
+  //   return audioUrl;
+  // };
+
+  // const audioUrl = audioDetail?.list[currentAudio]?.m3u8
+  //   ? audioDetail.list[currentAudio].m3u8
+  //   : getAudioFromOfflineItem(audioDetail?.list[currentAudio]?.data);
+
+  // console.log(audioDetail, "audio");
+
+  if (!isVisible || !audioDetail) return null;
 
   return (
     <>
@@ -324,9 +364,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       : audioDetail?.imageUrl || "/image-placeholder.png"
                   }
                   alt="Background Image"
-                  layout="fill"
-                  objectFit="cover"
-                  className="blur-2xl opacity-65"
+                  fill={true}
+                  className="blur-2xl opacity-65 object-fit"
                 />
               </div>
               <div className="flex sm:flex-row flex-col justify-between items-center ml-5 h-full">
@@ -437,9 +476,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           : audioDetail?.imageUrl || "/image-placeholder.png"
                       }
                       alt="Background Image"
-                      layout="fill"
-                      objectFit="cover"
-                      className="blur-2xl opacity-65"
+                      fill={true}
+                      className="blur-2xl opacity-65 object-fit"
                     />
                   </div>
                   {showList && (
@@ -453,9 +491,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                                 "/image-placeholder.png"
                           }
                           alt="Background Image"
-                          layout="fill"
-                          objectFit="cover"
-                          className="blur-2xl opacity-65"
+                          fill={true}
+                          className="blur-2xl opacity-65 object-fit"
                         />
                       </div>
                       <div className="max-h-screen md:w-9/12 w-11/12 h-full m-auto">
@@ -538,9 +575,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                                 "/image-placeholder.png"
                           }
                           alt="Background Image"
-                          layout="fill"
-                          objectFit="cover"
-                          className="blur-2xl opacity-65"
+                          fill={true}
+                          className="blur-2xl opacity-65 object-fit"
                         />
                       </div>
 
