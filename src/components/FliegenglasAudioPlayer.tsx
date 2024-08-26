@@ -23,7 +23,6 @@ import AudioPlayerOptions from "./AudioPlayerOptions";
 
 const playbackRates = [0.25, 0.5, 1, 1.25, 1.5, 1.75, 2];
 
-
 interface FliegenglasAudioPlayerProps {
   audioType?: string;
   handleShowPlayer?(): any;
@@ -51,10 +50,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
   const playerRef = useRef<ReactPlayer>(null);
+  const sleepTimerRef: any = useRef(null);
+
   const {
     isVisible,
     audioDetail,
@@ -69,12 +69,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
-  const autoSleepTime=typeof window !== "undefined" && sessionStorage.getItem("autosleeptime")
+
+  const autoSleepTime: any =
+    typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
 
   const fetchCountData = async () => {
     try {
       let res: any = await API.get(
-        `getCounts?&post_id=${audioDetail?.categoryID}&user_id=${user?.id
+        `getCounts?&post_id=${audioDetail?.categoryID}&user_id=${
+          user?.id
         }&time=${new Date().toString()}`
       );
       setGetCounts(res);
@@ -102,15 +105,28 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   }, [isVisible, mini]);
 
-
   const [isPlaying, setIsPlaying] = useState(false);
 
+  useEffect(() => {
+    if (isPlaying && autoSleepTime) {
+      handleAutoSleepMode();
+    }
+    return () => {
+      clearTimeout(sleepTimerRef.current);
+    };
+  }, [isPlaying, autoSleepTime]);
+
   const handleAutoSleepMode = () => {
-    if (isPlaying) {
+    if (isPlaying && autoSleepTime) {
+      console.log(isPlaying, autoSleepTime, "==");
+      sleepTimerRef.current = setTimeout(() => {
+        console.log("Auto-sleep time reached. Pausing the player...");
+        setIsPlaying(false);
+        setPlay(false);
+      }, autoSleepTime);
     } else {
     }
   };
-
 
   if (!isVisible || !audioDetail) return null;
 
@@ -191,7 +207,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const handleLike = async () => {
     try {
       await API.post(
-        `likeAudioBook?&id=${audioDetail?.categoryID}&user_id=${user?.id
+        `likeAudioBook?&id=${audioDetail?.categoryID}&user_id=${
+          user?.id
         }&value=like&time=${new Date().toString()}`,
         {
           id: audioDetail?.categoryID,
@@ -208,7 +225,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const handleDislike = async () => {
     try {
       await API.post(
-        `dislikeAudioBook?&id=${audioDetail?.categoryID}&user_id=${user?.id
+        `dislikeAudioBook?&id=${audioDetail?.categoryID}&user_id=${
+          user?.id
         }&value=dislike&time=${new Date().toString()}`,
         {
           id: audioDetail?.categoryID,
@@ -231,7 +249,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
           url: audioDetail?.shareurl,
         });
         await API.post(
-          `share?&id=${audioDetail?.categoryID}&user_id=${user?.id
+          `share?&id=${audioDetail?.categoryID}&user_id=${
+            user?.id
           }&value=like&time=${new Date().toString()}`,
           {
             id: audioDetail?.categoryID,
@@ -247,7 +266,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       console.log("Web Share API not supported.");
     }
   };
-
 
   const handleMoreDetails = (audioDetail: any) => {
     setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
@@ -285,13 +303,16 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             height="0"
             onError={(error) => console.log("Error:", error)}
             onPlay={() => {
-              setIsPlaying(true); 
+              console.log("Playing");
+              setIsPlaying(true);
               handleAutoSleepMode();
             }}
             onPause={() => {
-              setIsPlaying(false); 
-              handleAutoSleepMode();
-                        }}
+              console.log("Paused");
+              setIsPlaying(false);
+              // handleAutoSleepMode();
+              clearTimeout(sleepTimerRef.current);
+            }}
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
@@ -336,10 +357,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 </div>
                 <div className="flex items-center sm:justify-center justify-between w-full">
                   <button
-                    className={`rounded-full duration-300 text-2xl p-4 ${currentAudio === 0
-                      ? "text-white/50"
-                      : "text-white hover:bg-white/10 cursor-pointer"
-                      }`}
+                    className={`rounded-full duration-300 text-2xl p-4 ${
+                      currentAudio === 0
+                        ? "text-white/50"
+                        : "text-white hover:bg-white/10 cursor-pointer"
+                    }`}
                     onClick={handlePreviousAudio}
                     disabled={currentAudio === 0 ? true : false}
                   >
@@ -373,10 +395,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     <TbRewindForward10 />
                   </button>
                   <button
-                    className={`p-4 rounded-full duration-300 ${audioDetail?.list.length > currentAudio + 1
-                      ? "text-white hover:bg-white/10 cursor-pointer"
-                      : "text-white/50"
-                      }`}
+                    className={`p-4 rounded-full duration-300 ${
+                      audioDetail?.list.length > currentAudio + 1
+                        ? "text-white hover:bg-white/10 cursor-pointer"
+                        : "text-white/50"
+                    }`}
                     style={{ fontSize: "10vw" }}
                     onClick={handleNextAudio}
                     disabled={
@@ -562,11 +585,12 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     </button>
 
                     <div
-                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${open ? "" : "hidden"
-                        }`}
+                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
+                        open ? "" : "hidden"
+                      }`}
                     >
                       <ul className="text-center">
-                        {playbackRates.map(rate => (
+                        {playbackRates.map((rate) => (
                           <li
                             key={rate}
                             className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
@@ -641,10 +665,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </div>
                       <div className="flex flex-row justify-between">
                         <button
-                          className={`p-4 rounded-full duration-300 ${currentAudio === 0
-                            ? "text-white/50"
-                            : "text-white hover:bg-white/10 cursor-pointer"
-                            }`}
+                          className={`p-4 rounded-full duration-300 ${
+                            currentAudio === 0
+                              ? "text-white/50"
+                              : "text-white hover:bg-white/10 cursor-pointer"
+                          }`}
                           disabled={currentAudio === 0 ? true : false}
                           onClick={handlePreviousAudio}
                         >
