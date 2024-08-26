@@ -83,6 +83,7 @@ export default function AlbumDetail() {
       backgroundImageUrl: data?.player_background_image,
       artist: data?.artist,
       shareurl: data?.shareurl,
+      paid: false,
     });
   };
 
@@ -156,9 +157,7 @@ export default function AlbumDetail() {
               ) : (
                 <button
                   className="w-full text-center bg-[#182e49] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                  onClick={() => {
-                    handleShowPlayer();
-                  }}
+                  onClick={() => handleShowPlayer()}
                 >
                   Hörprobe hören
                 </button>

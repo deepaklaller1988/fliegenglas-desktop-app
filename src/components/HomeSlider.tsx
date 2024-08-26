@@ -75,6 +75,7 @@ export default function HomeSlider({ type }: any) {
           shareurl: orders[index].line_items[0].shareurl,
           list: orders[index].line_items[0].downloads,
           primaryCategory: orders[index].line_items[0].primaryCategory,
+          paid: true,
         };
         if (!isVisible) {
           handleCurrentAudio(0);

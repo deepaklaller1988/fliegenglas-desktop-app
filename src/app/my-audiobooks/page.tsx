@@ -98,6 +98,7 @@ const OrderList: React.FC = () => {
       shareurl: product?.line_items[0].shareurl,
       list: product?.line_items[0].downloads,
       primaryCategory: product?.line_items[0].primaryCategory,
+      paid: true,
     };
     if (!isVisible) {
       handleCurrentAudio(0);

@@ -12,6 +12,7 @@ interface AudioDetail {
   shareurl: string;
   list?: any;
   primaryCategory?: any;
+  paid: boolean;
 }
 
 interface AudioPlayerContextType {
@@ -47,6 +48,7 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     setAudioDetail(detail);
     setIsVisible(true);
     setMini(false);
+    setPlay(true);
   };
 
   const closePlayer = () => {
