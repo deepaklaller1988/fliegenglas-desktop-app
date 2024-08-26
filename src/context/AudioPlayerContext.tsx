@@ -73,7 +73,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
 
   const handleCurrentAudio = (index: number) => {
     setCurrentAudio(index);
-  };
+    setPlay(true);
+    };
 
   const handleShowList = () => {
     setShowList(!showList);

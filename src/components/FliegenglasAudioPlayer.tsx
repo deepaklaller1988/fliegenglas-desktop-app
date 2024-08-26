@@ -117,14 +117,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   }, [isPlaying, autoSleepTime]);
 
   const handleAutoSleepMode = () => {
+    clearTimeout(sleepTimerRef.current);
     if (isPlaying && autoSleepTime) {
-      console.log(isPlaying, autoSleepTime, "==");
+      console.log("Setting auto-sleep timer...");
       sleepTimerRef.current = setTimeout(() => {
         console.log("Auto-sleep time reached. Pausing the player...");
         setIsPlaying(false);
         setPlay(false);
       }, autoSleepTime);
-    } else {
     }
   };
 
