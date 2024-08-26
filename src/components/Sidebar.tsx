@@ -8,6 +8,7 @@ import {
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarRightCollapseFilled,
 } from "react-icons/tb";
+import { removeIndexDbData } from "utils/indexDB";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -18,8 +19,9 @@ export default function Sidebar() {
     setIsOn(!isOn);
   };
 
-  const handleLogout=()=>{
+  const handleLogout=async()=>{
     deleteCookie("user");
+    await removeIndexDbData()
     window.location.href = "/auth/login";
   }
   const getLinkClasses = (path: string) => {

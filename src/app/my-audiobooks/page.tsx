@@ -9,7 +9,6 @@ import PageContent from "@components/PageContent";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { getImagePath } from "@lib/getImagePath";
 import { SkeletonLoader } from "@components/core/SkeletonLoader";
 import { useAudioPlayer } from "context/AudioPlayerContext";
@@ -17,7 +16,6 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 const OrderList: React.FC = () => {
   useTitle("Meine Hörbücher");
   const { user }: any = useUser();
-  const router = useRouter();
   const [filteredList, setFilteredList] = useState<any>({});
   const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
@@ -28,6 +26,7 @@ const OrderList: React.FC = () => {
     try {
       const response: any = await API.get(
         `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+        // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
       );
       await putData("order-data", response);
 
@@ -108,9 +107,10 @@ const OrderList: React.FC = () => {
   };
 
   const renderAlbumItems = (item: any, index: any) => (
+    console.log(item, "item"),
     <div
       className="w-full playNail p-3 pr-0 py-6 text-white"
-      key={item?.category?.categoryid}
+      key={item?.category?.categoryid || `item-${index}`}
     >
       {/* {index == 0 && (
         <div className="text-white p-8 shadow-lg text-center w-full">
@@ -120,7 +120,7 @@ const OrderList: React.FC = () => {
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
-          href={`/my-audiobooks/order-details?name=${item?.category?.name}&id=${item?.category?.categoryid}`}
+          href={`/my-audiobooks/order-details?name=${encodeURIComponent(item?.category?.name)}&id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
           Alle anzeigen
@@ -169,8 +169,7 @@ const OrderList: React.FC = () => {
           </div>
           <button
             onClick={handleRefresh}
-            className={`
-              ${isFetching ? "flie-loader !bg-gray-600 py-2 bg-gray-600" : ""}
+            className={`  
               bg-gray-600 hover:bg-gray-500 text-white py-2 px-10 rounded mt-10`}
           >
             Hörbücher aktualisieren

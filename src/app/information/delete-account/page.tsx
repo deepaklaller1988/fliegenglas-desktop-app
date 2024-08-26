@@ -5,6 +5,7 @@ import useTitle from "@hooks/useTitle";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { removeIndexDbData } from "utils/indexDB";
 
 export default function AccountDelete() {
   const router=useRouter()
@@ -15,8 +16,9 @@ export default function AccountDelete() {
     setIsPopupVisible(true);
   };
 
-  const confirmLogout = () => {
+  const confirmLogout = async() => {
     deleteCookie("user");
+    await removeIndexDbData()
     router.push("/delete-account/delete-confirmation")
   };
 

@@ -18,7 +18,7 @@ const useFetchPageData = (slug: string) => {
             setLoading(false);
             return;
           }
-          const url = `${process.env.NEXT_PUBLIC_URL}pages/?slug=${slug}&time=`;
+          const url = `${process.env.NEXT_PUBLIC_URL}pages/?slug=${slug}&time=${new Date().toString()}`;
           const response = await fetch(url);
           const data = await response.json();
 

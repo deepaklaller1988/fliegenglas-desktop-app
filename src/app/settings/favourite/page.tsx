@@ -84,7 +84,7 @@ export default function ChannelData() {
             <div className="py-4 pr-4 text-white">
               <HiArrowLeft className="text-lg ml-4" />
             </div>
-            <p className="text-lg ml-4 text-white w-full text-center">
+            <p className="text-lg text-white w-full text-center">
               Lieblingskategorien
             </p>
             <p className="text-lg ml-4 text-white mb-4">

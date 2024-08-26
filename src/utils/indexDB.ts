@@ -37,7 +37,25 @@ export async function putData(key: string, value: any): Promise<void> {
   return saveData(key, value);
 }
 
-export async function deleteData(key: string): Promise<void> {
-  const db = await initDB();
-  await db.delete(STORE_NAME, key);
+export async function deleteData(keysToRemove: string[]): Promise<void> {
+  try {
+    const db = await initDB();
+
+    for (const key of keysToRemove) {
+      await db.delete(STORE_NAME, key);
+    }
+  } catch (error) {
+    console.error('Error deleting data from IndexedDB:', error);
+  }
+}
+
+export async function removeIndexDbData(): Promise<void> {
+  const keysToRemove = ['channelData', 'order-data', 'tags'];
+
+  try {
+    await deleteData(keysToRemove);
+    console.log('Data successfully removed from IndexedDB.');
+  } catch (error) {
+    console.error('Error in removeIndexDbData:', error);
+  }
 }

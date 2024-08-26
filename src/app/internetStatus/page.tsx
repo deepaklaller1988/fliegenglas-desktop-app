@@ -16,7 +16,7 @@ export default function InternetStatus() {
 
   return (
     <>
-      <div className="time_out">
+      <div className="time_out w-full">
         <div className="wifi-section">
           <span>
             <img src="/assets/images/wifi.svg" alt="wifi-disabled" />

@@ -13,7 +13,7 @@ const OrderDetails = () => {
     const id = searchParams.get("id") || "";
     const name = searchParams.get("name") || "";
     const [orderList, setOrderList] = useState<any[]>([]);
-
+console.log(name);
 
     useEffect(() => {
         const fetchOrdersFromDB = async () => {
@@ -23,7 +23,6 @@ const OrderDetails = () => {
                 if (orders && orders.length > 0) {
                     const newSup: any = {};
                     orders.forEach((value: any) => {
-                        console.log(value)
                         if (value.line_items && value.line_items[0].type !== 'subscription') {
                             value.line_items[0].CategoryName.forEach((cat: string) => {
                                 if (!newSup[cat]) {
@@ -49,7 +48,7 @@ const OrderDetails = () => {
 
         <div className='rightSideSet'>
             {name && (
-                <HeaderLink className='py-4 pr-4 text-white flex items-center'
+                <HeaderLink className='py-4 pr-4 ml-4 text-white flex items-center'
                  onClick={() => router.back()}
                  title={name}
                  />

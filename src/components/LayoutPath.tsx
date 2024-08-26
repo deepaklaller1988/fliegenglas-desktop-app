@@ -9,7 +9,7 @@ const LayoutPath = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const isDashboard = () => {
-    return !route.includes("auth") ? !route.includes("maintenance") ? true : false : false;
+    return !route.includes("auth") && !route.includes("internetStatus")? !route.includes("maintenance") ? true : false : false;
   }
 
 

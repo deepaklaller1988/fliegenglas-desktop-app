@@ -8,9 +8,8 @@ import AlbumSection from "@components/AlbumCard";
 import HomeSlider from "@components/HomeSlider";
 import { saveData, getData, putData } from "../../utils/indexDB";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
-import useOnlineStatus from "@hooks/UseOnlineStatus";
 import RefreshButton from "@components/buttons/RefreshButton";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 export default function Album() {
   const { user }: any = useUser();
@@ -110,9 +109,7 @@ export default function Album() {
       console.log(error);
       return [];
     }
-  };
-
-  useOnlineStatus();
+  }
 
   // const { isLoading, data = [] } = useQuery<any>({
   //   queryKey: ["categories-data", user],
