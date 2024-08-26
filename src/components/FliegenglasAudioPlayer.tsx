@@ -69,13 +69,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
-<<<<<<< HEAD
-  console.log(play, "play");
-  const autoSleepTime =
-=======
 
   const autoSleepTime: any =
->>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
 
   const fetchCountData = async () => {
@@ -110,20 +105,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   }, [isVisible, mini]);
 
-<<<<<<< HEAD
-  // useEffect(() => {
-  //   if(play==true)
-  //   handleAutoSleepMode();
-  // }, [play]);
-
-  // const handleAutoSleepMode=()=>{
-  //   if(onPlay && autoSleepTime){
-  //     console.log("first")
-  //   }
-  // }
-
-  // if (!isVisible || !audioDetail) return null;
-=======
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -148,7 +129,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   if (!isVisible || !audioDetail) return null;
->>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
 
   const togglePlayPause = () => {
     setPlay(!play);
@@ -158,10 +138,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     played: number;
     playedSeconds: number;
   }) => {
-<<<<<<< HEAD
-    console.log(progress, "progress");
-=======
->>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
     if (!seeking) {
       setPlayed(progress.played);
       setPlayedSeconds(progress.playedSeconds);
@@ -614,7 +590,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           x {playbackRate}
                         </button>
 
-<<<<<<< HEAD
                         <div
                           className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
                             open ? "" : "hidden"
@@ -641,33 +616,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </button>
                     </>
                   )}
-=======
-                    <div
-                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
-                        open ? "" : "hidden"
-                      }`}
-                    >
-                      <ul className="text-center">
-                        {playbackRates.map((rate) => (
-                          <li
-                            key={rate}
-                            className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
-                            onClick={() => handlePlaybackRateChange(rate)}
-                          >
-                            {rate}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <button
-                    className="p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white"
-                    // onClick={handleDownloadAll}
-                    onClick={() => handleMoreDetails(audioDetail)}
-                  >
-                    <HiDotsHorizontal />
-                  </button>
->>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
                 </div>
                 <div className="flex md:flex-row flex-col h-full">
                   <div className="w-full h-96 relative">
