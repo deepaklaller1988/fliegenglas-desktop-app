@@ -50,10 +50,11 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
   const playerRef = useRef<ReactPlayer>(null);
+  const sleepTimerRef: any = useRef(null);
+
   const {
     isVisible,
     audioDetail,
@@ -68,8 +69,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     setPlay,
   } = useAudioPlayer();
   const { user }: any = useUser();
+<<<<<<< HEAD
   console.log(play, "play");
   const autoSleepTime =
+=======
+
+  const autoSleepTime: any =
+>>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
 
   const fetchCountData = async () => {
@@ -104,6 +110,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   }, [isVisible, mini]);
 
+<<<<<<< HEAD
   // useEffect(() => {
   //   if(play==true)
   //   handleAutoSleepMode();
@@ -116,6 +123,32 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   // }
 
   // if (!isVisible || !audioDetail) return null;
+=======
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (isPlaying && autoSleepTime) {
+      handleAutoSleepMode();
+    }
+    return () => {
+      clearTimeout(sleepTimerRef.current);
+    };
+  }, [isPlaying, autoSleepTime]);
+
+  const handleAutoSleepMode = () => {
+    if (isPlaying && autoSleepTime) {
+      console.log(isPlaying, autoSleepTime, "==");
+      sleepTimerRef.current = setTimeout(() => {
+        console.log("Auto-sleep time reached. Pausing the player...");
+        setIsPlaying(false);
+        setPlay(false);
+      }, autoSleepTime);
+    } else {
+    }
+  };
+
+  if (!isVisible || !audioDetail) return null;
+>>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
 
   const togglePlayPause = () => {
     setPlay(!play);
@@ -125,7 +158,10 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     played: number;
     playedSeconds: number;
   }) => {
+<<<<<<< HEAD
     console.log(progress, "progress");
+=======
+>>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
     if (!seeking) {
       setPlayed(progress.played);
       setPlayedSeconds(progress.playedSeconds);
@@ -256,7 +292,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   const handleMoreDetails = (audioDetail: any) => {
-    console.log("Clicked button with audioDetail:", audioDetail);
     setSelectedAudioDetail(audioDetail); // Set the audioDetail from the button click
     setShowPopup(true); // Show the popup
   };
@@ -267,10 +302,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
 
   const handleEnded = () => {
     if (audioDetail?.list.length > currentAudio + 1) {
-      // Move to the next audio
       handleCurrentAudio(currentAudio + 1);
     } else {
-      // Optionally handle the case when there are no more audios
       console.log("No more audios to play.");
     }
   };
@@ -293,8 +326,17 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             width="0"
             height="0"
             onError={(error) => console.log("Error:", error)}
-            onPlay={() => console.log("Playing")}
-            onPause={() => console.log("Paused")}
+            onPlay={() => {
+              console.log("Playing");
+              setIsPlaying(true);
+              handleAutoSleepMode();
+            }}
+            onPause={() => {
+              console.log("Paused");
+              setIsPlaying(false);
+              // handleAutoSleepMode();
+              clearTimeout(sleepTimerRef.current);
+            }}
           />
           {mini ? (
             <div className="sm:h-20 h-40 bottom-0 w-full fixed z-10">
@@ -572,6 +614,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           x {playbackRate}
                         </button>
 
+<<<<<<< HEAD
                         <div
                           className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
                             open ? "" : "hidden"
@@ -598,6 +641,33 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       </button>
                     </>
                   )}
+=======
+                    <div
+                      className={`bg-black/80 rounded-2xl py-4 absolute z-10 mt-20 transition-all duration-300 ${
+                        open ? "" : "hidden"
+                      }`}
+                    >
+                      <ul className="text-center">
+                        {playbackRates.map((rate) => (
+                          <li
+                            key={rate}
+                            className="p-2 px-6 hover:bg-black cursor-pointer duration-300 rounded-xl text-white"
+                            onClick={() => handlePlaybackRateChange(rate)}
+                          >
+                            {rate}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <button
+                    className="p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white"
+                    // onClick={handleDownloadAll}
+                    onClick={() => handleMoreDetails(audioDetail)}
+                  >
+                    <HiDotsHorizontal />
+                  </button>
+>>>>>>> e59db66f23196b794a75b1d303412fee0ddbd011
                 </div>
                 <div className="flex md:flex-row flex-col h-full">
                   <div className="w-full h-96 relative">

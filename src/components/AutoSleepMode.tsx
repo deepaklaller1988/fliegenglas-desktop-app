@@ -14,21 +14,20 @@ export default function AutoSleepMode() {
     setSelectedButton(buttonId);
 
     {
-      buttonId === "0" ?
-      sessionStorage.removeItem("autosleeptime")
-      :
-      sessionStorage.setItem("autosleeptime", buttonId);
+      buttonId === "0"
+        ? sessionStorage.removeItem("autosleeptime")
+        : sessionStorage.setItem("autosleeptime", buttonId);
     }
   };
-
 
   return (
     <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex flex-col gap-2">
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-center w-full text-black">Autosleep Modus</h1>
         <button
-          className={`${selectedButton === "0" ? "bg-[#182e49]" : "bg-[#6c7279]"
-            } p-5 py-1 text-white text-sm block rounded-md absolute right-14`}
+          className={`${
+            selectedButton === "0" ? "bg-[#182e49]" : "bg-[#6c7279]"
+          } p-5 py-1 text-white text-sm block rounded-md absolute right-14`}
           onClick={() => autoSleepTime("0")}
         >
           Off
@@ -39,22 +38,31 @@ export default function AutoSleepMode() {
       </p>
       <div className="flex flex-row gap-5">
         <button
-          className={`${selectedButton === "60000" ? "bg-[#182e49] hover:bg-[#182e49]" : "bg-[#6c7279]"
-            } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
-          onClick={() => autoSleepTime("60000")}
+          className={`${
+            selectedButton === "900000"
+              ? "bg-[#182e49] hover:bg-[#182e49]"
+              : "bg-[#6c7279]"
+          } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
+          onClick={() => autoSleepTime("900000")}
         >
           15 min
         </button>
         <button
-          className={`${selectedButton === "1800000" ? "bg-[#182e49] hover:bg-[#182e49]" : "bg-[#6c7279]"
-            } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
+          className={`${
+            selectedButton === "1800000"
+              ? "bg-[#182e49] hover:bg-[#182e49]"
+              : "bg-[#6c7279]"
+          } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
           onClick={() => autoSleepTime("1800000")}
         >
           30 min
         </button>
         <button
-          className={`${selectedButton === "-1" ? "bg-[#182e49] hover:bg-[#182e49]" : "bg-[#6c7279]"
-            } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
+          className={`${
+            selectedButton === "-1"
+              ? "bg-[#182e49] hover:bg-[#182e49]"
+              : "bg-[#6c7279]"
+          } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
           onClick={() => autoSleepTime("-1")}
         >
           Ende Kapitel

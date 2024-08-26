@@ -113,8 +113,8 @@ export default function AlbumDetail() {
             }
             alt="Background Image"
             layout="fill"
-            objectFit="cover"
-            className="blur-2xl opacity-65"
+            // objectFit="cover"
+            className="blur-2xl opacity-65 object-cover"
           />
         </div>
         <div className="w-full p-3 relative z-10">
