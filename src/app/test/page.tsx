@@ -1,107 +1,113 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { generateToken } from "utils/token";
 
-const TestAudioPlayer = () => {
-  const [audioUrl, setAudioUrl] = useState<string>("");
+const indexDBSetup = async () => {
+  const dbPromise = indexedDB.open("mp3DB", 1);
 
-  // Function to convert ArrayBuffer to Uint8Array (if needed)
-  const arrayBufferToUint8Array = (arrayBuffer: ArrayBuffer): Uint8Array => {
-    return new Uint8Array(arrayBuffer);
+  dbPromise.onupgradeneeded = (event) => {
+    const db = (event.target as IDBOpenDBRequest).result;
+    if (!db.objectStoreNames.contains("mp3Store")) {
+      db.createObjectStore("mp3Store");
+    }
   };
 
-  useEffect(() => {
-    const loadAudio = async () => {
-      try {
-        // Replace these with your actual database and store names
-        const dbName = "audioDB";
-        const storeName = "audios";
-        const key = 76771; // Replace with the actual key
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    dbPromise.onsuccess = (event) =>
+      resolve((event.target as IDBOpenDBRequest).result);
+    dbPromise.onerror = () => reject(new Error("Failed to open IndexedDB"));
+  });
+};
 
-        const uint8Array: any = await getAudioDataFromIndexedDB(
-          dbName,
-          storeName,
-          key
-        );
-        if (!uint8Array) throw new Error("No data found for the given key.");
-        console.log(uint8Array);
+const storeMp3InDB = async (data: ArrayBuffer) => {
+  const db = await indexDBSetup();
+  const transaction = db.transaction("mp3Store", "readwrite");
+  const store = transaction.objectStore("mp3Store");
+  store.put(data, "mp3File");
+  return new Promise<void>((resolve, reject) => {
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () =>
+      reject(new Error("Failed to store MP3 in IndexedDB"));
+  });
+};
 
-        // console.log(audioBlob, uint8Array?.audios[0]?.data, "ooooooo");
+const retrieveMp3FromDB = async (): Promise<ArrayBuffer | null> => {
+  const db = await indexDBSetup();
+  const transaction = db.transaction("mp3Store", "readonly");
+  const store = transaction.objectStore("mp3Store");
+  return new Promise<ArrayBuffer | null>((resolve, reject) => {
+    const request = store.get("mp3File");
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () =>
+      reject(new Error("Failed to retrieve MP3 from IndexedDB"));
+  });
+};
 
-        let nn: any = new Uint8Array(uint8Array?.audios[0]?.data);
+const playAudioFromDB = async () => {
+  try {
+    const audioData = await retrieveMp3FromDB();
+    if (!audioData) {
+      alert("No MP3 file found in IndexedDB");
+      return;
+    }
 
-        console.log(nn, "NN");
+    const blob = new Blob([audioData], { type: "audio/mpeg" });
+    const url = URL.createObjectURL(blob);
 
-        const audioBlob = new Blob([nn], {
-          type: "audio/mpeg",
-        });
+    const audio = new Audio(url);
+    audio.play();
+  } catch (error: any) {
+    alert(`Error: ${error.message}`);
+  }
+};
 
-        console.log(audioBlob, "audioBlob");
+const downloadAndStoreMp3 = async () => {
+  let payload = {
+    remoteAudioUrl:
+      "https://fliegenglas.app/wp-content/uploads/2024/07/22gg240800.mp3",
+    audioName: "test-audio.mp3",
+  };
+  let token = await generateToken(payload);
+  const response = await fetch("/api/download-audio", {
+    method: "POST",
+    body: JSON.stringify(token),
+  });
+  const data = await response.arrayBuffer();
+  await storeMp3InDB(data);
+};
 
-        const testAudioUrl = URL.createObjectURL(audioBlob);
+const Home = () => {
+  const [loading, setLoading] = useState(false);
 
-        console.log(testAudioUrl, "testAudioUrl");
+  const handleDownloadAndStoreClick = async () => {
+    setLoading(true);
+    try {
+      await downloadAndStoreMp3();
+      alert("MP3 file stored in IndexedDB");
+    } catch (error) {
+      console.log(error, "ERROR");
+      alert("Error storing MP3 file");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setAudioUrl(testAudioUrl);
-
-        return () => {
-          if (audioUrl) {
-            URL.revokeObjectURL(audioUrl);
-          }
-        };
-      } catch (error) {
-        console.error("Error loading audio:", error);
-      }
-    };
-
-    loadAudio();
-  }, []);
-
-  // Function to retrieve data from IndexedDB using db_name, store_name, and key
-  const getAudioDataFromIndexedDB = async (
-    db_name: string,
-    store_name: string,
-    key: IDBValidKey
-  ): Promise<Uint8Array | null> => {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(db_name);
-
-      request.onsuccess = () => {
-        const db = request.result;
-        const transaction = db.transaction([store_name], "readonly");
-        const store = transaction.objectStore(store_name);
-        const dataRequest = store.get(key);
-
-        dataRequest.onsuccess = () => {
-          resolve((dataRequest.result as Uint8Array) || null);
-        };
-
-        dataRequest.onerror = (event) => {
-          reject((event as any).target.error);
-        };
-      };
-
-      request.onerror = (event) => {
-        reject((event as any).target.error);
-      };
-    });
+  const handlePlayClick = async () => {
+    await playAudioFromDB();
   };
 
   return (
     <div>
-      <audio
-        src={audioUrl}
-        controls
-        autoPlay
-        onPlay={() => console.log("Playing")}
-        onPause={() => console.log("Paused")}
-        onError={(event) => {
-          const error = event.nativeEvent;
-          console.error("Playback error:", error);
-        }}
-      />
+      <h1>Download, Store, and Play MP3</h1>
+      <button onClick={handleDownloadAndStoreClick} disabled={loading}>
+        {loading ? "Processing..." : "Download and Store MP3"}
+      </button>
+      <button onClick={handlePlayClick} disabled={loading}>
+        Play MP3 from IndexedDB
+      </button>
     </div>
   );
 };
 
-export default TestAudioPlayer;
+export default Home;

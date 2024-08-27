@@ -21,7 +21,7 @@ export const saveAudios = async (
     primaryCategory: string,
     imageUrl: string,
     shareurl: string,
-    audios: Array<{ id: string; data: ArrayBuffer; name: string; }>,
+    audios: Array<{ id: string; data: ArrayBuffer; title: string; duration: string; }>,
 ) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
