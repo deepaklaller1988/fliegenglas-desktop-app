@@ -20,6 +20,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import AudioPlayerOptions from "./AudioPlayerOptions";
+import { useQuery } from "@tanstack/react-query";
 
 const playbackRates = [0.25, 0.5, 1, 1.25, 1.5, 1.75, 2];
 
@@ -41,6 +42,7 @@ interface GetCounts {
 const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   children,
 }) => {
+  const { user }: any = useUser();
   const [played, setPlayed] = useState(0);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -69,7 +71,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     play,
     setPlay,
   } = useAudioPlayer();
-  const { user }: any = useUser();
 
   const autoSleepTime: any =
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
@@ -81,10 +82,13 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
         }&time=${new Date().toString()}`
       );
       setGetCounts(res);
+      return res;
+
     } catch (err) {
       console.error(err);
     }
   };
+
 
   useEffect(() => {
     // setPlay(true);

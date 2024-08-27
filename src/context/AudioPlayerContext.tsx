@@ -60,6 +60,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     setPlay(true);
   };
 
+  console.log(audioDetail,"audio===");
+
   const closePlayer = () => {
     setIsVisible(false);
     setMini(false);
