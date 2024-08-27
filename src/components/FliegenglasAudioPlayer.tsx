@@ -41,7 +41,6 @@ interface GetCounts {
 const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   children,
 }) => {
-  // const [play, setPlay] = useState(true);
   const [played, setPlayed] = useState(0);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -51,7 +50,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedAudioDetail, setSelectedAudioDetail] = useState(null);
+  const [audioUrl, setAudioUrl] = useState<string>("");
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const playerRef = useRef<ReactPlayer>(null);
   const sleepTimerRef: any = useRef(null);
 
@@ -105,10 +106,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   }, [isVisible, mini]);
 
-  const [isPlaying, setIsPlaying] = useState(false);
-
   useEffect(() => {
-    if (isPlaying && autoSleepTime) {
+    if (isPlaying && autoSleepTime !== -1) {
       handleAutoSleepMode();
     }
     return () => {
@@ -116,20 +115,34 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     };
   }, [isPlaying, autoSleepTime]);
 
+  useEffect(() => {
+    if (audioDetail?.list[currentAudio]?.data) {
+      const blobUrl = getAudioFromOfflineItem(
+        audioDetail.list[currentAudio].data
+      );
+      console.log("Generated Blob URL:", blobUrl);
+      setAudioUrl(blobUrl);
+
+      return () => {
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+        }
+      };
+    }
+  }, [audioDetail, currentAudio]);
+  
   const handleAutoSleepMode = () => {
     clearTimeout(sleepTimerRef.current);
-    if (isPlaying && autoSleepTime) {
+    if (isPlaying && autoSleepTime > 0) {
       console.log("Setting auto-sleep timer...");
       sleepTimerRef.current = setTimeout(() => {
         console.log("Auto-sleep time reached. Pausing the player...");
         setIsPlaying(false);
         setPlay(false);
       }, autoSleepTime);
+    } else if (autoSleepTime === -1) {
+      console.log("Auto-sleep is disabled. Continuing playback...");
     }
-  };
-
-  const togglePlayPause = () => {
-    setPlay(!play);
   };
 
   const handleProgress = (progress: {
@@ -147,6 +160,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   const handleNextAudio = () => {
+    
     if (audioDetail?.list.length > currentAudio + 1) {
       handleCurrentAudio(currentAudio + 1);
     } else {
@@ -162,29 +176,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     }
   };
 
-  const seekBackward = () => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(playedSeconds - 10);
-    }
-  };
-
-  const seekForward = () => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(playedSeconds + 10);
-    }
-  };
-
   const handlePlaybackRateChange = (rate: number) => {
     setPlaybackRate(rate);
     setOpen(!open);
-  };
-
-  const toggleOpen = () => {
-    setOpen(!open);
-  };
-
-  const minimizePlayer = () => {
-    miniPlayer();
   };
 
   const handleSeekMouseDown = () => {
@@ -266,7 +260,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   };
 
   const handleMoreDetails = (audioDetail: any) => {
-    setSelectedAudioDetail(audioDetail);
     setShowPopup(true);
   };
 
@@ -276,30 +269,46 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
 
   const handleEnded = () => {
     if (audioDetail?.list.length > currentAudio + 1) {
-      handleCurrentAudio(currentAudio + 1);
+      handleCurrentAudio(currentAudio + 1); 
+      if (autoSleepTime == -1) {
+        setIsPlaying(false); 
+        setPlay(false);
+      } else {
+        setIsPlaying(true);
+        setPlay(true);
+      }
     } else {
-      console.log("No more audios to play.");
+      setIsPlaying(false);
+      setPlay(false); 
     }
   };
 
-  const [audioUrl, setAudioUrl] = useState<string>("");
-
-  useEffect(() => {
-    if (audioDetail?.list[currentAudio]?.data) {
-      const blobUrl = getAudioFromOfflineItem(
-        audioDetail.list[currentAudio].data
-      );
-      console.log("Generated Blob URL:", blobUrl);
-      setAudioUrl(blobUrl);
-
-      return () => {
-        if (audioUrl) {
-          URL.revokeObjectURL(audioUrl);
-        }
-      };
+  const seekBackward = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(playedSeconds - 10);
     }
-  }, [audioDetail, currentAudio]);
+  };
 
+  const togglePlayPause = () => {
+    setPlay(!play);
+  };
+
+  const seekForward = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(playedSeconds + 10);
+    }
+  };
+
+
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
+
+  const minimizePlayer = () => {
+    miniPlayer();
+  };
+
+ 
   const getAudioFromOfflineItem = (data: any) => {
     if (!data || data.byteLength === 0) return "";
     const audioBlob = new Blob([data], { type: "audio/mpeg" });
@@ -350,7 +359,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             onPause={() => {
               console.log("Paused");
               setIsPlaying(false);
-              // handleAutoSleepMode();
               clearTimeout(sleepTimerRef.current);
             }}
           />

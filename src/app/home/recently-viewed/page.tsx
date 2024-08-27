@@ -1,4 +1,5 @@
 
+"use client"
 import Homelisting from '@components/Homelisting'
 import useTitle from '@hooks/useTitle'
 import React from 'react'
