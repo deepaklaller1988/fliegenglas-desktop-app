@@ -5,8 +5,8 @@ import { GiFly } from "react-icons/gi";
 import { GoHome } from "react-icons/go";
 import { IoChatboxEllipsesOutline, IoLogOut, IoSearch, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
-import { PiDotsThreeOutlineDuotone, PiDownloadSimpleBold } from "react-icons/pi";
-import { TbBellRinging2Filled, TbLayoutSidebarLeftCollapseFilled, TbLayoutSidebarRightCollapseFilled } from "react-icons/tb";
+import {  PiDownloadSimpleBold } from "react-icons/pi";
+import { TbBellRinging2Filled } from "react-icons/tb";
 import { TiUserDelete } from "react-icons/ti";
 
 interface MenuItem {
@@ -22,7 +22,6 @@ interface MenuItem {
 }
 export default class Menu {
     static list: MenuItem[] = [
-        // 8
         {
             id: "home",
             item: "Startseite",
@@ -118,7 +117,6 @@ export default class Menu {
     ];
 
     static subInfoList: MenuItem[] = [
-        // 8
         {
             id: "about",
             item: "Über uns",

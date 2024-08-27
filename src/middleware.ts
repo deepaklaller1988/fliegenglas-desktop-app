@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
 
-
-
 export async function middleware(request: NextRequest) {
   const excludedPaths = [
     '/_next/static/',
@@ -29,7 +27,6 @@ export async function middleware(request: NextRequest) {
 
   if (user) {
     const token = JSON.parse(user);
-    // let { data, success }: any = await checkToken(token, "access");
     if (request.nextUrl.pathname.startsWith('/auth')) {
       return NextResponse.redirect(new URL('/home', request.url));
     }

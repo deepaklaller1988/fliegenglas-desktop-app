@@ -8,13 +8,11 @@ import AudioDetailCard from "./AudioDetailCard";
 import ProductDes from "./ProductDes";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import AutoSleepMode from "./AutoSleepMode";
-import { saveAudios, getAudioByID } from "utils/indexeddb";
+import {  getAudioByID } from "utils/indexeddb";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function AudioPlayerOptions({ audioDetail }: any) {
   const { user }: any = useUser();
-  // const [downloading, setDownloading] = useState<boolean>(false);
-  // const [alreadyDownloaded, setAlreadyDownloaded] = useState<boolean>(false);
   const {
     handleDownloadAll,
     downloadPercentage,
@@ -22,7 +20,6 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
     downloading,
     setAlreadyDownloaded
   } = useAudioPlayer();
-  // const [downloadPercentage, setDownloadPercentage] = useState<number>(0);
 
   useEffect(() => {
     let checkDownload = async () => {

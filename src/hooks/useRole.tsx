@@ -6,8 +6,6 @@ export default function useRole() {
   const [loading, setLoading] = useState(true);
   const [roleData, setRoleData] = useState<any>({});
 
-  console.log(roleData);
-
   useEffect(() => {
     async function check() {
       if (user) {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { saveAudios, getAudioByID } from "utils/indexeddb";
+import { saveAudios } from "utils/indexeddb";
 
 interface AudioDetail {
   categoryID: string;

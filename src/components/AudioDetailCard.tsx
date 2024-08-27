@@ -2,12 +2,11 @@
 
 import { useAudioPlayer } from "context/AudioPlayerContext";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const AudioDetailCard = ({ imageSrc, title, name, linkHref }: any) => {
   const router = useRouter();
-  const { showPlayer, miniPlayer } = useAudioPlayer();
+  const {  miniPlayer } = useAudioPlayer();
   return (
     <div className="w-full bg-white/80 rounded-md p-3 mt-3 flex gap-3">
       <span className="min-w-[85px] max-w-[85px]">
