@@ -14,7 +14,7 @@ export default function AutoSleepMode() {
     setSelectedButton(buttonId);
 
     {
-      buttonId === "0"
+      buttonId == "0"
         ? sessionStorage.removeItem("autosleeptime")
         : sessionStorage.setItem("autosleeptime", buttonId);
     }
@@ -39,11 +39,11 @@ export default function AutoSleepMode() {
       <div className="flex flex-row gap-5">
         <button
           className={`${
-            selectedButton === "180000"
+            selectedButton === "900000"
               ? "bg-[#182e49] hover:bg-[#182e49]"
               : "bg-[#6c7279]"
           } w-full hover:bg-[#555a61] text-white p-2 rounded-md text-sm text-center duration-300`}
-          onClick={() => autoSleepTime("180000")}
+          onClick={() => autoSleepTime("900000")}
         >
           15 min
         </button>
