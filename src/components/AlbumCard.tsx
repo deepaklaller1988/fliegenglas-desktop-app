@@ -20,44 +20,49 @@ const AlbumSection = ({
 
   const openPlayerOrDetails = async (product: any) => {
     const orders: any[] = await getData("order-data");
-
-    if (orders && orders.length > 0) {
-      let index: number = -1;
-      orders.forEach((value: any, ind: number) => {
-        if (value.line_items && value.line_items[0].type !== "subscription") {
-          if (
-            Number(value.line_items[0].id) ===
-            Number(product?.id || product?.product_id)
-          ) {
-            index = ind;
-          }
-        }
-      });
-
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+    
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+    
       if (index !== -1) {
-        const data: any = {
-          categoryID: Number(product?.id || product?.product_id),
-          categoryName: orders[index].line_items[0].name,
-          imageUrl: orders[index].line_items[0].image,
-          backgroundImageUrl:
-            orders[index].line_items[0].player_background_image,
-          artist: orders[index].line_items[0].artist,
-          shareurl: orders[index].line_items[0].shareurl,
-          list: orders[index].line_items[0].downloads,
-          primaryCategory: orders[index].line_items[0].primaryCategory,
-          paid: true,
-        };
-        if (!isVisible) {
-          handleCurrentAudio(0);
+        const lineItem = orders[index]?.line_items?.[0];
+    
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+    
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+    
+          showPlayer(data);
+          return; 
         }
-
-        showPlayer(data);
-      } else {
-        router.push(
-          `/home/album-detail?id=${product?.id || product?.product_id}`
-        );
+      }
+    
+      router.push(`/home/album-detail?id=${productId}`);
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
       }
     }
+    
   };
 
   const renderAlbumItems = (item: any) => (
