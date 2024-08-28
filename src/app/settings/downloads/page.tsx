@@ -52,8 +52,6 @@ export default function Downloads() {
     showPlayer(data);
   };
 
-  console.log(offlineAudios, "offlineAudios");
-
   return (
     <>
       <div id="login-page" className="px-4 w-full">
@@ -70,7 +68,7 @@ export default function Downloads() {
                 </h2>
                 {offlineAudios === undefined ? (
                   <FlieLoader />
-                ) : offlineAudios ? (
+                ) : offlineAudios.length > 0 ? (
                   <div>
                     <p>
                       Derzeit belegen Deine Fliegenglas Downloads {999} an

@@ -21,11 +21,23 @@ export const saveAudios = async (
     primaryCategory: string,
     imageUrl: string,
     shareurl: string,
-    audios: Array<{ id: string; data: ArrayBuffer; title: string; duration: string; }>,
+    newAudios: Array<{ id: string; data: ArrayBuffer; title: string; duration: string; name: string; }>
 ) => {
     const db = await openDB();
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
+
+    const existingEntry = await new Promise<any>((resolve, reject) => {
+        const request = store.get(categoryID);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+
+    let audios = newAudios;
+
+    if (existingEntry) {
+        audios = [...existingEntry.audios, ...newAudios];
+    }
 
     store.put({
         categoryID,
