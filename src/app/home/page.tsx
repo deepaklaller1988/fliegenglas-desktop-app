@@ -9,7 +9,6 @@ import HomeSlider from "@components/HomeSlider";
 import { saveData, getData, putData } from "../../utils/indexDB";
 import PrivacyPolicyLink from "@components/PrivacyPolicyLink";
 import RefreshButton from "@components/buttons/RefreshButton";
-import {  useState } from "react";
 import useTitle from "@hooks/useTitle";
 
 export default function Album() {
@@ -22,7 +21,7 @@ export default function Album() {
     }
     try {
       const cachedData = await getData("categories");
-      if (cachedData ) {
+      if (cachedData) {
         return cachedData;
       }
       const response: any = await API.get(
@@ -37,15 +36,19 @@ export default function Album() {
     }
   };
 
-  const fetchCategoryData = async () => {
+  const fetchJsonCategoryData = async () => {
     if (!user) {
       return [];
     }
     try {
+      const cachedData = await getData("cat-json");
+      if (cachedData) {
+        return cachedData;
+      }
       const response: any = await API.get(
         `/catData.json?&time=${new Date().toString()}`
       );
-      // await saveData("home-categories", response);
+      await saveData("cat-json", response);
       return response;
     } catch (error) {
       console.log(error);
@@ -66,11 +69,9 @@ export default function Album() {
         // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
         `getCategories?&user_id=${50451}&time=${new Date().toString()}`
       );
-      const updatedData = response;
+      await saveData("home-categories", response);
+      return response;
 
-      await saveData("home-categories", updatedData);
-
-      return updatedData;
     } catch (error) {
       console.log(error);
       return [];
@@ -83,8 +84,8 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        // `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
-        `recentlyPlayedList/?&user_id=${50451}&time=${new Date().toString()}`
+        `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
+        // `recentlyPlayedList/?&user_id=${50451}&time=${new Date().toString()}`
       );
       await saveData("recently-played", response);
       return response;
@@ -100,7 +101,8 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+        // `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+        `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
       );
       await putData("order-data", response);
 
@@ -111,15 +113,14 @@ export default function Album() {
     }
   }
 
+  const { isLoading: isJsonLoading, data: JsonData = [] } = useQuery<any>({
+    queryKey: ["json-data", user],
+    queryFn: fetchJsonCategoryData,
+  });
+
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
-    queryFn: async () => {
-      const cachedData = await getData("home-categories");
-      if (cachedData) {
-        return cachedData;
-      }
-      return fetchCategoryData();
-    },
+    queryFn: fetchnewCategories
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
@@ -134,22 +135,24 @@ export default function Album() {
 
   const handleRefresh = async () => {
     fetchnewCategories();
-    fetchCategoryData();
+    fetchJsonCategoryData();
     fetchRecentlPlayed();
     // fetchAllCategories()
   };
+  const displayData = data.length > 0 ? data : JsonData;
+  const isDataLoading = isLoading && !data.length && isJsonLoading;
 
   return (
     <div className="rightSideSet">
-      
+
       <HomeSlider type="home" />
 
       <div className="w-full">
         <AlbumSection
-          data={data}
+          data={displayData}
           recentlyPlayed={recentlyPlayed}
           isRecentlyPlayed={isRecentlyPlayed}
-          isLoading={isLoading}
+          isLoading={isDataLoading}
         />
       </div>
 
