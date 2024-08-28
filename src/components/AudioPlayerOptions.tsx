@@ -52,8 +52,6 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
     queryFn: fetchData,
   });
 
-  console.log(data, "DATA");
-
   return (
     <div className="w-full h-full z-50 pb-52">
       {isLoading ? (

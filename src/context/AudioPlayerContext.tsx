@@ -212,8 +212,6 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  console.log(audioDetail, "lllll");
-
   return (
     <AudioPlayerContext.Provider
       value={{

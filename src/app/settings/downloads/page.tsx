@@ -6,7 +6,6 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getData } from "utils/indexDB";
 import { getAll } from "utils/indexeddb";
 
 export default function Downloads() {
@@ -15,22 +14,25 @@ export default function Downloads() {
 
   const [offlineAudios, setOfflineAudios] = useState<any>();
   const [offlineAudiosSize, setOfflineAudiosSize] = useState<number[]>([]);
-  const [totalSize, setTotalSize] = useState<number>();
+  const [totalSize, setTotalSize] = useState<number>(0);
 
   useEffect(() => {
     getOfflineAudios();
   }, []);
 
   const getOfflineAudios = async () => {
+    let total = 0;
     let data: any = await getAll();
     setOfflineAudios(data);
     const sizesInMB = data.map((item: any) => {
       const totalBytes = item.audios.reduce((total: any, audioItem: any) => {
         return total + audioItem.data.byteLength;
       }, 0);
+      total = total + Number((totalBytes / (1024 * 1024)).toFixed(1));
       return (totalBytes / (1024 * 1024)).toFixed(1);
     });
 
+    setTotalSize(total);
     setOfflineAudiosSize(sizesInMB);
   };
 
@@ -49,6 +51,12 @@ export default function Downloads() {
     }
 
     showPlayer(data);
+  };
+
+  const handleDeleteOfflineAudio = (e: any) => {
+    if (e.target === e.currentTarget) {
+      console.log(e.currentTarget);
+    }
   };
 
   return (
@@ -70,8 +78,8 @@ export default function Downloads() {
                 ) : offlineAudios.length > 0 ? (
                   <div>
                     <p>
-                      Derzeit belegen Deine Fliegenglas Downloads {999} an
-                      Speicherplatz. Folgende Hörbücher hast Du in Deiner
+                      Derzeit belegen Deine Fliegenglas Downloads {totalSize} MB
+                      an Speicherplatz. Folgende Hörbücher hast Du in Deiner
                       Mediathek gespeichert:
                     </p>
                     <ul>
@@ -90,7 +98,7 @@ export default function Downloads() {
                                 className="object-cover rounded-lg w-full h-full"
                               />
                             </span>
-                            <div className="flex flex-col gap-1 w-full pr-40">
+                            <div className="flex flex-col gap-1 w-full h-full justify-between">
                               <p className="text-[#b5b7bb] text-sm">
                                 {item?.primaryCategory}
                               </p>
@@ -99,7 +107,10 @@ export default function Downloads() {
                                 <p className="text-sm">
                                   {offlineAudiosSize[index]} MB
                                 </p>
-                                <button className="bg-white/80 py-2 px-3 text-black rounded-lg absolute right-0">
+                                <button
+                                  className="bg-white/80 py-2 px-3 text-black rounded-lg absolute right-0 mr-40"
+                                  onClick={handleDeleteOfflineAudio}
+                                >
                                   Aus Mediathek entfernen
                                 </button>
                               </div>

@@ -42,12 +42,11 @@ export default function AuthorDetails() {
     );
   }
 
- 
   return (
     <div className="w-full">
       <section className="bg-[#6c7279] p-4 ">
         <a
-          onClick={()=>router.back()}
+          onClick={() => router.back()}
           className="flex items-center gap-1 pt-0 pb-4 text-white"
         >
           <MdKeyboardBackspace className="w-6 h-6" /> Zurück
@@ -65,9 +64,9 @@ export default function AuthorDetails() {
         </div>
       </section>
       {data &&
-        data?.products?.map((item: any) => {
+        data?.products?.map((item: any, index: number) => {
           return (
-            <div className="w-full spaceBorder px-4">
+            <div className="w-full spaceBorder px-4" key={index}>
               <section>
                 <div
                   className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"

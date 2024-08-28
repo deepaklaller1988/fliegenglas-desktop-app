@@ -54,6 +54,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const sleepTimerRef: any = useRef(null);
   const autoSleepTime: any =
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
+
   const {
     isVisible,
     audioDetail,
@@ -69,10 +70,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     open,
     setOpen,
   } = useAudioPlayer();
+
   useEffect(() => {
-    console.log("Component mounted or updated");
     return () => {
-      console.log("Component unmounted");
       clearTimeout(sleepTimerRef.current);
     };
   }, [isPlaying, autoSleepTime]);
@@ -80,10 +80,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   useEffect(() => {
     console.log("Playing state changed:", isPlaying);
   }, [isPlaying]);
-
-  useEffect(() => {
-    console.log("Play state changed:", play);
-  }, [play]);
 
   const fetchCountData = async () => {
     try {
@@ -346,17 +342,15 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
             controls={true}
             width="0"
             height="0"
-            onError={(error) => console.log("Error:", error)}
+            // onError={(error) => console.log("Error:", error)}
             onPlay={() => {
               if (play) {
-                console.log("Playing");
                 setIsPlaying(true);
                 handleAutoSleepMode();
               }
             }}
             onPause={() => {
               if (!play) {
-                console.log("Paused");
                 setIsPlaying(false);
                 clearTimeout(sleepTimerRef.current);
               }
