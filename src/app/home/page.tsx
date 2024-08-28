@@ -105,8 +105,8 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        // `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
-        `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
+        `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+        // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
       );
       await putData("order-data", response);
 
