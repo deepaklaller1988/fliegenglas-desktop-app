@@ -88,137 +88,119 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     setShowList(!showList);
   };
 
-  // const handleDownloadAll = async () => {
-  //   if (!audioDetail?.list || audioDetail.list.length === 0) {
-  //     console.log("No audio files to download");
-  //     return;
-  //   }
-  //   setDownloading(true);
-
-  //   const payload = {
-  //     audios: audioDetail?.list.map((audio: any) => ({
-  //       title: audio.title,
-  //       file: audio.file,
-  //       duration: audio.duration,
-  //       id: audio.id,
-  //     })),
-  //   };
-
-  //   const token = await generateToken(payload);
-  //   const response = await fetch("/api/download-audio", {
-  //     method: "POST",
-  //     body: JSON.stringify(token),
-  //   });
-
-  //   console.log(response, "two");
-  //   // const data = await response.arrayBuffer();
-  //   const data = await response.json();
-
-  //   console.log(data, "three");
-  //   setAlreadyDownloaded(true);
-  //   setDownloading(false);
-
-  //   // await saveAudios({categoryID: audioDetail?.categoryID, categoryName: audioDetail?.categoryName, primaryCategory: audioDetail?.primaryCategory, imageUrl: audioDetail?.imageUrl, shareurl: audioDetail?.shareurl, audios: data});
-
-  //   // try {
-  //   //   setDownloading(true);
-
-  //   //   setDownloadPercentage(0);
-
-  //   //   setDownloading(false);
-  //   //   console.log(
-  //   //     "All valid audios have been downloaded and saved successfully"
-  //   //   );
-  //   //   setAlreadyDownloaded(true);
-  //   // } catch (error) {
-  //   //   setDownloading(false);
-  //   //   console.error("Failed to download all audios", error);
-  //   // }
-  // };
-
-  const handleDownloadAll = async () => {
-    if (!audioDetail || audioDetail.list?.length === 0) {
+  const handleDownloadAll1 = async () => {
+    if (!audioDetail?.list || audioDetail.list.length === 0) {
       console.log("No audio files to download");
       return;
     }
+    setDownloading(true);
+
+    const payload = {
+      title: audioDetail?.list[0].title,
+      file: audioDetail?.list[0].file,
+      duration: audioDetail?.list[0].duration,
+      id: audioDetail?.list[0].id,
+    };
+
+    // const payload = {
+    //   audios: audioDetail?.list.map((audio: any) => ({
+    //     title: audio.title,
+    //     file: audio.file,
+    //     duration: audio.duration,
+    //     id: audio.id,
+    //   })),
+    // };
+
+    const token = await generateToken(payload);
+    const response = await fetch("/api/download-audio", {
+      method: "POST",
+      body: JSON.stringify(token),
+    });
+
+    // const data = await response.arrayBuffer();
+    const data = await response.arrayBuffer();
+
+    setAlreadyDownloaded(true);
+    setDownloading(false);
+
+    // await saveAudios({categoryID: audioDetail?.categoryID, categoryName: audioDetail?.categoryName, primaryCategory: audioDetail?.primaryCategory, imageUrl: audioDetail?.imageUrl, shareurl: audioDetail?.shareurl, audios: data});
+
+    // try {
+    //   setDownloading(true);
+
+    //   setDownloadPercentage(0);
+
+    //   setDownloading(false);
+    //   console.log(
+    //     "All valid audios have been downloaded and saved successfully"
+    //   );
+    //   setAlreadyDownloaded(true);
+    // } catch (error) {
+    //   setDownloading(false);
+    //   console.error("Failed to download all audios", error);
+    // }
+  };
+
+  const handleDownloadAll = async () => {
+    if (!audioDetail?.list || audioDetail.list.length === 0) {
+      console.log("No audio files to download");
+      return;
+    }
+    setDownloading(true);
+    setDownloadPercentage(0);
 
     try {
-      let progress = 0;
+      for (let i = 0; i < audioDetail.list.length; i++) {
+        const audio = audioDetail.list[i];
+        const payload = {
+          file: audio.file,
+        };
 
-      // const buffers: any = await Promise.all(
-      //   audioDetail.list?.map(async (audio: AudioAttributes) => {
-      //     const response = await fetch(audio.file);
-      //     if (!response.ok) {
-      //       throw new Error(
-      //         `Failed to fetch ${audio.file}: ${response.statusText}`
-      //       );
-      //     }
-      //     const arrayBuffer = await response.arrayBuffer();
-      //     console.log(
-      //       arrayBuffer.byteLength,
-      //       "==========================================="
-      //     );
-      //     if (arrayBuffer.byteLength === 0) {
-      //       console.warn(`Received empty ArrayBuffer for ${audio.file}`);
-      //     }
-      //     progress += 1;
-      //     console.log(
-      //       `Progress: ${progress}/${audioDetail.list.length} -${response}- =${arrayBuffer}= files downloaded`
-      //     );
-      //     console.log(response, "RESPONSE");
-      //     console.log(arrayBuffer, "arrayBuffer");
-      //     return {
-      //       id: audio.id,
-      //       title: audio.title,
-      //       duration: audio.duration,
-      //       buffer: arrayBuffer,
-      //     };
-      //   })
-      // );
+        const token = await generateToken(payload);
 
-      const buffers: any = await Promise.all(
-        audioDetail.list?.map(async (audio: AudioAttributes, index: number) => {
-          const response = await fetch(audio.file);
-          if (!response.ok) {
-            throw new Error(
-              `Failed to fetch ${audio.file}: ${response.statusText}`
-            );
-          }
+        const response = await fetch("/api/download-audio", {
+          method: "POST",
+          body: JSON.stringify(token),
+        });
+
+        if (response.ok) {
           const arrayBuffer = await response.arrayBuffer();
-          console.log(
-            arrayBuffer.byteLength,
-            "==========================================="
-          );
-          if (arrayBuffer.byteLength === 0) {
-            console.warn(`Received empty ArrayBuffer for ${audio.file}`);
-          }
-          progress += 1;
-          console.log(
-            `Progress: ${progress}/${audioDetail.list.length} -${response}- =${arrayBuffer}= files downloaded`
-          );
-          console.log(response, "RESPONSE");
-          console.log(arrayBuffer, "arrayBuffer");
-          return {
-            id: audio.id,
-            title: audio.title,
-            duration: audio.duration,
-            buffer: arrayBuffer,
-          };
-        })
-      );
 
-      await saveAudios(
-        audioDetail.categoryID,
-        audioDetail.categoryName,
-        audioDetail.primaryCategory,
-        audioDetail.imageUrl,
-        audioDetail.shareurl,
-        buffers
-      );
+          await saveAudios(
+            audioDetail.categoryID,
+            audioDetail.categoryName,
+            audioDetail.primaryCategory,
+            audioDetail.imageUrl,
+            audioDetail.shareurl,
+            [
+              {
+                id: audio.id,
+                data: arrayBuffer,
+                title: audio.title,
+                duration: audio.duration,
+                name: audio.name,
+              },
+            ]
+          );
+
+          console.log(
+            `Downloaded and saved audio ${i + 1}/${audioDetail.list.length}`
+          );
+          setDownloadPercentage(
+            parseFloat((((i + 1) / audioDetail.list.length) * 100).toFixed(1))
+          );
+        } else {
+          console.error(
+            `Failed to download audio ${i + 1}: ${response.statusText}`
+          );
+        }
+      }
 
       console.log("All files have been downloaded and saved to IndexedDB");
     } catch (error) {
       console.error("Failed to download and save files", error);
+    } finally {
+      setDownloading(false);
     }
   };
 

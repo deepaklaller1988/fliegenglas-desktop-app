@@ -13,7 +13,6 @@ const OrderDetails = () => {
     const id = searchParams.get("id") || "";
     const name = searchParams.get("name") || "";
     const [orderList, setOrderList] = useState<any[]>([]);
-console.log(name);
 
     useEffect(() => {
         const fetchOrdersFromDB = async () => {
