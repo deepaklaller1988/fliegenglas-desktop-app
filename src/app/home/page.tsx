@@ -15,7 +15,6 @@ import useTitle from "@hooks/useTitle";
 export default function Album() {
   useTitle("Home")
   const { user }: any = useUser();
-  const [refresh, setRefresh] = useState(false);
 
   const fetchAllCategories = async () => {
     if (!user) {
@@ -23,7 +22,7 @@ export default function Album() {
     }
     try {
       const cachedData = await getData("categories");
-      if (cachedData && !refresh) {
+      if (cachedData ) {
         return cachedData;
       }
       const response: any = await API.get(
@@ -60,7 +59,7 @@ export default function Album() {
     }
     try {
       const cachedData = await getData("home-categories");
-      if (cachedData && !refresh) {
+      if (cachedData) {
         return cachedData;
       }
       const response: any = await API.get(
@@ -69,7 +68,7 @@ export default function Album() {
       );
       const updatedData = response;
 
-      await saveData("home-json", updatedData);
+      await saveData("home-categories", updatedData);
 
       return updatedData;
     } catch (error) {
@@ -111,12 +110,6 @@ export default function Album() {
       return [];
     }
   }
-
-  // const { isLoading, data = [] } = useQuery<any>({
-  //   queryKey: ["categories-data", user],
-  //   queryFn:fetchCategoryData,
-
-  // });
 
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],

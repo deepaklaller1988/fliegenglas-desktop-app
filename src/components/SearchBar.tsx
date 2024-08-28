@@ -78,6 +78,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const redirectFromSearch = (type: any, id: any) => {
+    console.log(type,id,"[]");
     switch (type) {
       case "author":
         router.push(`/home/artist-details?authorId=${id}&role=author`);
@@ -89,7 +90,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         router.push(`/home/listing?id=${id}`);
         break;
       case "product":
-        console.log(`Invoke commonService.canPlay(${id})`);
+        router.push(`/home/album-detail?id=${id}`);
         break;
       case "channel":
         router.push(`/search/channel-details?id=${id}`);
