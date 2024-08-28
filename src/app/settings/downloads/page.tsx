@@ -6,7 +6,7 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAll } from "utils/indexeddb";
+import { getAll } from "utils/audioPlayerIndexedDB";
 
 export default function Downloads() {
   const router = useRouter();

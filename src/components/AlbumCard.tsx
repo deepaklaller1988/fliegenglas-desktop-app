@@ -22,17 +22,17 @@ const AlbumSection = ({
     const orders: any[] = await getData("order-data");
     if (orders && orders?.length > 0) {
       const productId = Number(product?.id ?? product?.product_id);
-    
+
       const index = orders.findIndex(
         ({ line_items }) =>
           line_items &&
           line_items[0]?.type !== "subscription" &&
           Number(line_items[0].id) === productId
       );
-    
+
       if (index !== -1) {
         const lineItem = orders[index]?.line_items?.[0];
-    
+
         if (lineItem) {
           const data: any = {
             categoryID: productId,
@@ -45,16 +45,18 @@ const AlbumSection = ({
             primaryCategory: lineItem.primaryCategory,
             paid: true,
           };
-    
+
           if (!isVisible) {
             handleCurrentAudio(0);
           }
-    
+
           showPlayer(data);
-          return; 
+          return;
         }
       }
-    
+
+      console.log(product, "product");
+
       router.push(`/home/album-detail?id=${productId}`);
     } else {
       const productId = product?.id ?? product?.product_id;
@@ -62,7 +64,6 @@ const AlbumSection = ({
         router.push(`/home/album-detail?id=${productId}`);
       }
     }
-    
   };
 
   const renderAlbumItems = (item: any) => (

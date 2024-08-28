@@ -50,7 +50,6 @@ export default function HomeSlider({ type }: any) {
   });
 
   const openPlayerOrDetails = async (product: any) => {
-    console.log(product);
     const orders: any[] = await getData("order-data");
 
     if (orders && orders.length > 0) {

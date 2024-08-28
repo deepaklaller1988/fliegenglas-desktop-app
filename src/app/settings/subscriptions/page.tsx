@@ -68,8 +68,11 @@ export default function Subscriptions() {
         </div>
 
         {data &&
-          data.map((item: any) => (
-            <div className="max-w-md mx-auto bg-gray-900 text-white rounded-lg overflow-hidden shadow-lg">
+          data.map((item: any, index: number) => (
+            <div
+              key={index}
+              className="max-w-md mx-auto bg-gray-900 text-white rounded-lg overflow-hidden shadow-lg"
+            >
               <div className="p-4 flex">
                 <img
                   src={item.image}

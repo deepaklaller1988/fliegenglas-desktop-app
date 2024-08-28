@@ -8,7 +8,7 @@ import AudioDetailCard from "./AudioDetailCard";
 import ProductDes from "./ProductDes";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import AutoSleepMode from "./AutoSleepMode";
-import { getAudioByID } from "utils/indexeddb";
+import { getAudioByID } from "utils/audioPlayerIndexedDB";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function AudioPlayerOptions({ audioDetail }: any) {
@@ -83,12 +83,12 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
               onClick={handleDownloadAll}
               disabled={downloading || alreadyDownloaded ? true : false}
             >
-              {downloading
+              {alreadyDownloaded
+                ? "Bereits Heruntergeladen"
+                : downloading
                 ? downloadCategoryId === data?.id
                   ? `Hörbuch zu ${downloadPercentage}% geladen...`
                   : "Bitte warten Sie, bis der andere Download abgeschlossen ist"
-                : alreadyDownloaded
-                ? "Bereits Heruntergeladen"
                 : "Hörbuch downloaden"}
             </button>
             {/* <button

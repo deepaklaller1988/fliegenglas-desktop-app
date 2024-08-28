@@ -77,10 +77,6 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     };
   }, [isPlaying, autoSleepTime]);
 
-  useEffect(() => {
-    console.log("Playing state changed:", isPlaying);
-  }, [isPlaying]);
-
   const fetchCountData = async () => {
     try {
       let res: any = await API.get(

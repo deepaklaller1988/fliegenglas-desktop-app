@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { saveAudios } from "utils/indexeddb";
+import { saveAudios } from "utils/audioPlayerIndexedDB";
 import { generateToken } from "utils/token";
 
 interface AudioDetail {
@@ -38,13 +38,6 @@ interface AudioPlayerContextType {
   open: boolean;
   setOpen: any;
   downloadCategoryId: number;
-}
-
-interface AudioAttributes {
-  file: string;
-  title: string;
-  duration: string;
-  id: string;
 }
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(
@@ -92,59 +85,6 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
 
   const handleShowList = () => {
     setShowList(!showList);
-  };
-
-  const handleDownloadAll1 = async () => {
-    if (!audioDetail?.list || audioDetail.list.length === 0) {
-      console.log("No audio files to download");
-      return;
-    }
-    setDownloading(true);
-
-    const payload = {
-      title: audioDetail?.list[0].title,
-      file: audioDetail?.list[0].file,
-      duration: audioDetail?.list[0].duration,
-      id: audioDetail?.list[0].id,
-    };
-
-    // const payload = {
-    //   audios: audioDetail?.list.map((audio: any) => ({
-    //     title: audio.title,
-    //     file: audio.file,
-    //     duration: audio.duration,
-    //     id: audio.id,
-    //   })),
-    // };
-
-    const token = await generateToken(payload);
-    const response = await fetch("/api/download-audio", {
-      method: "POST",
-      body: JSON.stringify(token),
-    });
-
-    // const data = await response.arrayBuffer();
-    const data = await response.arrayBuffer();
-
-    setAlreadyDownloaded(true);
-    setDownloading(false);
-
-    // await saveAudios({categoryID: audioDetail?.categoryID, categoryName: audioDetail?.categoryName, primaryCategory: audioDetail?.primaryCategory, imageUrl: audioDetail?.imageUrl, shareurl: audioDetail?.shareurl, audios: data});
-
-    // try {
-    //   setDownloading(true);
-
-    //   setDownloadPercentage(0);
-
-    //   setDownloading(false);
-    //   console.log(
-    //     "All valid audios have been downloaded and saved successfully"
-    //   );
-    //   setAlreadyDownloaded(true);
-    // } catch (error) {
-    //   setDownloading(false);
-    //   console.error("Failed to download all audios", error);
-    // }
   };
 
   const handleDownloadAll = async () => {

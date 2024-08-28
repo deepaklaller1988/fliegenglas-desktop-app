@@ -19,18 +19,18 @@ export default function Sidebar() {
     setIsOn(!isOn);
   };
 
-  const handleLogout=async()=>{
+  const handleLogout = async () => {
     deleteCookie("user");
-    await removeIndexDbData()
+    await removeIndexDbData();
     window.location.href = "/auth/login";
-  }
+  };
   const getLinkClasses = (path: string) => {
     const isActive = pathname.includes(path);
     return `flex items-center gap-3 hover:text-[#ff9900] transition ${
       isActive ? "text-[#ff9900] activeSidebarLink" : ""
     }`;
   };
-  
+
   return (
     <div
       className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${
@@ -100,13 +100,13 @@ export default function Sidebar() {
                           </>
                         ) : (
                           <Link
-                          href={"/auth/login"}
-                          className={getLinkClasses(item.path)}
-                          onClick={handleLogout}
-                        >
-                          <div>{item.item}</div>
-                          <item.icon className="w-5 h-5" /> {item.item}
-                        </Link>
+                            href={"/auth/login"}
+                            className={getLinkClasses(item.path)}
+                            onClick={handleLogout}
+                          >
+                            <div>{item.item}</div>
+                            <item.icon className="w-5 h-5" /> {item.item}
+                          </Link>
                         )}
                       </div>
                     ))}
