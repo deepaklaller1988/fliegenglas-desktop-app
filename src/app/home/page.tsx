@@ -36,14 +36,16 @@ export default function Album() {
     }
   };
 
-  const fetchJsonCategoryData = async () => {
+  const fetchJsonCategoryData = async(forceRefresh = false) => {
     if (!user) {
       return [];
     }
     try {
-      const cachedData = await getData("cat-json");
-      if (cachedData) {
-        return cachedData;
+      if (!forceRefresh) {
+        const cachedData = await getData("cat-json");
+        if (cachedData) {
+          return cachedData;
+        }
       }
       const response: any = await API.get(
         `/catData.json?&time=${new Date().toString()}`
@@ -56,14 +58,16 @@ export default function Album() {
     }
   };
 
-  const fetchnewCategories = async () => {
+  const fetchnewCategories = async (forceRefresh=false) => {
     if (!user) {
       return [];
     }
     try {
-      const cachedData = await getData("home-categories");
-      if (cachedData) {
-        return cachedData;
+      if (!forceRefresh) {
+        const cachedData = await getData("home-categories");
+        if (cachedData) {
+          return cachedData;
+        }
       }
       const response: any = await API.get(
         // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
@@ -115,12 +119,12 @@ export default function Album() {
 
   const { isLoading: isJsonLoading, data: JsonData = [] } = useQuery<any>({
     queryKey: ["json-data", user],
-    queryFn: fetchJsonCategoryData,
+    queryFn:()=> fetchJsonCategoryData(true),
   });
 
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
-    queryFn: fetchnewCategories
+    queryFn:()=> fetchnewCategories(true)
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
@@ -134,8 +138,8 @@ export default function Album() {
   });
 
   const handleRefresh = async () => {
-    fetchnewCategories();
-    fetchJsonCategoryData();
+    fetchnewCategories(true);
+    fetchJsonCategoryData(true);
     fetchRecentlPlayed();
     // fetchAllCategories()
   };
