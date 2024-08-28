@@ -35,6 +35,9 @@ interface AudioPlayerContextType {
   alreadyDownloaded: boolean;
   downloading: boolean;
   setAlreadyDownloaded: any;
+  open: boolean;
+  setOpen: any;
+  downloadCategoryId: number;
 }
 
 interface AudioAttributes {
@@ -60,6 +63,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
   const [downloading, setDownloading] = useState<boolean>(false);
   const [alreadyDownloaded, setAlreadyDownloaded] = useState<boolean>(false);
   const [downloadPercentage, setDownloadPercentage] = useState<number>(0);
+  const [open, setOpen] = useState(false);
+  const [downloadCategoryId, setdownloadCategoryId] = useState<any>();
 
   const showPlayer = (detail: AudioDetail) => {
     setAudioDetail(detail);
@@ -69,14 +74,15 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const closePlayer = () => {
-    setIsVisible(false);
+    setPlay(false);
     setMini(false);
     setShowList(false);
-    setPlay(false);
+    setIsVisible(false);
   };
 
   const miniPlayer = () => {
     setMini(!mini);
+    setOpen(false);
   };
 
   const handleCurrentAudio = (index: number) => {
@@ -148,6 +154,7 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
     setDownloading(true);
     setDownloadPercentage(0);
+    setdownloadCategoryId(Number(audioDetail?.categoryID));
 
     try {
       for (let i = 0; i < audioDetail.list.length; i++) {
@@ -197,12 +204,15 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
       }
 
       console.log("All files have been downloaded and saved to IndexedDB");
+      setAlreadyDownloaded(true);
     } catch (error) {
       console.error("Failed to download and save files", error);
     } finally {
       setDownloading(false);
     }
   };
+
+  console.log(audioDetail, "lllll");
 
   return (
     <AudioPlayerContext.Provider
@@ -224,6 +234,9 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
         alreadyDownloaded,
         downloading,
         setAlreadyDownloaded,
+        open,
+        setOpen,
+        downloadCategoryId,
       }}
     >
       {children}

@@ -8,7 +8,7 @@ import AudioDetailCard from "./AudioDetailCard";
 import ProductDes from "./ProductDes";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
 import AutoSleepMode from "./AutoSleepMode";
-import {  getAudioByID } from "utils/indexeddb";
+import { getAudioByID } from "utils/indexeddb";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function AudioPlayerOptions({ audioDetail }: any) {
@@ -18,7 +18,8 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
     downloadPercentage,
     alreadyDownloaded,
     downloading,
-    setAlreadyDownloaded
+    setAlreadyDownloaded,
+    downloadCategoryId,
   } = useAudioPlayer();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
     queryFn: fetchData,
   });
 
+  console.log(data, "DATA");
 
   return (
     <div className="w-full h-full z-50 pb-52">
@@ -71,6 +73,27 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
               Internetverbindung.
             </p>
             <button
+              className={`text-white p-3 rounded-md text-sm text-center duration-300 ${
+                downloading
+                  ? downloadCategoryId === data?.id
+                    ? "bg-[#182f4a]"
+                    : "bg-[#182f4a]"
+                  : alreadyDownloaded
+                  ? "bg-[#182f4a]"
+                  : "bg-[#6c7279] hover:bg-[#555a61]"
+              }`}
+              onClick={handleDownloadAll}
+              disabled={downloading || alreadyDownloaded ? true : false}
+            >
+              {downloading
+                ? downloadCategoryId === data?.id
+                  ? `Hörbuch zu ${downloadPercentage}% geladen...`
+                  : "Bitte warten Sie, bis der andere Download abgeschlossen ist"
+                : alreadyDownloaded
+                ? "Bereits Heruntergeladen"
+                : "Hörbuch downloaden"}
+            </button>
+            {/* <button
               className={`w-full ${
                 downloading || alreadyDownloaded
                   ? "bg-[#182f4a]"
@@ -84,7 +107,7 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
                 : downloading
                 ? `Hörbuch zu ${downloadPercentage}% geladen...`
                 : "Hörbuch downloaden"}
-            </button>
+            </button> */}
           </div>
           <AutoSleepMode />
           <AudioDetailCard
@@ -95,10 +118,31 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
           />
           <AudioDetailCard
             linkHref={`/home/artist-details?artistId=${data?.artist_id}&role=artist`}
-            imageSrc={"/" + data?.local_image}
+            // imageSrc={data?.artistavatar}
+            imageSrc={
+              data?.artistavatar.includes("assets")
+                ? "/" + data?.artistavatar
+                : data?.artistavatar || "/image-placeholder.png"
+            }
             title={"Sprecher*ln"}
             name={data.artist}
           />
+          <div className="w-full bg-white/80 rounded-md px-3 py-4 mt-3 flex flex-col gap-1">
+            <div className="w-full flex items-center gap-1">
+              <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                Dauer:
+              </b>
+              <p className="text-[#232a2c] text-[16px]">
+                {data?.audiobookDuration}
+              </p>
+            </div>
+            <div className="w-full flex gap-1">
+              <b className="text-[#232a2c] text-[16px] min-w-[90px] max-w-[90px]">
+                Copyright:
+              </b>
+              <p className="text-[#232a2c] text-[16px]">{data?.copyright}</p>
+            </div>
+          </div>
           <div className="w-full bg-white/80 rounded-md p-3 py-4 mt-3 flex flex-col">
             <h2 className="text-center text-[#232a2c]">
               {data?.type === "subscription"

@@ -15,6 +15,7 @@ export default function Downloads() {
 
   const [offlineAudios, setOfflineAudios] = useState<any>();
   const [offlineAudiosSize, setOfflineAudiosSize] = useState<number[]>([]);
+  const [totalSize, setTotalSize] = useState<number>();
 
   useEffect(() => {
     getOfflineAudios();
@@ -38,8 +39,6 @@ export default function Downloads() {
       categoryID: Number(product?.categoryID),
       categoryName: product?.categoryName,
       imageUrl: product?.imageUrl,
-      //   backgroundImageUrl: product?.line_items[0].player_background_image,
-      //   artist: product?.line_items[0].artist,
       shareurl: product?.shareurl,
       list: product?.audios,
       primaryCategory: product?.primaryCategory,

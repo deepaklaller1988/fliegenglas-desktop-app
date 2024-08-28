@@ -43,7 +43,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
@@ -66,6 +66,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
     handleShowList,
     play,
     setPlay,
+    open,
+    setOpen,
   } = useAudioPlayer();
   useEffect(() => {
     console.log("Component mounted or updated");
@@ -124,6 +126,23 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
       clearTimeout(sleepTimerRef.current);
     };
   }, [isPlaying, autoSleepTime]);
+
+  useEffect(() => {
+    if (audioDetail?.list[currentAudio]?.data) {
+      const blobUrl = getAudioFromOfflineItem(
+        audioDetail.list[currentAudio].data
+      );
+      setAudioUrl(blobUrl);
+
+      return () => {
+        if (audioUrl) {
+          URL.revokeObjectURL(audioUrl);
+        }
+      };
+    } else {
+      setAudioUrl(audioDetail?.list[currentAudio]?.m3u8);
+    }
+  }, [audioDetail, currentAudio]);
 
   const handleAutoSleepMode = () => {
     clearTimeout(sleepTimerRef.current);
@@ -316,10 +335,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
         <>
           <ReactPlayer
             ref={playerRef}
-            url={
-              audioDetail?.list[currentAudio]?.m3u8 ||
-              getAudioFromOfflineItem(audioDetail?.list[currentAudio]?.data)
-            }
+            url={audioUrl}
             playing={play}
             onBuffer={() => setBuffering(true)}
             onBufferEnd={() => setBuffering(false)}
@@ -514,40 +530,37 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                             {audioDetail?.list?.length > 0 ? (
                               audioDetail?.list?.map(
                                 (item: any, index: number) => (
-                                  console.log(item, index),
-                                  (
-                                    <li
-                                      key={item?.id}
-                                      className="rounded-lg py-0 px-4 bg-white/80 text-black hover:bg-white hover:shadow-xl duration-300 cursor-pointer flex flex-row items-center mx-10"
+                                  <li
+                                    key={item?.id}
+                                    className="rounded-lg py-0 px-4 bg-white/80 text-black hover:bg-white hover:shadow-xl duration-300 cursor-pointer flex flex-row items-center mx-10"
+                                  >
+                                    <div
+                                      className="w-full py-3"
+                                      onClick={() => {
+                                        handleCurrentAudio(index);
+                                        handleShowList();
+                                      }}
                                     >
-                                      <div
-                                        className="w-full py-3"
-                                        onClick={() => {
-                                          handleCurrentAudio(index);
-                                          handleShowList();
-                                        }}
-                                      >
-                                        <h1 className="font-semibold text-lg">
-                                          {item?.title}
-                                        </h1>
-                                        <p className="text-[16px] text-gray-600">
-                                          {item?.name}
+                                      <h1 className="font-semibold text-lg">
+                                        {item?.title}
+                                      </h1>
+                                      <p className="text-[16px] text-gray-600">
+                                        {item?.name}
+                                      </p>
+                                      <div className="flex justify-between items-center h-7">
+                                        <p className="text-gray-500 mt-1">
+                                          {item?.duration}
                                         </p>
-                                        <div className="flex justify-between items-center h-7">
-                                          <p className="text-gray-500 mt-1">
-                                            {item?.duration}
-                                          </p>
-                                          {index === currentAudio && (
-                                            <img
-                                              src="/assets/fly.gif"
-                                              alt="flie seelctor"
-                                              className="h-7"
-                                            />
-                                          )}
-                                        </div>
+                                        {index === currentAudio && (
+                                          <img
+                                            src="/assets/fly.gif"
+                                            alt="flie seelctor"
+                                            className="h-7"
+                                          />
+                                        )}
                                       </div>
-                                    </li>
-                                  )
+                                    </div>
+                                  </li>
                                 )
                               )
                             ) : (
