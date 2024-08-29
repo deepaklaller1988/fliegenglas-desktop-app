@@ -9,7 +9,6 @@ import {
   appleProvider,
 } from "../utils/firebase";
 import { useRouter } from "next/navigation";
-import User from "@hooks/User";
 
 const AuthContext = createContext<any>(null);
 

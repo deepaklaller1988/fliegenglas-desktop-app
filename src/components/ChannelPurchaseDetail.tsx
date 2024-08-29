@@ -268,7 +268,7 @@ export default function ChannelPurchaseDetail() {
               </p>
               <div className="grid grid-rows-2 grid-cols-2 gap-3">
                 {data?.subscription_products.map((item: any, index: number) => (
-                  <Link href={`/home/album-detail?id=${item?.product_id}`}>
+                  <Link key={index} href={`/home/album-detail?id=${item?.product_id}`}>
                     <Image
                       src={item?.image}
                       alt={`category image ${index}`}

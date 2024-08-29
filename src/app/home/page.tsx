@@ -88,8 +88,8 @@ export default function Album() {
     }
     try {
       const response: any = await API.get(
-        `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
-        // `recentlyPlayedList/?&user_id=${50451}&time=${new Date().toString()}`
+        // `recentlyPlayedList/?&user_id=${user.id}&time=${new Date().toString()}`
+        `recentlyPlayedList/?&user_id=${50451}&time=${new Date().toString()}`
       );
       await saveData("recently-played", response);
       return response;
@@ -117,6 +117,21 @@ export default function Album() {
     }
   }
 
+  const getChannelData = async (refresh = false) => {
+    if (!user) return [];
+    
+    if (!refresh) {
+      const cachedData = await getData("channelData");
+      if (cachedData) return cachedData;
+    }
+
+    const response: any = await API.get(
+      `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
+    );
+    await saveData("channelData", response);
+    return response;
+  };
+
   const { isLoading: isJsonLoading, data: JsonData = [] } = useQuery<any>({
     queryKey: ["json-data", user],
     queryFn:()=> fetchJsonCategoryData(true),
@@ -135,6 +150,11 @@ export default function Album() {
   const { isLoading: isOrder, data: orderData = [] } = useQuery({
     queryKey: ["order-data", user],
     queryFn: getOrderByUser,
+  });
+
+  const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
+    queryKey: ["channel-data", user],
+    queryFn: () => getChannelData(),
   });
 
   const handleRefresh = async () => {

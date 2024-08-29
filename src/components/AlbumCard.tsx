@@ -54,9 +54,10 @@ const AlbumSection = ({
           return;
         }
       }
+      const cachedData = await getData("channelData");
+      console.log(cachedData,"======")
 
       console.log(product, "product");
-
       router.push(`/home/album-detail?id=${productId}`);
     } else {
       const productId = product?.id ?? product?.product_id;
