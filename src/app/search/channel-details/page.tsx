@@ -20,8 +20,7 @@ export default function ChannelDetails() {
     const channelId = searchParams.get("id") || "";
     const [isLiked, setIsLiked] = useState(false);
     const [channelData, setChannelData] = useState<any>(null);
-
-
+console.log(isLiked,"is")
     useEffect(() => {
         const fetchChannelData = async () => {
             const cachedData = await getData("channelData");
@@ -41,6 +40,7 @@ export default function ChannelDetails() {
                 user_id: user.id.toString(),
                 fav: favStatus,
             });
+            console.log(response,"response")
             return response;
         },
         onSuccess: () => {

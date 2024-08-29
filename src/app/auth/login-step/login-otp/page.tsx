@@ -65,7 +65,7 @@ export default function Loginstep() {
     <>
       <div id="login-page" className="px-4 flex justify-center w-full">
         <div className="loginInner max-w-[400px]">
-          <HeaderLink className="" onClick={()=>route.push("/auth/login")} label={"E-Mail:"}  titleContent={email}/>
+          <HeaderLink className="py-4 pr-4 text-white mt-4" onClick={()=>route.push("/auth/login")} label={"E-Mail:"}  titleContent={email}/>
           <div className="w-full">
             <div className="form-view">
               <div className="log-otp">

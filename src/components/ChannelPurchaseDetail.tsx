@@ -107,10 +107,11 @@ export default function ChannelPurchaseDetail() {
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image
             src={
-              checkPurchaseData?.imageUrl === "/undefined" ||
-              checkPurchaseData?.imageUrl === undefined
-                ? `/${data?.local_image}`
-                : checkPurchaseData?.imageUrl
+              checkPurchaseData?.imageUrl.includes("undefined")
+                ? data?.local_image?.includes("assets")
+                  ? "/" + data?.local_image
+                  : data?.local_image
+                : "/image-placeholder.png"
             }
             alt="Background Image"
             fill={true}
@@ -128,10 +129,11 @@ export default function ChannelPurchaseDetail() {
             <Image
               className="block w-full shadow-xl"
               src={
-                checkPurchaseData?.imageUrl === "/undefined" ||
-                checkPurchaseData?.imageUrl === undefined
-                  ? `/${data?.local_image}`
-                  : checkPurchaseData?.imageUrl
+                checkPurchaseData?.imageUrl.includes("undefined")
+                  ? data?.local_image?.includes("assets")
+                    ? "/" + data?.local_image
+                    : data?.local_image
+                  : "/image-placeholder.png"
               }
               alt="Album"
               width={500}
@@ -232,7 +234,12 @@ export default function ChannelPurchaseDetail() {
               />
               <AudioDetailCard
                 linkHref={`/home/artist-details?authorId=${data?.author_id}&role=author`}
-                imageSrc={"/" + data.authoravatar}
+                // imageSrc={"/" + data.authoravatar}
+                imageSrc={
+                  data.authoravatar.includes("assets")
+                    ? "/" + data.authoravatar
+                    : data.authoravatar || "/image-placeholder.png"
+                }
                 title={"Autor*ln"}
                 name={data.author}
               />
@@ -268,7 +275,10 @@ export default function ChannelPurchaseDetail() {
               </p>
               <div className="grid grid-rows-2 grid-cols-2 gap-3">
                 {data?.subscription_products.map((item: any, index: number) => (
-                  <Link key={index} href={`/home/album-detail?id=${item?.product_id}`}>
+                  <Link
+                    key={index}
+                    href={`/home/album-detail/channel-purchase?id=${item?.product_id}`}
+                  >
                     <Image
                       src={item?.image}
                       alt={`category image ${index}`}
