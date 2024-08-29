@@ -17,13 +17,13 @@ const HeaderLink: React.FC<HeaderLinkProps> = ({ onClick, className,label, title
                     <HiArrowLeft className="text-lg" />
                     {title &&
                         <div className="flex-grow text-center">
-                            <h4 className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6">
+                            <h4 className="flex gap-1 pt-0 pb-4 ml-4 text-white justify-center mt-6">
                                 {title}
                             </h4>
                         </div>
                     }
                     {titleContent && 
-                                <span className="text-white">:{label} {titleContent}</span>
+                                <span className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6"> {label} {titleContent}</span>
                             }
                 </div>
             </div>
