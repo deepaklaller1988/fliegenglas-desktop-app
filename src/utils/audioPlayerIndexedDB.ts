@@ -91,7 +91,7 @@ export const getAll = async () => {
     }
 };
 
-export const deleteAudioByID = async (categoryID: string) => {
+export const deleteAudioByID = async (categoryID: string): Promise<boolean> => {
     try {
         const db = await openDB();
         const transaction = db.transaction(STORE_NAME, 'readwrite');
@@ -99,13 +99,16 @@ export const deleteAudioByID = async (categoryID: string) => {
 
         const request = store.delete(categoryID);
 
-        return new Promise<void>((resolve, reject) => {
-            request.onsuccess = () => resolve();
-            request.onerror = () => reject(request.error);
+        return new Promise<boolean>((resolve, reject) => {
+            request.onsuccess = () => resolve(true);
+            request.onerror = () => {
+                console.error('Delete request failed', request.error);
+                resolve(false);
+            };
         });
     } catch (error) {
         console.error('Failed to delete audio by ID', error);
-        throw error;
+        return false;
     }
 };
 

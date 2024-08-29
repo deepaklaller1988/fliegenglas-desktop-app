@@ -6,7 +6,7 @@ import { useAudioPlayer } from "context/AudioPlayerContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAll } from "utils/audioPlayerIndexedDB";
+import { getAll, deleteAudioByID } from "utils/audioPlayerIndexedDB";
 
 export default function Downloads() {
   const router = useRouter();
@@ -49,13 +49,14 @@ export default function Downloads() {
     if (!isVisible) {
       handleCurrentAudio(0);
     }
-
     showPlayer(data);
   };
 
-  const handleDeleteOfflineAudio = (e: any) => {
-    if (e.target === e.currentTarget) {
-      console.log(e.currentTarget);
+  const handleDeleteOfflineAudio = async (e: any, item: any) => {
+    e.stopPropagation();
+    let deleteCheck = await deleteAudioByID(item?.categoryID);
+    if (deleteCheck) {
+      getOfflineAudios();
     }
   };
 
@@ -89,7 +90,7 @@ export default function Downloads() {
                             className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
                             onClick={() => openPlayerOrDetails(item)}
                           >
-                            <span className="h-32 overflow-hidden">
+                            <span className="h-32 w-32 overflow-hidden">
                               <Image
                                 src={item?.imageUrl}
                                 alt={"Image"}
@@ -103,13 +104,15 @@ export default function Downloads() {
                                 {item?.primaryCategory}
                               </p>
                               <p>{item?.categoryName}</p>
-                              <div className="w-full flex justify-between items-end relative mt-6">
+                              <div className="w-full flex justify-between items-end mt-6">
                                 <p className="text-sm">
                                   {offlineAudiosSize[index]} MB
                                 </p>
                                 <button
-                                  className="bg-white/80 py-2 px-3 text-black rounded-lg absolute right-0 mr-40"
-                                  onClick={handleDeleteOfflineAudio}
+                                  className="bg-white/80 py-2 px-3 text-black rounded-lg right-0 mr-40"
+                                  onClick={(e) =>
+                                    handleDeleteOfflineAudio(e, item)
+                                  }
                                 >
                                   Aus Mediathek entfernen
                                 </button>

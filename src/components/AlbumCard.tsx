@@ -55,10 +55,40 @@ const AlbumSection = ({
         }
       }
       const cachedData = await getData("channelData");
-      console.log(cachedData,"======")
+      console.log(cachedData, "======");
 
       console.log(product, "product");
-      router.push(`/home/album-detail?id=${productId}`);
+      // console.log(
+      //   cachedData[0]?.name === product?.name.replace("Hörbuch-Abo ", "")
+      // );
+      // console.log(
+      //   cachedData.find((item: any) => {
+      //     item?.name === product?.name.split("Hörbuch-Abo ", "")[1];
+      //   })
+      // );
+      // console.log(
+      //   console.log("first"),
+      //   cachedData.filter((item: any) => {
+      //     item?.name === product?.name.split("Hörbuch-Abo ", "")[1];
+      //   })
+      // );
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
     } else {
       const productId = product?.id ?? product?.product_id;
       if (productId) {

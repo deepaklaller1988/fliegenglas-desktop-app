@@ -593,7 +593,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                             className="rounded-xl shadow-lg h-40 w-auto"
                           />
                           <button
-                            className="flex flex-row items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
+                            className="flex flex-row text-white items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
                             onClick={handleClosePopup}
                           >
                             <IoMdClose size={25} />
