@@ -32,7 +32,7 @@ export default function Downloads() {
       return (totalBytes / (1024 * 1024)).toFixed(1);
     });
 
-    setTotalSize(total);
+    setTotalSize(Number(total.toFixed(1)));
     setOfflineAudiosSize(sizesInMB);
   };
 
@@ -78,7 +78,7 @@ export default function Downloads() {
                   <FlieLoader />
                 ) : offlineAudios.length > 0 ? (
                   <div>
-                    <p>
+                    <p className="text-white">
                       Derzeit belegen Deine Fliegenglas Downloads {totalSize} MB
                       an Speicherplatz. Folgende Hörbücher hast Du in Deiner
                       Mediathek gespeichert:
