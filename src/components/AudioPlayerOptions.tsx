@@ -83,29 +83,16 @@ export default function AudioPlayerOptions({ audioDetail }: any) {
               onClick={handleDownloadAll}
               disabled={downloading || alreadyDownloaded ? true : false}
             >
-              {alreadyDownloaded
-                ? "Bereits Heruntergeladen"
-                : downloading
+              {downloading
                 ? downloadCategoryId === data?.id
                   ? `Hörbuch zu ${downloadPercentage}% geladen...`
+                  : alreadyDownloaded
+                  ? "Bereits Heruntergeladen"
                   : "Bitte warten Sie, bis der andere Download abgeschlossen ist"
+                : alreadyDownloaded
+                ? "Bereits Heruntergeladen"
                 : "Hörbuch downloaden"}
             </button>
-            {/* <button
-              className={`w-full ${
-                downloading || alreadyDownloaded
-                  ? "bg-[#182f4a]"
-                  : "bg-[#6c7279] hover:bg-[#555a61]"
-              } text-white p-3 rounded-md text-sm text-center duration-300`}
-              onClick={handleDownloadAll}
-              disabled={downloading || alreadyDownloaded ? true : false}
-            >
-              {alreadyDownloaded
-                ? "Bereits Heruntergeladen"
-                : downloading
-                ? `Hörbuch zu ${downloadPercentage}% geladen...`
-                : "Hörbuch downloaden"}
-            </button> */}
           </div>
           <AutoSleepMode />
           <AudioDetailCard
