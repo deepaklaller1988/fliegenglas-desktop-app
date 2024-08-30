@@ -1,25 +1,25 @@
 'use client'
 import useOnlineStatus from "@hooks/UseOnlineStatus";
-// import useNetworkStatus from "@hooks/useNetworkCheck";
 import { getQueryClient } from "@lib/get-query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthContextProvider } from "context/AuthContext";
+import { OfflineProvider } from "context/InternetContext";
 import { UserProvider } from "context/UserContext";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
     const queryClient = getQueryClient();
-    // useNetworkStatus()
-    useOnlineStatus()
+    useOnlineStatus();
+
     return (
         <>
             <QueryClientProvider client={queryClient}>
-                {/* <NetworkProvider> */}
+                <OfflineProvider>
                     <UserProvider>
                         <AuthContextProvider>
                             {children}
                         </AuthContextProvider>
                     </UserProvider>
-                {/* </NetworkProvider> */}
+                </OfflineProvider>
             </QueryClientProvider>
         </>
     )

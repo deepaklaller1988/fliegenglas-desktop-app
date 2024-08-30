@@ -1,68 +1,52 @@
-"use client";
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAll } from 'utils/audioPlayerIndexedDB';
 
 const useOnlineStatus = (): boolean => {
-  const [isOnline, setIsOnline] = useState<boolean>(true); 
-  const [wasOnline, setWasOnline] = useState<boolean>(true);
+  const [isOnline, setIsOnline] = useState<boolean>(true);
   const router = useRouter();
 
-  const checkIndexedDBData = async (): Promise<boolean> => {
-    try {
-      const offlineAudios:any = await getAll();
-      console.log('IndexedDB Data:', offlineAudios);
-      return offlineAudios.length > 0;
-    } catch (error) {
-      console.error('IndexedDB Error:', error);
-      return false;
-    }
-  };
-
   useEffect(() => {
-    if (typeof navigator !== 'undefined') {
-      setIsOnline(navigator.onLine);
-      setWasOnline(navigator.onLine);
-
-      const updateOnlineStatus = async () => {
-        console.log('Updating online status...');
-        const onlineStatus = navigator.onLine;
-        console.log(`Online status: ${onlineStatus}, Previous: ${wasOnline}`);
-
-        if (onlineStatus !== wasOnline) {
-          setIsOnline(onlineStatus);
-          setWasOnline(onlineStatus);
-
-          if (onlineStatus) {
-            console.log('Online, navigating back...');
-            router.back();
-          } else {
-            console.log('Offline, checking IndexedDB...');
-            const hasOfflineData = await checkIndexedDBData();
-            if (hasOfflineData) {
-              console.log('Has offline data, navigating to downloads...');
-              router.push('/settings/downloads');
-            } else {
-              console.log('No offline data, navigating to internet status...');
-              router.push('/internetStatus');
-            }
-          }
+    const handleStatusChange = async () => {
+      if (navigator.onLine) {
+        setIsOnline(true);
+        // Redirect or perform any other online-specific logic
+      } else {
+        setIsOnline(false);
+        // Immediately show the offline page
+        router.push('/offline');
+        
+        // Check IndexedDB data in the background
+        const hasOfflineData = await checkIndexedDBData();
+        if (hasOfflineData) {
+          router.push('/settings/downloads'); // Redirect if offline data exists
         }
-      };
+      }
+    };
 
-      window.addEventListener('online', updateOnlineStatus);
-      window.addEventListener('offline', updateOnlineStatus);
+    const checkIndexedDBData = async (): Promise<boolean> => {
+      try {
+        const offlineAudios:any = await getAll();
+        return offlineAudios.length > 0;
+      } catch (error) {
+        console.error('IndexedDB Error:', error);
+        return false;
+      }
+    };
 
-      // Initial check
-      updateOnlineStatus();
+    // Initial status check
+    handleStatusChange();
 
-      return () => {
-        window.removeEventListener('online', updateOnlineStatus);
-        window.removeEventListener('offline', updateOnlineStatus);
-      };
-    }
-  }, [router, wasOnline]);
+    // Add event listeners
+    window.addEventListener('online', handleStatusChange);
+    window.addEventListener('offline', handleStatusChange);
+
+    // Clean up
+    return () => {
+      window.removeEventListener('online', handleStatusChange);
+      window.removeEventListener('offline', handleStatusChange);
+    };
+  }, [router]);
 
   return isOnline;
 };

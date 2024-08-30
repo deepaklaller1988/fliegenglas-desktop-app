@@ -1,15 +1,10 @@
 "use client";
 import { useEffect } from 'react';
-import "./online.css";
-// import useNetworkStatus from '@hooks/useNetworkCheck';
-// import useOnlineStatus from '@hooks/UseOnlineStatus';
+import "./offline.css";
+import { useOffline } from 'context/InternetContext';
 
 export default function InternetStatus() {
-  // const {isOnline}  :any= useOnlineStatus();
-
-  // useEffect(() => {
-  //   console.log('Network status:', isOnline);
-  // }, [isOnline]);
+const {isOffline}=useOffline()
 
   const handleRefresh = () => {
     window.location.reload(); 
