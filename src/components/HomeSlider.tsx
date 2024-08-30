@@ -123,7 +123,7 @@ export default function HomeSlider({ type }: any) {
                 key={index}
                 className="h-80 text flex items-center justify-center"
               >
-                <Link href={`/home/album-detail?id=${item.id}`}>
+                <button onClick={() => openPlayerOrDetails(item)}>
                   <div>
                     <div className="w-full h-full absolute z-[-1]">
                       <img
@@ -140,7 +140,7 @@ export default function HomeSlider({ type }: any) {
                       alt="Album"
                     />
                   </div>
-                </Link>
+                </button>
               </div>
             )}
           </div>

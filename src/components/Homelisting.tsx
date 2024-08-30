@@ -8,12 +8,14 @@ import Image from "next/image";
 import { useUser } from "context/UserContext";
 import { getData, saveData } from "utils/indexDB";
 import HeaderLink from "./HiArrowleft";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function Homelisting({ list }: any) {
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
-  const router = useRouter();
   const { user }: any = useUser();
+  const router = useRouter();
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const fetchRecentlPlayed = async () => {
     if (!user) {
@@ -69,6 +71,68 @@ export default function Homelisting({ list }: any) {
   const displayData =
     list == "recently-viewed" && recentlyData.length > 0 ? recentlyData : data;
 
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+
+      if (index !== -1) {
+        const lineItem = orders[index]?.line_items?.[0];
+
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+
+          showPlayer(data);
+          return;
+        }
+      }
+      const cachedData = await getData("channelData");
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+    }
+  };
+
   return (
     <>
       {displayData && displayData.length > 0 && (
@@ -90,9 +154,7 @@ export default function Homelisting({ list }: any) {
                 <section className="">
                   <div
                     className="w-full flex gap-4 text-white cursor-pointer rounded-md hover:bg-white/10 duration-300 py-6 px-2"
-                    onClick={() => {
-                      router.push(`/home/album-detail?id=${productId}`);
-                    }}
+                    onClick={() => openPlayerOrDetails(item)}
                   >
                     <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px] overflow-hidden">
                       <Image

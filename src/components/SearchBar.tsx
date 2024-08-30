@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { getImagePath } from "@lib/getImagePath";
 import { VscHeartFilled } from "react-icons/vsc";
 import FlieLoaderCustom from "./core/FlieLoaderCustom";
+import { getData } from "utils/indexDB";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 interface SearchBarProps {
   searchQuery: { tag: any; id: number };
@@ -22,6 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const router = useRouter();
   const [inputValue, setInputValue] = useState(searchQuery.tag || "");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   useEffect(() => {
     setInputValue(searchQuery?.tag || "");
@@ -78,7 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const redirectFromSearch = (type: any, id: any) => {
-    console.log(type,id,"[]");
+    console.log(type, id, "[]");
     switch (type) {
       case "author":
         router.push(`/home/artist-details?authorId=${id}&role=author`);
@@ -97,6 +100,68 @@ const SearchBar: React.FC<SearchBarProps> = ({
         break;
       default:
         break;
+    }
+  };
+
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+
+      if (index !== -1) {
+        const lineItem = orders[index]?.line_items?.[0];
+
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+
+          showPlayer(data);
+          return;
+        }
+      }
+      const cachedData = await getData("channelData");
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
     }
   };
 
@@ -148,9 +213,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                   <section>
                     <div
                       className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
-                      onClick={() =>
-                        router.push(`/home/album-detail?id=${item.id}`)
-                      }
+                      onClick={() => openPlayerOrDetails(item)}
                     >
                       <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
                         <img

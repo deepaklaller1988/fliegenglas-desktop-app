@@ -368,7 +368,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                 />
               </div>
               <div className="flex sm:flex-row flex-col justify-between items-center sm:ml-5 ml-0 h-full">
-                <div className="h-full flex sm:justify-center justify-between items-center sm:w-2/12 w-full sm:mr-4 mr-0">
+                <div className="flex sm:justify-center justify-between items-center sm:w-2/12 w-full sm:mr-4 mr-0">
                   <Image
                     src={
                       audioDetail?.imageUrl.includes("assets")
@@ -378,7 +378,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     alt="mini player image"
                     height={100}
                     width={100}
-                    className="h-14 w-14 rounded-full"
+                    className="h-14 w-14 rounded-lg object-cover"
                   />
                   <div className="flex flex-col w-full">
                     <p className="text-sm ml-2 text-white">
@@ -388,7 +388,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       {audioDetail?.list[currentAudio]?.artist}
                     </p>
                   </div>
-                  <div className="space-x-2 sm:hidden inline h-full">
+                  <div className="space-x-2 sm:hidden inline h-full flex">
                     <button
                       className="cursor-pointer p-4 hover:bg-blue-500/40 rounded-full duration-300 text-white"
                       onClick={miniPlayer}
@@ -434,9 +434,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center sm:justify-center justify-between sm:w-2/12 w-full">
+                <div className="flex items-center sm:justify-center justify-between sm:w-2/12 w-full sm:p-0 px-8">
                   <button
-                    className={`rounded-full duration-300 text-2xl p-4 ${
+                    className={`rounded-full duration-300 text-2xl sm:p-4 p-2 ${
                       currentAudio === 0
                         ? "text-white/50"
                         : "text-white hover:bg-white/10 cursor-pointer"
@@ -447,34 +447,34 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     <IoPlaySkipBack size={20} />
                   </button>
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white"
+                    className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full text-white"
                     onClick={seekBackward}
                   >
                     <TbRewindBackward10 size={20} />
                   </button>
                   {play ? (
                     <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
+                      className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
                       onClick={togglePlayPause}
                     >
                       <FaCirclePause size={50} />
                     </button>
                   ) : (
                     <button
-                      className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
+                      className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full duration-300 text-[12vw] text-white"
                       onClick={togglePlayPause}
                     >
                       <FaCirclePlay size={50} />
                     </button>
                   )}
                   <button
-                    className="cursor-pointer p-4 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
+                    className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
                     onClick={seekForward}
                   >
                     <TbRewindForward10 />
                   </button>
                   <button
-                    className={`p-4 rounded-full duration-300 ${
+                    className={`sm:p-4 p-2 rounded-full duration-300 ${
                       audioDetail?.list.length > currentAudio + 1
                         ? "text-white hover:bg-white/10 cursor-pointer"
                         : "text-white/50"

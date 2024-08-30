@@ -13,10 +13,14 @@ import SearchBar from "@components/SearchBar";
 import { useState } from "react";
 import RefreshButton from "@components/buttons/RefreshButton";
 import { staticData } from "@lib/SearchBannerData";
+import { useRouter } from "next/navigation";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function Search() {
   const { user }: any = useUser();
   const [searchQuery, setSearchQuery] = useState<any>("");
+  const router = useRouter();
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const fetchTagData = async (refresh = false) => {
     if (!user) return [];
@@ -88,6 +92,68 @@ export default function Search() {
      fetchTagData(true);
      fecthSearchSuggestions(true);
      getChannelData(true);
+  };
+
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+
+      if (index !== -1) {
+        const lineItem = orders[index]?.line_items?.[0];
+
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+
+          showPlayer(data);
+          return;
+        }
+      }
+      const cachedData = await getData("channelData");
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+    }
   };
   
   return (

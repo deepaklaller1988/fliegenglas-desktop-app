@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { useAudioPlayer } from "context/AudioPlayerContext";
+import { useEffect } from "react";
 
 const LayoutPath = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
@@ -23,7 +24,26 @@ const LayoutPath = ({ children }: { children: React.ReactNode }) => {
       : false;
   };
 
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     const registerServiceWorker = async () => {
+  //       try {
+  //         const swUrl = `${
+  //           process.env.NEXT_PUBLIC_BASE_PATH || ""
+  //         }/service-worker.js`;
+  //         const registration = await navigator.serviceWorker.register(swUrl);
+  //         console.log(
+  //           "Service Worker registered with scope:",
+  //           registration.scope
+  //         );
+  //       } catch (error) {
+  //         console.error("Service Worker registration failed:", error);
+  //       }
+  //     };
 
+  //     registerServiceWorker();
+  //   }
+  // }, []);
 
   return (
     <div className="flex w-full">
