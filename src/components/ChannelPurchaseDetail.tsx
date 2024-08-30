@@ -94,7 +94,7 @@ export default function ChannelPurchaseDetail() {
 
   return (
     <div className="rightSideSet">
-      <div className="loaderSet w-full h-full items-center justify-center hidden">
+      {/* <div className="loaderSet w-full h-full items-center justify-center hidden">
         <Image
           className="block w-full max-w-[150px]"
           width={265}
@@ -102,7 +102,7 @@ export default function ChannelPurchaseDetail() {
           src={""}
           alt="Album"
         />
-      </div>
+      </div> */}
       <div className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image

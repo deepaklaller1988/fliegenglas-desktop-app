@@ -55,23 +55,6 @@ const AlbumSection = ({
         }
       }
       const cachedData = await getData("channelData");
-      console.log(cachedData, "======");
-
-      console.log(product, "product");
-      // console.log(
-      //   cachedData[0]?.name === product?.name.replace("Hörbuch-Abo ", "")
-      // );
-      // console.log(
-      //   cachedData.find((item: any) => {
-      //     item?.name === product?.name.split("Hörbuch-Abo ", "")[1];
-      //   })
-      // );
-      // console.log(
-      //   console.log("first"),
-      //   cachedData.filter((item: any) => {
-      //     item?.name === product?.name.split("Hörbuch-Abo ", "")[1];
-      //   })
-      // );
       let cc = await cachedData.filter((item: any) => {
         console.log(
           item?.name,

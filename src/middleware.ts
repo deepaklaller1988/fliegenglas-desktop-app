@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getCookie } from 'cookies-next';
 
 export async function middleware(request: NextRequest) {
+
   const excludedPaths = [
     '/_next/static/',
     '/favicon.ico',
@@ -11,7 +12,6 @@ export async function middleware(request: NextRequest) {
     '/fonts.googleapis.com/',
     '/fonts.gstatic.com/',
   ];
-
 
   for (const path of excludedPaths) {
     if (request.nextUrl.pathname.startsWith(path)) {

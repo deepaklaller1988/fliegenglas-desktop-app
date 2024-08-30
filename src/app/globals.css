@@ -49,7 +49,9 @@
 	height: 65vh;
   } */
 
-.range-slider {
+  
+
+.range-slider, .range-slider2 {
 	-webkit-appearance: none; /* Remove default styling in WebKit browsers */
 	width: 100%; /* Full width */
 	height: 8px; /* Height of the track */
@@ -59,15 +61,23 @@
 	margin: 10px 0; /* Margin for spacing */
 	z-index: 1; /* Ensure slider is above progress */
   }
+
+  .range-slider2 {
+	height: 5px; /* Height of the track */
+  }
   
   /* WebKit browsers (Chrome, Safari) */
-  .range-slider::-webkit-slider-runnable-track {
+  .range-slider::-webkit-slider-runnable-track, .range-slider2::-webkit-slider-runnable-track {
 	height: 8px; /* Track height */
 	background: #dddddd12; /* Track color */
 	border-radius: 4px; /* Rounded corners */
   }
+
+  .range-slider2::-webkit-slider-runnable-track {
+	height: 5px; /* Track height */
+  }
   
-  .range-slider::-webkit-slider-thumb {
+  .range-slider::-webkit-slider-thumb, .range-slider2::-webkit-slider-thumb {
 	-webkit-appearance: none; /* Remove default styling */
 	width: 20px; /* Thumb width */
 	height: 20px; /* Thumb height */
@@ -77,7 +87,12 @@
 	border-radius: 50%; /* Rounded thumb */
   }
 
-  .range-slider::-webkit-slider-thumb:hover {
+  .range-slider2::-webkit-slider-thumb {
+	width: 15px; /* Thumb width */
+	height: 15px; /* Thumb height */
+  }
+
+  .range-slider::-webkit-slider-thumb:hover, .range-slider2::-webkit-slider-thumb:hover {
 	transition-duration: 300ms;
 	box-shadow: 0px 0px 10px 1px orange;
   }
@@ -89,7 +104,7 @@
 	border-radius: 4px; /* Rounded corners */
   }
   
-  .range-slider::-moz-range-thumb {
+  .range-slider::-moz-range-thumb, .range-slider2::-moz-range-thumb {
 	width: 15px; /* Thumb width */
 	height: 15px; /* Thumb height */
 	margin-top: -3px;
