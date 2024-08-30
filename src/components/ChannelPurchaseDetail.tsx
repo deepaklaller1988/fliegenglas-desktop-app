@@ -3,7 +3,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MdKeyboardBackspace } from "react-icons/md";
 import Image from "next/image";
-// import "./album-detail.css";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import { useQuery } from "@tanstack/react-query";
@@ -94,15 +93,6 @@ export default function ChannelPurchaseDetail() {
 
   return (
     <div className="rightSideSet">
-      {/* <div className="loaderSet w-full h-full items-center justify-center hidden">
-        <Image
-          className="block w-full max-w-[150px]"
-          width={265}
-          height={300}
-          src={""}
-          alt="Album"
-        />
-      </div> */}
       <div className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image
@@ -111,7 +101,7 @@ export default function ChannelPurchaseDetail() {
                 ? data?.local_image?.includes("assets")
                   ? "/" + data?.local_image
                   : data?.local_image
-                : "/image-placeholder.png"
+                : checkPurchaseData?.imageUrl
             }
             alt="Background Image"
             fill={true}
@@ -121,7 +111,7 @@ export default function ChannelPurchaseDetail() {
         <div className="w-full p-3 relative z-10">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1 py-2 pb-3 mb-2 text-white"
+            className="flex items-center gap-1 my-2 mb-5 text-white"
           >
             <MdKeyboardBackspace className="w-6 h-6" /> Zurück
           </button>
@@ -133,7 +123,7 @@ export default function ChannelPurchaseDetail() {
                   ? data?.local_image?.includes("assets")
                     ? "/" + data?.local_image
                     : data?.local_image
-                  : "/image-placeholder.png"
+                  : checkPurchaseData?.imageUrl
               }
               alt="Album"
               width={500}
@@ -234,7 +224,6 @@ export default function ChannelPurchaseDetail() {
               />
               <AudioDetailCard
                 linkHref={`/home/artist-details?authorId=${data?.author_id}&role=author`}
-                // imageSrc={"/" + data.authoravatar}
                 imageSrc={
                   data.authoravatar.includes("assets")
                     ? "/" + data.authoravatar

@@ -4,7 +4,7 @@ import API from "@lib/API";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "context/UserContext";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdKeyboardBackspace } from "react-icons/md";
 import "./channel-details.css";
@@ -13,13 +13,16 @@ import Image from "next/image";
 import RefreshButton from "@components/buttons/RefreshButton";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { SkeletonLoader } from "@components/core/SkeletonLoader";
+import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function ChannelDetails() {
   const { user }: any = useUser();
   const searchParams = useSearchParams();
   const channelId = searchParams.get("id") || "";
+  const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const [channelData, setChannelData] = useState<any>(null);
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   useEffect(() => {
     const fetchChannelData = async () => {
@@ -142,6 +145,68 @@ export default function ChannelDetails() {
     getAllCategories(channelId);
   };
 
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+
+      if (index !== -1) {
+        const lineItem = orders[index]?.line_items?.[0];
+
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+
+          showPlayer(data);
+          return;
+        }
+      }
+      const cachedData = await getData("channelData");
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+    }
+  };
+
   return (
     <>
       {/* Top slideshow section */}
@@ -159,8 +224,8 @@ export default function ChannelDetails() {
             <Image
               src={channelData.banner_image}
               alt="Channel"
-              width={600}
-              height={400}
+              width={1000}
+              height={1000}
               className="w-full h-auto background"
             />
           )}
@@ -217,8 +282,8 @@ export default function ChannelDetails() {
                                 key={index}
                                 className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
                               >
-                                <Link
-                                  href={`/home/album-detail?id=${product?.id}`}
+                                <button
+                                  onClick={() => openPlayerOrDetails(product)}
                                 >
                                   <Image
                                     src={product?.image || ""}
@@ -227,7 +292,7 @@ export default function ChannelDetails() {
                                     height={150}
                                     className="w-full block rounded-md"
                                   />
-                                </Link>
+                                </button>
                               </div>
                             ))}
                     </ScrollContainer>

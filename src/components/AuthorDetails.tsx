@@ -45,15 +45,21 @@ export default function AuthorDetails() {
   return (
     <div className="w-full">
       <section className="bg-[#6c7279] p-4 ">
-        <a
+        <button
           onClick={() => router.back()}
-          className="flex items-center gap-1 pt-0 pb-4 text-white"
+          className="flex items-center gap-1 mt-0 mb-4 text-white cursor-pointer"
         >
           <MdKeyboardBackspace className="w-6 h-6" /> Zurück
-        </a>
+        </button>
         <div className="w-full flex items-center gap-4 text-white">
           <span className="min-w-[100px] max-h-[100px] min-w-[100px] max-w-[100px] overflow-hidden rounded-full">
-            <img src={"/" + data?.image || ""} />
+            <img
+              src={
+                data?.image?.includes("assets")
+                  ? "/" + data?.image
+                  : data?.image || "/image-placeholder.png"
+              }
+            />
           </span>
           <div className="">
             <span className="text-[24px]">

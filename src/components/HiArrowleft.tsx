@@ -12,7 +12,7 @@ interface HeaderLinkProps {
 const HeaderLink: React.FC<HeaderLinkProps> = ({ onClick, className,label, title,titleContent }) => {
     return (
         <div className="header">
-            <div onClick={onClick}>
+            <button onClick={onClick}>
                 <div className={className}>
                     <HiArrowLeft className="text-lg" />
                     {title &&
@@ -26,7 +26,7 @@ const HeaderLink: React.FC<HeaderLinkProps> = ({ onClick, className,label, title
                                 <span className="flex gap-1 pt-0 pb-4 text-white justify-center mt-6"> {label} {titleContent}</span>
                             }
                 </div>
-            </div>
+            </button>
         </div>
     );
 };

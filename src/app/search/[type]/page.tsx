@@ -1,11 +1,11 @@
-"use client"
-import API from '@lib/API';
-import { useQuery } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
-import { getData, saveData } from 'utils/indexDB';
-import Link from 'next/link';
-import FlieLoader from '@components/core/FlieLoader';
-import HeaderLink from '@components/HiArrowleft';
+"use client";
+import API from "@lib/API";
+import { useQuery } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
+import { getData, saveData } from "utils/indexDB";
+import Link from "next/link";
+import FlieLoader from "@components/core/FlieLoader";
+import HeaderLink from "@components/HiArrowleft";
 
 export default function TypePage() {
   const { type }: any = useParams();
@@ -13,7 +13,7 @@ export default function TypePage() {
 
   const fetchData = async () => {
     try {
-      const role = type === 'nav-author' ? 'Author' : 'Artist';
+      const role = type === "nav-author" ? "Author" : "Artist";
       const cacheKey = `author-artist-data-${role}`;
 
       const cachedData = await getData(cacheKey);
@@ -21,7 +21,9 @@ export default function TypePage() {
         return cachedData;
       }
 
-      const response: any = await API.get(`allUserByRole?&role=${role}&time=${new Date().toString()}`);
+      const response: any = await API.get(
+        `allUserByRole?&role=${role}&time=${new Date().toString()}`
+      );
       await saveData(cacheKey, response);
       return response;
     } catch (error) {
@@ -30,10 +32,7 @@ export default function TypePage() {
     }
   };
 
-  const {
-    isLoading,
-    data = [],
-  } = useQuery({
+  const { isLoading, data = [] } = useQuery({
     queryKey: ["data", type],
     queryFn: fetchData,
   });
@@ -55,15 +54,19 @@ export default function TypePage() {
     return acc;
   }, {});
 
-  const itemsWithoutLastName = Object.keys(groupedData).reduce((acc: any[], letter: string) => {
-    const filteredItems = groupedData[letter].filter((item: any) => !item.user_lastname);
-    return [...acc, ...filteredItems];
-  }, []);
+  const itemsWithoutLastName = Object.keys(groupedData).reduce(
+    (acc: any[], letter: string) => {
+      const filteredItems = groupedData[letter].filter(
+        (item: any) => !item.user_lastname
+      );
+      return [...acc, ...filteredItems];
+    },
+    []
+  );
 
   if (isLoading) {
     return <FlieLoader />;
   }
-
 
   return (
     <div className="w-full py-4 listSerachCZ">
@@ -75,7 +78,6 @@ export default function TypePage() {
 
       <h1 className="text-[22px] mb-4 text-white px-4">Nach Autoren suchen</h1>
 
-
       {itemsWithoutLastName.length > 0 && (
         <div key="no-lastname" id="no-lastname">
           <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1"></h2>
@@ -83,12 +85,19 @@ export default function TypePage() {
             <li className="text-white flex flex-col px-4">
               {itemsWithoutLastName.map((item: any, index: number) => (
                 <span
-                  className="py-2 border-b border-white/10"
+                  className="py-2 border-b border-white/10 cursor-pointer"
                   key={item.user_firstname}
+                  onClick={() =>
+                    router.push(
+                      `/home/artist-details?${
+                        type === "nav-author" ? "authorId" : "artistId"
+                      }=${item?.ID}`
+                    )
+                  }
                 >
                   <b>
                     {item.user_firstname}
-                    {index < itemsWithoutLastName.length - 1 && ', '}
+                    {index < itemsWithoutLastName.length - 1 && ", "}
                   </b>
                 </span>
               ))}
@@ -100,43 +109,52 @@ export default function TypePage() {
       {Object.keys(groupedData).map((letter: string) => (
         <div key={letter} id={letter}>
           <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1">
-            {letter !=="undefined" ? letter[0]:""}
+            {letter !== "undefined" ? letter[0] : ""}
           </h2>
           <ul>
             <li className="text-white flex flex-col px-4">
-              {groupedData[letter].filter((item: any) => item.user_lastname).map((item: any, index: number) => (
-                <span
-                  className="py-2 border-b border-white/10"
-                  key={item.user_lastname + item.user_firstname}
-                >
-                  <b>
-                    {item.user_lastname + " " + item.user_firstname}
-                    {index < groupedData[letter].length - 1 && ', '}
-                  </b>
-                </span>
-              ))}
+              {groupedData[letter]
+                .filter((item: any) => item.user_lastname)
+                .map((item: any, index: number) => (
+                  <span
+                    className="py-2 border-b border-white/10 cursor-pointer"
+                    key={item.user_lastname + item.user_firstname}
+                    onClick={() =>
+                      router.push(
+                        `/home/artist-details?${
+                          type === "nav-author" ? "authorId" : "artistId"
+                        }=${item?.ID}`
+                      )
+                    }
+                  >
+                    <b>
+                      {item.user_lastname + " " + item.user_firstname}
+                      {index < groupedData[letter].length - 1}
+                    </b>
+                  </span>
+                ))}
             </li>
           </ul>
         </div>
       ))}
 
-
       <ul id="alphabets" className="display-alphabetic">
-        {Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map((letter) => (
-          groupedData[letter] && groupedData[letter].length > 0 ? (
-            <li key={letter} className="text-white opacity-50">
-              <Link href={`#${letter}`} legacyBehavior>
-                {letter}
-              </Link>
-            </li>
-          ) : (
-            <li key={letter} className="text-white opacity-50">
-              <Link href={""} legacyBehavior>
-               {letter}
-              </Link>
-            </li>
-          )
-        ))}
+        {Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map(
+          (letter) =>
+            groupedData[letter] && groupedData[letter].length > 0 ? (
+              <li key={letter} className="text-white opacity-50">
+                <Link href={`#${letter}`} legacyBehavior>
+                  {letter}
+                </Link>
+              </li>
+            ) : (
+              <li key={letter} className="text-white opacity-50">
+                <Link href={""} legacyBehavior>
+                  {letter}
+                </Link>
+              </li>
+            )
+        )}
       </ul>
     </div>
   );

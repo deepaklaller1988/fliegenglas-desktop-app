@@ -71,7 +71,6 @@ const AlbumSection = ({
       } else {
         router.push(`/home/album-detail?id=${productId}`);
       }
-      console.log(cc, "CC");
     } else {
       const productId = product?.id ?? product?.product_id;
       if (productId) {
