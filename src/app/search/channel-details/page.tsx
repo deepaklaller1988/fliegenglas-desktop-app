@@ -19,9 +19,9 @@ export default function ChannelDetails() {
   const { user }: any = useUser();
   const searchParams = useSearchParams();
   const channelId = searchParams.get("id") || "";
-  const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const [channelData, setChannelData] = useState<any>(null);
+  const router = useRouter();
   const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   useEffect(() => {
@@ -40,15 +40,15 @@ export default function ChannelDetails() {
   const mutation: any = useMutation({
     mutationFn: async () => {
       const favStatus = isLiked ? 0 : 1;
-      const response = await API.post(
+      const response = await fetch(
         `addFav?&channel_id=${channelId}&user_id=${
           user?.id
-        }&fav=${favStatus}&time=${new Date().toString()}`,
-        {
-          channel_id: Number(channelId),
-          user_id: user.id.toString(),
-          fav: favStatus,
-        }
+        }&fav=${favStatus}&time=${new Date().toString()}`
+        // {
+        //   channel_id: Number(channelId),
+        //   user_id: user.id.toString(),
+        //   fav: favStatus,
+        // }
       );
       console.log(response, "response");
       return response;
@@ -68,12 +68,77 @@ export default function ChannelDetails() {
     },
   });
 
-  const getAllCategories = async (channelId: string) => {
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders?.length > 0) {
+      const productId = Number(product?.id ?? product?.product_id);
+
+      const index = orders.findIndex(
+        ({ line_items }) =>
+          line_items &&
+          line_items[0]?.type !== "subscription" &&
+          Number(line_items[0].id) === productId
+      );
+
+      if (index !== -1) {
+        const lineItem = orders[index]?.line_items?.[0];
+
+        if (lineItem) {
+          const data: any = {
+            categoryID: productId,
+            categoryName: lineItem.name,
+            imageUrl: lineItem.image,
+            backgroundImageUrl: lineItem.player_background_image,
+            artist: lineItem.artist,
+            shareurl: lineItem.shareurl,
+            list: lineItem.downloads,
+            primaryCategory: lineItem.primaryCategory,
+            paid: true,
+          };
+
+          if (!isVisible) {
+            handleCurrentAudio(0);
+          }
+
+          showPlayer(data);
+          return;
+        }
+      }
+      const cachedData = await getData("channelData");
+      let cc = await cachedData.filter((item: any) => {
+        console.log(
+          item?.name,
+          product?.name,
+          product?.name.split("Hörbuch-Abo ")[1],
+          item?.name === product?.name.split("Hörbuch-Abo ")[1]
+        );
+        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+          return true;
+        }
+      });
+      if (cc.length > 0) {
+        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
+      } else {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+      console.log(cc, "CC");
+    } else {
+      const productId = product?.id ?? product?.product_id;
+      if (productId) {
+        router.push(`/home/album-detail?id=${productId}`);
+      }
+    }
+  };
+
+  const getAllCategories = async (
+    channelId: string,
+    isRefreshing: boolean = false
+  ) => {
     try {
       const cacheKey = `categoriesmatched-${channelId}`;
 
       const cachedData = await getData(cacheKey);
-      if (cachedData) {
+      if (cachedData && !isRefreshing) {
         return cachedData;
       }
 
@@ -142,69 +207,7 @@ export default function ChannelDetails() {
   };
 
   const handleRefresh = async () => {
-    getAllCategories(channelId);
-  };
-
-  const openPlayerOrDetails = async (product: any) => {
-    const orders: any[] = await getData("order-data");
-    if (orders && orders?.length > 0) {
-      const productId = Number(product?.id ?? product?.product_id);
-
-      const index = orders.findIndex(
-        ({ line_items }) =>
-          line_items &&
-          line_items[0]?.type !== "subscription" &&
-          Number(line_items[0].id) === productId
-      );
-
-      if (index !== -1) {
-        const lineItem = orders[index]?.line_items?.[0];
-
-        if (lineItem) {
-          const data: any = {
-            categoryID: productId,
-            categoryName: lineItem.name,
-            imageUrl: lineItem.image,
-            backgroundImageUrl: lineItem.player_background_image,
-            artist: lineItem.artist,
-            shareurl: lineItem.shareurl,
-            list: lineItem.downloads,
-            primaryCategory: lineItem.primaryCategory,
-            paid: true,
-          };
-
-          if (!isVisible) {
-            handleCurrentAudio(0);
-          }
-
-          showPlayer(data);
-          return;
-        }
-      }
-      const cachedData = await getData("channelData");
-      let cc = await cachedData.filter((item: any) => {
-        console.log(
-          item?.name,
-          product?.name,
-          product?.name.split("Hörbuch-Abo ")[1],
-          item?.name === product?.name.split("Hörbuch-Abo ")[1]
-        );
-        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
-          return true;
-        }
-      });
-      if (cc.length > 0) {
-        router.push(`/home/album-detail/channel-purchase?id=${productId}`);
-      } else {
-        router.push(`/home/album-detail?id=${productId}`);
-      }
-      console.log(cc, "CC");
-    } else {
-      const productId = product?.id ?? product?.product_id;
-      if (productId) {
-        router.push(`/home/album-detail?id=${productId}`);
-      }
-    }
+    await getAllCategories(channelId, true);
   };
 
   return (
@@ -313,8 +316,9 @@ export default function ChannelDetails() {
               : "Als Lieblingskategorie setzen"}
           </button>
           <p className="text-white text-sm">
-            Diese Hörbuch-Kategories wird direkt auf der App-Startseite
-            angezeigt.
+            {isLiked
+              ? "Diese Hörbuch-Kategories wird direkt auf der App-Startseite angezeigt."
+              : "Setze diese Kategorie als Lieblingskategorie, um sie jeweils direkt auf der Startseite der App zu sehen."}
           </p>
         </div>
 

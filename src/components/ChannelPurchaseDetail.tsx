@@ -65,7 +65,6 @@ export default function ChannelPurchaseDetail() {
       }
     }
   };
-
   const { isLoading: isLoadingCheckPurchase, data: checkPurchaseData = {} } =
     useQuery<any>({
       queryKey: ["check-purchase", productId],
@@ -97,7 +96,7 @@ export default function ChannelPurchaseDetail() {
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image
             src={
-              checkPurchaseData?.imageUrl.includes("undefined")
+              checkPurchaseData?.imageUrl?.includes("undefined")
                 ? data?.local_image?.includes("assets")
                   ? "/" + data?.local_image
                   : data?.local_image
@@ -119,7 +118,7 @@ export default function ChannelPurchaseDetail() {
             <Image
               className="block w-full shadow-xl"
               src={
-                checkPurchaseData?.imageUrl.includes("undefined")
+                checkPurchaseData?.imageUrl?.includes("undefined")
                   ? data?.local_image?.includes("assets")
                     ? "/" + data?.local_image
                     : data?.local_image
