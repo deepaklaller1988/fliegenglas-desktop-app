@@ -8,18 +8,18 @@ import { UserProvider } from "context/UserContext";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
     const queryClient = getQueryClient();
-    useOnlineStatus();
+    // useOnlineStatus();
 
     return (
         <>
             <QueryClientProvider client={queryClient}>
-                <OfflineProvider>
+                {/* <OfflineProvider> */}
                     <UserProvider>
                         <AuthContextProvider>
                             {children}
                         </AuthContextProvider>
                     </UserProvider>
-                </OfflineProvider>
+                {/* </OfflineProvider> */}
             </QueryClientProvider>
         </>
     )

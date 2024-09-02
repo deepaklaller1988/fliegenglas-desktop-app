@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import { useRouter } from 'next/navigation';
-import React from 'react'
+import { useRouter } from "next/navigation";
+import React from "react";
 
 export default function Notification() {
   const router = useRouter();
- 
-  return (
-    <div>page</div>
-  )
+
+  return <div className="w-full text-center mt-5">Notifications</div>;
 }

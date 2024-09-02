@@ -80,8 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setFilteredSuggestions([]);
   };
 
-  const redirectFromSearch = (type: any, id: any) => {
-    console.log(type, id, "[]");
+  const redirectFromSearch = (type: any, id: any, item?: any) => {
     switch (type) {
       case "author":
         router.push(`/home/artist-details?authorId=${id}&role=author`);
@@ -93,7 +92,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         router.push(`/home/listing?id=${id}`);
         break;
       case "product":
-        router.push(`/home/album-detail?id=${id}`);
+        // router.push(`/home/album-detail?id=${id}`);
+        openPlayerOrDetails(item);
         break;
       case "channel":
         router.push(`/search/channel-details?id=${id}`);
@@ -121,13 +121,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         if (lineItem) {
           const data: any = {
             categoryID: productId,
-            categoryName: lineItem.name,
-            imageUrl: lineItem.image,
-            backgroundImageUrl: lineItem.player_background_image,
-            artist: lineItem.artist,
-            shareurl: lineItem.shareurl,
-            list: lineItem.downloads,
-            primaryCategory: lineItem.primaryCategory,
+            categoryName: lineItem?.name,
+            imageUrl: lineItem?.image,
+            backgroundImageUrl: lineItem?.player_background_image,
+            artist: lineItem?.artist,
+            shareurl: lineItem?.shareurl,
+            list: lineItem?.downloads,
+            primaryCategory: lineItem?.primaryCategory,
             paid: true,
           };
 
@@ -140,14 +140,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }
       }
       const cachedData = await getData("channelData");
-      let cc = await cachedData.filter((item: any) => {
-        console.log(
-          item?.name,
-          product?.name,
-          product?.name.split("Hörbuch-Abo ")[1],
-          item?.name === product?.name.split("Hörbuch-Abo ")[1]
-        );
-        if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
+      let cc = await cachedData?.filter((item: any) => {
+        if (item?.name === product?.name?.split("Hörbuch-Abo ")[1]) {
           return true;
         }
       });
@@ -156,7 +150,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
       } else {
         router.push(`/home/album-detail?id=${productId}`);
       }
-      console.log(cc, "CC");
     } else {
       const productId = product?.id ?? product?.product_id;
       if (productId) {
@@ -249,7 +242,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     <section>
                       <div
                         className="w-full flex gap-4 py-4 my-1 px-2 rounded-lg duration-300 cursor-pointer bg-[#ffffffcc] hover:bg-white text-black"
-                        onClick={() => redirectFromSearch(item.type, item.id)}
+                        onClick={() =>
+                          redirectFromSearch(item?.type, item?.id, item)
+                        }
                       >
                         <span
                           className={`${

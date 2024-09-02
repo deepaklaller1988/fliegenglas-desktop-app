@@ -28,9 +28,7 @@ const LayoutPath = ({ children }: { children: React.ReactNode }) => {
   //   if ("serviceWorker" in navigator) {
   //     const registerServiceWorker = async () => {
   //       try {
-  //         const swUrl = `${
-  //           process.env.NEXT_PUBLIC_BASE_PATH || ""
-  //         }/service-worker.js`;
+  //         const swUrl = `/service-worker.js`;
   //         const registration = await navigator.serviceWorker.register(swUrl);
   //         console.log(
   //           "Service Worker registered with scope:",

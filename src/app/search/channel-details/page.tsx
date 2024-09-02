@@ -44,13 +44,8 @@ export default function ChannelDetails() {
         `addFav?&channel_id=${channelId}&user_id=${
           user?.id
         }&fav=${favStatus}&time=${new Date().toString()}`
-        // {
-        //   channel_id: Number(channelId),
-        //   user_id: user.id.toString(),
-        //   fav: favStatus,
-        // }
       );
-      console.log(response, "response");
+
       return response;
     },
     onSuccess: () => {
@@ -106,12 +101,6 @@ export default function ChannelDetails() {
       }
       const cachedData = await getData("channelData");
       let cc = await cachedData.filter((item: any) => {
-        console.log(
-          item?.name,
-          product?.name,
-          product?.name.split("Hörbuch-Abo ")[1],
-          item?.name === product?.name.split("Hörbuch-Abo ")[1]
-        );
         if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
           return true;
         }
@@ -121,7 +110,6 @@ export default function ChannelDetails() {
       } else {
         router.push(`/home/album-detail?id=${productId}`);
       }
-      console.log(cc, "CC");
     } else {
       const productId = product?.id ?? product?.product_id;
       if (productId) {

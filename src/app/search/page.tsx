@@ -132,12 +132,6 @@ export default function Search() {
       }
       const cachedData = await getData("channelData");
       let cc = await cachedData.filter((item: any) => {
-        console.log(
-          item?.name,
-          product?.name,
-          product?.name.split("Hörbuch-Abo ")[1],
-          item?.name === product?.name.split("Hörbuch-Abo ")[1]
-        );
         if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
           return true;
         }
@@ -147,7 +141,6 @@ export default function Search() {
       } else {
         router.push(`/home/album-detail?id=${productId}`);
       }
-      console.log(cc, "CC");
     } else {
       const productId = product?.id ?? product?.product_id;
       if (productId) {

@@ -56,12 +56,6 @@ const AlbumSection = ({
       }
       const cachedData = await getData("channelData");
       let cc = await cachedData.filter((item: any) => {
-        console.log(
-          item?.name,
-          product?.name,
-          product?.name.split("Hörbuch-Abo ")[1],
-          item?.name === product?.name.split("Hörbuch-Abo ")[1]
-        );
         if (item?.name === product?.name.split("Hörbuch-Abo ")[1]) {
           return true;
         }
