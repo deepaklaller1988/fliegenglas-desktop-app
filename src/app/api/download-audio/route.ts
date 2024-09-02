@@ -16,7 +16,6 @@ export const POST = async (request: Request) => {
         return new NextResponse(arrayBuffer);
 
     } catch (error) {
-        console.log(error,"error")
         return NextResponse.json({ error, success: false }, { status: 500 });
     }
 }

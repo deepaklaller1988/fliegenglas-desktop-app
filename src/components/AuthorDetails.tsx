@@ -7,8 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { VscHeartFilled } from "react-icons/vsc";
 import { getImagePath } from "@lib/getImagePath";
 import FlieLoader from "./core/FlieLoader";
+import { useAudioPlayer } from "context/AudioPlayerContext";
+import { getData } from "utils/indexDB";
 
 export default function AuthorDetails() {
+  const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
   const searchParams = useSearchParams();
   const router = useRouter();
   const authorId = searchParams.get("authorId") || "";
@@ -17,7 +20,7 @@ export default function AuthorDetails() {
   const role = authorId ? "author" : artistId ? "artist" : null;
   const id = authorId || artistId;
 
-  const getData = async () => {
+  const getUserData = async () => {
     try {
       const response = await API.get(
         `getUserData?role=${role}&id=${id}&time=${new Date().toISOString()}`
@@ -30,9 +33,48 @@ export default function AuthorDetails() {
   };
   const { isLoading, data, error } = useQuery<any>({
     queryKey: ["authorDetails", role, id],
-    queryFn: getData,
+    queryFn: getUserData,
     refetchOnWindowFocus: false,
   });
+
+  const openPlayerOrDetails = async (product: any) => {
+    const orders: any[] = await getData("order-data");
+    if (orders && orders.length > 0) {
+      let index: number = -1;
+      orders.forEach((value: any, ind: number) => {
+        if (value?.line_items && value?.line_items[0].type !== "subscription") {
+          if (Number(value?.line_items[0]?.id) === Number(product?.id)) {
+            index = ind;
+          }
+        }
+      });
+
+      if (index !== -1) {
+        const data: any = {
+          categoryID: Number(product?.id),
+          categoryName: orders[index]?.line_items[0]?.name,
+          audioUrl: "",
+          imageUrl: orders[index]?.line_items[0]?.image,
+          backgroundImageUrl:
+            orders[index].line_items[0].player_background_image,
+          artist: orders[index].line_items[0].artist,
+          shareurl: orders[index].line_items[0].shareurl,
+          list: orders[index].line_items[0].downloads,
+          primaryCategory: orders[index].line_items[0].primaryCategory,
+          paid: true,
+        };
+        if (!isVisible) {
+          handleCurrentAudio(0);
+        }
+
+        showPlayer(data);
+      } else {
+        router.push(`/home/album-detail?id=${product?.id}`);
+      }
+    } else {
+      router.push(`/home/album-detail?id=${product?.id}`);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -76,9 +118,7 @@ export default function AuthorDetails() {
               <section>
                 <div
                   className="w-full flex gap-4 text-white py-6 px-2 rounded-lg hover:bg-white/10 duration-300 cursor-pointer"
-                  onClick={() =>
-                    router.push(`/home/album-detail?id=${item.id}`)
-                  }
+                  onClick={() => openPlayerOrDetails(item)}
                 >
                   <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
                     <img

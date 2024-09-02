@@ -15,7 +15,7 @@ const useOnlineStatus = (): boolean => {
         setIsOnline(false);
         // Immediately show the offline page
         router.push('/offline');
-        
+
         // Check IndexedDB data in the background
         const hasOfflineData = await checkIndexedDBData();
         if (hasOfflineData) {
@@ -26,7 +26,7 @@ const useOnlineStatus = (): boolean => {
 
     const checkIndexedDBData = async (): Promise<boolean> => {
       try {
-        const offlineAudios:any = await getAll();
+        const offlineAudios: any = await getAll();
         return offlineAudios.length > 0;
       } catch (error) {
         console.error('IndexedDB Error:', error);

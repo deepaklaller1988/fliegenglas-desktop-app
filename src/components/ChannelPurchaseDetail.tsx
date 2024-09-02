@@ -160,7 +160,7 @@ export default function ChannelPurchaseDetail() {
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
               {isLoadingCheckPurchase ? (
                 <FlieLoader />
-              ) : checkPurchaseData?.flag === 1 ? (
+              ) : data?.flag === 1 ? (
                 <>
                   <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
                     Du hast dieses Abo schon gekauft. Die Hörbücher befinden
@@ -184,7 +184,7 @@ export default function ChannelPurchaseDetail() {
               </p>
             </div>
           ) : (
-            checkPurchaseData?.flag !== 1 && (
+            data?.flag !== 1 && (
               <div className="w-full bg-white/80 rounded-md p-3 mt-3">
                 <Link
                   href={`/home/album-detail/channel-purchase?id=${data?.subscriptionProductID}`}

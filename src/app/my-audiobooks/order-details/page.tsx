@@ -50,7 +50,6 @@ const OrderDetails = () => {
 
   const openPlayerOrDetails = async (product: any) => {
     const orders: any[] = await getData("order-data");
-    console.log(orders);
     if (orders && orders.length > 0) {
       let index: number = -1;
       orders.forEach((value: any, ind: number) => {
