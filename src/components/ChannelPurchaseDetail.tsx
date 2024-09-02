@@ -105,6 +105,7 @@ export default function ChannelPurchaseDetail() {
             alt="Background Image"
             fill={true}
             className="blur-2xl opacity-65 object-cover"
+            loading="lazy"
           />
         </div>
         <div className="w-full p-3 relative z-10">
@@ -127,6 +128,7 @@ export default function ChannelPurchaseDetail() {
               alt="Album"
               width={500}
               height={500}
+              loading="lazy"
             />
           </div>
           {data?.type !== "subscription" && (
@@ -274,6 +276,7 @@ export default function ChannelPurchaseDetail() {
                       width={500}
                       key={index}
                       className="w-full h-full cursor-pointer"
+                      loading="lazy"
                     />
                   </Link>
                 ))}

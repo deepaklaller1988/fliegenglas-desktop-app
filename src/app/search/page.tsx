@@ -214,6 +214,7 @@ export default function Search() {
                             alt="img"
                             width={265}
                             height={300}
+                            loading="lazy"
                             className="w-full block rounded-md"
                           />
                         </Link>

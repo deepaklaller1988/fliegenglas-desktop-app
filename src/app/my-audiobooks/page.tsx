@@ -140,6 +140,7 @@ const OrderList: React.FC = () => {
                   width={150}
                   height={150}
                   className="w-full block rounded-md"
+                  loading="lazy"
                 />
               </button>
             </div>

@@ -12,7 +12,8 @@ const Subscription = ({ data }: any) => {
           height={300}
           src={""}
           alt="Album"
-        />
+          loading="lazy"
+          />
       </div>
       <div
         className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed"
@@ -36,6 +37,8 @@ const Subscription = ({ data }: any) => {
             alt="Album"
             width={500}
             height={500}
+            loading="lazy"
+
           />
         </div>
 

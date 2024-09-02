@@ -23,6 +23,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ title, likes, audiobookDuration, co
             alt="favorite"
             width={20}
             height={20}
+            loading="lazy"
           />
           {likes} gefällt das.
         </p>

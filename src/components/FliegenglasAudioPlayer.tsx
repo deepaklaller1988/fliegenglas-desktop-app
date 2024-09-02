@@ -365,6 +365,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                   alt="Background Image"
                   fill={true}
                   className="blur-2xl opacity-65 object-fit"
+                  loading="lazy"
                 />
               </div>
               <div className="flex sm:flex-row flex-col justify-between items-center sm:ml-5 ml-0 h-full">
@@ -379,6 +380,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     height={100}
                     width={100}
                     className="h-14 w-14 rounded-lg object-cover"
+                    loading="lazy"
                   />
                   <div className="flex flex-col w-full">
                     <p className="text-sm ml-2 text-white">
@@ -518,6 +520,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       alt="Background Image"
                       fill={true}
                       className="blur-2xl opacity-65 object-fit"
+                      loading="lazy"
                     />
                   </div>
                   {showList && (
@@ -533,6 +536,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           alt="Background Image"
                           fill={true}
                           className="blur-2xl opacity-65 object-fit"
+                          loading="lazy"
                         />
                       </div>
                       <div className="max-h-screen md:w-9/12 w-11/12 h-full m-auto">
@@ -549,6 +553,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                               height={200}
                               width={200}
                               className="rounded-xl shadow-lg h-40 w-auto"
+                              loading="lazy"
                             />
                             <button
                               className="flex flex-row items-center gap-2 text-white hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
@@ -617,6 +622,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                           alt="Background Image"
                           fill={true}
                           className="blur-2xl opacity-65 object-fit"
+                          loading="lazy"
                         />
                       </div>
 
@@ -633,6 +639,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                             height={200}
                             width={200}
                             className="rounded-xl shadow-lg h-40 w-auto"
+                            loading="lazy"
                           />
                           <button
                             className="flex flex-row text-white items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
@@ -710,6 +717,7 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       height={500}
                       width={500}
                       className="w-full h-full w-full object-cover rounded-2xl"
+                      loading="lazy"
                     />
                   </div>
                   <div className="w-full flex items-center justify-center md:block hidden">

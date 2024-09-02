@@ -229,6 +229,7 @@ export default function ChannelDetails() {
               alt="Channel"
               width={1000}
               height={1000}
+              loading="lazy"
               className="w-full h-auto background"
             />
           )}
@@ -293,6 +294,7 @@ export default function ChannelDetails() {
                                     alt={product?.name || ""}
                                     width={150}
                                     height={150}
+                                    loading="lazy"
                                     className="w-full block rounded-md"
                                   />
                                 </button>

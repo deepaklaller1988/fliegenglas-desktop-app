@@ -107,6 +107,7 @@ const AlbumSection = ({
                   alt={product?.name || ""}
                   width={150}
                   height={150}
+                  loading="lazy"
                   className="w-full block rounded-md"
                 />
               </button>
@@ -148,6 +149,7 @@ const AlbumSection = ({
                         alt={item?.name || ""}
                         width={150}
                         height={150}
+                        loading="lazy"
                         className="w-full block rounded-md"
                       />
                     </button>

@@ -123,6 +123,7 @@ const OrderDetails = () => {
                         alt="Order Image"
                         width={100}
                         height={100}
+                        loading="lazy"
                         className="object-cover rounded-md h-20"
                       />
                     </div>
@@ -132,6 +133,7 @@ const OrderDetails = () => {
                         alt="playButton"
                         width={100}
                         height={100}
+                        loading="lazy"
                         className="h-10"
                       />
                     </div>

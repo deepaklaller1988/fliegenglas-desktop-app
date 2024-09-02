@@ -10,6 +10,7 @@ const FlieLoader = () => {
           width={46}
           height={46}
           className="absolute w-24 h-24"
+          loading="lazy"
         />
     </div>
   );

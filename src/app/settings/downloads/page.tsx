@@ -95,6 +95,7 @@ export default function Downloads() {
                                 src={item?.imageUrl}
                                 alt={"Image"}
                                 width={200}
+                                loading="lazy"
                                 height={200}
                                 className="object-cover rounded-lg w-full h-full"
                               />
