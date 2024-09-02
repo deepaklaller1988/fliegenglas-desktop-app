@@ -106,6 +106,7 @@ export default function AuthorDetails() {
         })}
       <div className="w-full p-6 py-10 text-center">
         <Link
+          prefetch={true}
           className="rounded-md text-[#232a2c] bg-white/80 p-2 px-3"
           href=""
         >

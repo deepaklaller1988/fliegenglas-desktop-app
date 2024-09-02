@@ -119,6 +119,7 @@ const OrderList: React.FC = () => {
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
+         prefetch={true}
           href={`/my-audiobooks/order-details?name=${encodeURIComponent(item?.category?.name)}&id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >

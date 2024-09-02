@@ -143,13 +143,13 @@ export default function TypePage() {
           (letter) =>
             groupedData[letter] && groupedData[letter].length > 0 ? (
               <li key={letter} className="text-white opacity-50">
-                <Link href={`#${letter}`} legacyBehavior>
+                <Link href={`#${letter}`} legacyBehavior  prefetch={true}>
                   {letter}
                 </Link>
               </li>
             ) : (
               <li key={letter} className="text-white opacity-50">
-                <Link href={""} legacyBehavior>
+                <Link href={""} legacyBehavior  prefetch={true}>
                   {letter}
                 </Link>
               </li>

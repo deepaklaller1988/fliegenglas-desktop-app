@@ -215,7 +215,7 @@ export default function ChannelDetails() {
       {/* Top slideshow section */}
       <div className="rightSideSet">
         <div className="w-full relative">
-          <Link href="../search" className="absolute text-white left-4 top-4">
+          <Link href="../search" className="absolute text-white left-4 top-4"  prefetch={true}>
             <MdKeyboardBackspace className="w-6 h-6" />
           </Link>
           {!channelData && (
@@ -262,6 +262,7 @@ export default function ChannelDetails() {
                     <Link
                       href={`/home/listing?id=${item?.category?.categoryid}`}
                       className="text-[14px] whitespace-nowrap mt-1"
+                      prefetch={true}
                     >
                       Alle anzeigen
                     </Link>

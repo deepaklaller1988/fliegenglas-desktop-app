@@ -172,6 +172,7 @@ export default function ChannelPurchaseDetail() {
               ) : (
                 <Link
                   href={``}
+                  prefetch={true}
                   className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
                   1 Woche kostenlos hören
@@ -189,6 +190,7 @@ export default function ChannelPurchaseDetail() {
             checkPurchaseData?.flag !== 1 && (
               <div className="w-full bg-white/80 rounded-md p-3 mt-3">
                 <Link
+                 prefetch={true}
                   href={`/home/album-detail/channel-purchase?id=${data?.subscriptionProductID}`}
                   className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
@@ -199,6 +201,7 @@ export default function ChannelPurchaseDetail() {
                 </div>
                 <Link
                   href=""
+                  prefetch={true}
                   className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
                   Hörbuch ohne Abo kaufen
@@ -267,6 +270,7 @@ export default function ChannelPurchaseDetail() {
                 {data?.subscription_products.map((item: any, index: number) => (
                   <Link
                     key={index}
+                    prefetch={true}
                     href={`/home/album-detail/channel-purchase?id=${item?.product_id}`}
                   >
                     <Image
