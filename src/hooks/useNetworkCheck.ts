@@ -1,31 +1,33 @@
 import { useEffect, useState } from "react";
 
-const useNetworkStatus = () => {
-  const [isOnline, setOnline] = useState<boolean>(true);
+const useNetworkCheck = () => {
+  const [isOnline, setIsOnline] = useState<boolean>(true);
 
-  const updateNetworkStatus = () => {
-    if (typeof window !== "undefined") {
-      setOnline(navigator.onLine);
+  const checkNetworkStatus = async () => {
+    try {
+      const response = await fetch("https://www.google.com", { mode: "no-cors" });
+      if (response) {
+        setIsOnline(true);
+      } else {
+        setIsOnline(false);
+      }
+    } catch (error) {
+      setIsOnline(false);
     }
   };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      updateNetworkStatus();
+      setIsOnline(navigator.onLine);
 
-      window.addEventListener("load", updateNetworkStatus);
-      window.addEventListener("online", updateNetworkStatus);
-      window.addEventListener("offline", updateNetworkStatus);
+      checkNetworkStatus();
+      const intervalId = setInterval(checkNetworkStatus, 1000);
 
-      return () => {
-        window.removeEventListener("load", updateNetworkStatus);
-        window.removeEventListener("online", updateNetworkStatus);
-        window.removeEventListener("offline", updateNetworkStatus);
-      };
+      return () => clearInterval(intervalId);
     }
   }, []);
 
   return { isOnline };
 };
 
-export default useNetworkStatus;
+export default useNetworkCheck;
