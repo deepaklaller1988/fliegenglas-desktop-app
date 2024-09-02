@@ -81,6 +81,7 @@ const AlbumSection = ({
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
+         prefetch={true}
           href={`/home/listing?id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
@@ -101,6 +102,7 @@ const AlbumSection = ({
                   alt={product?.name || ""}
                   width={150}
                   height={150}
+                  loading="lazy"
                   className="w-full block rounded-md"
                 />
               </button>
@@ -121,6 +123,7 @@ const AlbumSection = ({
               <div className="flex justify-between items-center">
                 <div className="text-[22px]">{"Zuletzt gehört"}</div>
                 <Link
+                 prefetch={true}
                   href="/home/recently-viewed"
                   className="text-[14px] whitespace-nowrap mt-1 mr-2"
                 >
@@ -142,6 +145,7 @@ const AlbumSection = ({
                         alt={item?.name || ""}
                         width={150}
                         height={150}
+                        loading="lazy"
                         className="w-full block rounded-md"
                       />
                     </button>

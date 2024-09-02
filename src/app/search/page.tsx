@@ -188,15 +188,18 @@ export default function Search() {
                     ))
                   ) : combinedChannelData.length > 0 ? (
                     combinedChannelData?.map((item: any, index: any) => (
+
                       <div
                         key={index}
                         className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4"
                       >
                         <Link
+                        
                           className="w-full"
                           href={
                             item.link || `/search/channel-details?id=${item.id}`
                           }
+                          prefetch={true}
                         >
                           <Image
                             src={
@@ -207,6 +210,7 @@ export default function Search() {
                             alt="img"
                             width={265}
                             height={300}
+                            loading="lazy"
                             className="w-full block rounded-md"
                           />
                         </Link>
@@ -226,6 +230,7 @@ export default function Search() {
                         className="p-1 text-[#232a2c] px-2 rounded-md bg-white/80 hover:bg-white/90 transition"
                         href={``}
                         key={item.tag}
+                        prefetch={true}
                         onClick={() => handleTagClick(item)}
                       >
                         {item.tag}

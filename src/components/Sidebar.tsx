@@ -26,16 +26,14 @@ export default function Sidebar() {
   };
   const getLinkClasses = (path: string) => {
     const isActive = pathname.includes(path);
-    return `flex items-center gap-3 hover:text-[#ff9900] transition ${
-      isActive ? "text-[#ff9900] activeSidebarLink" : ""
-    }`;
+    return `flex items-center gap-3 hover:text-[#ff9900] transition ${isActive ? "text-[#ff9900] activeSidebarLink" : ""
+      }`;
   };
 
   return (
     <div
-      className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${
-        isOn ? "collapseMenu" : ""
-      }`}
+      className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${isOn ? "collapseMenu" : ""
+        }`}
     >
       <div className="sticky top-0 z-10">
         <div className="w-full sticky top-0 z-10 bg-[#242e39] openClose">
@@ -60,6 +58,7 @@ export default function Sidebar() {
                 {item.type === "link" ? (
                   <>
                     <Link
+                      prefetch={true}
                       href={item?.path}
                       className={getLinkClasses(item.path)}
                     >
@@ -70,6 +69,7 @@ export default function Sidebar() {
                 ) : (
                   <Link
                     href=""
+                    prefetch={true}
                     className={getLinkClasses(item.path)}
                     onClick={() => setIsMoreOptions(isMoreOptions)}
                   >
@@ -93,6 +93,7 @@ export default function Sidebar() {
                             <Link
                               href={item?.path}
                               className={getLinkClasses(item.path)}
+                              prefetch={true}
                             >
                               <div>{item.item}</div>
                               <item.icon className="w-5 h-5" /> {item.item}
@@ -103,6 +104,7 @@ export default function Sidebar() {
                             href={"/auth/login"}
                             className={getLinkClasses(item.path)}
                             onClick={handleLogout}
+                            prefetch={true}
                           >
                             <div>{item.item}</div>
                             <item.icon className="w-5 h-5" /> {item.item}
@@ -121,13 +123,15 @@ export default function Sidebar() {
                             <Link
                               href={item?.path}
                               className={getLinkClasses(item.path)}
+                              prefetch={true}
                             >
                               <div>{item.item}</div>
                               <item.icon className="w-5 h-5" /> {item.item}
                             </Link>
                           </>
                         ) : (
-                          <Link href="" className={getLinkClasses(item.path)}>
+                          <Link href="" className={getLinkClasses(item.path)} prefetch={true}
+                          >
                             <div>{item.item}</div>
                             <item.icon className="w-5 h-5" /> {item.item}
                           </Link>

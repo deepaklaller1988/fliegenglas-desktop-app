@@ -61,7 +61,7 @@ export default function Login() {
     queryKey: ["channel-data"],
     queryFn: getChannelData,
   });
-  
+
   const socialSignIn = async (e: any, platform: string) => {
     e.preventDefault();
     try {
@@ -79,8 +79,7 @@ export default function Login() {
         };
         setLoading(true);
         const response = await API.post(
-          `social_login/?&email=${
-            userData?.email
+          `social_login/?&email=${userData?.email
           }&time=${new Date().toString()}`,
           mainFormData
         );
@@ -127,6 +126,8 @@ export default function Login() {
                 href=""
                 className="button log-set rounded-md"
                 onClick={(e) => socialSignIn(e, "apple")}
+                prefetch={true}
+
               >
                 <img src="/assets/apple-logo.svg" className="md hydrated" />
                 Mit Apple anmelden
@@ -135,11 +136,15 @@ export default function Login() {
                 href=""
                 className="button google-set rounded-md"
                 onClick={(e) => socialSignIn(e, "google")}
+                prefetch={true}
+
               >
                 <img src="/assets/google.svg" className="md hydrated" />
                 Mit Google anmelden
               </Link>
-              <Link className="button rounded-md" href="/auth/login-step">
+             
+              <Link className="button rounded-md" href="/auth/login-step"
+               prefetch={true} >
                 Mit Deiner E-Mail anmelden
               </Link>
             </div>

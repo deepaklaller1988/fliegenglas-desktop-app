@@ -16,6 +16,7 @@ const AudioDetailCard = ({ imageSrc, title, name, linkHref }: any) => {
           alt={title}
           width={85}
           height={85}
+          loading="lazy"
         />
       </span>
       <span className="relative w-full">

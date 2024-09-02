@@ -12,7 +12,8 @@ const Subscription = ({ data }: any) => {
           height={300}
           src={""}
           alt="Album"
-        />
+          loading="lazy"
+          />
       </div>
       <div
         className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed"
@@ -22,6 +23,7 @@ const Subscription = ({ data }: any) => {
         <Link
           href="../home"
           className="flex items-center gap-1 py-2 pb-3 mb-2 text-white"
+          prefetch={true}
         >
           <MdKeyboardBackspace className="w-6 h-6" /> Zurück
         </Link>
@@ -36,6 +38,8 @@ const Subscription = ({ data }: any) => {
             alt="Album"
             width={500}
             height={500}
+            loading="lazy"
+
           />
         </div>
 

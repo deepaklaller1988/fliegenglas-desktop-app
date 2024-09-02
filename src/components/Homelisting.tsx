@@ -156,6 +156,8 @@ export default function Homelisting({ list }: any) {
                         width={100}
                         height={100}
                         className="object-cover w-full h-full"
+                        loading="lazy"
+                        
                       />
                     </span>
                     <div className="flex flex-col justify-between">

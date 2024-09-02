@@ -14,6 +14,8 @@ const RefreshButton: React.FC<RefreshButtonProps> = ({ onClick, text ,className,
       <Link
         href="#top"
         className={linkClassName}
+        prefetch={true}
+
       >
         {text}
       </Link>

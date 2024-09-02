@@ -203,7 +203,7 @@ export default function ChannelDetails() {
       {/* Top slideshow section */}
       <div className="rightSideSet">
         <div className="w-full relative">
-          <Link href="../search" className="absolute text-white left-4 top-4">
+          <Link href="../search" className="absolute text-white left-4 top-4"  prefetch={true}>
             <MdKeyboardBackspace className="w-6 h-6" />
           </Link>
           {!channelData && (
@@ -217,6 +217,7 @@ export default function ChannelDetails() {
               alt="Channel"
               width={1000}
               height={1000}
+              loading="lazy"
               className="w-full h-auto background"
             />
           )}
@@ -249,6 +250,7 @@ export default function ChannelDetails() {
                     <Link
                       href={`/home/listing?id=${item?.category?.categoryid}`}
                       className="text-[14px] whitespace-nowrap mt-1"
+                      prefetch={true}
                     >
                       Alle anzeigen
                     </Link>
@@ -281,6 +283,7 @@ export default function ChannelDetails() {
                                     alt={product?.name || ""}
                                     width={150}
                                     height={150}
+                                    loading="lazy"
                                     className="w-full block rounded-md"
                                   />
                                 </button>
