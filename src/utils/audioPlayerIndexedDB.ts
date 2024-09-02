@@ -74,22 +74,31 @@ export const getAudioByID = async (categoryID: string) => {
 
 export const getAll = async () => {
     try {
-        const db = await openDB();
-        const transaction = db.transaction(STORE_NAME, 'readonly');
-        const store = transaction.objectStore(STORE_NAME);
-
-        // Use the getAll method to retrieve all records
-        const request = store.getAll();
-
-        return new Promise((resolve, reject) => {
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
+      console.log("Opening IndexedDB...");
+      const db = await openDB();
+      console.log("DB opened. Accessing object store...");
+      const transaction = db.transaction(STORE_NAME, 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+  
+      console.log("Retrieving all records...");
+      const request = store.getAll();
+  
+      return new Promise((resolve, reject) => {
+        request.onsuccess = () => {
+          console.log("Data retrieved successfully:", request.result);
+          resolve(request.result);
+        };
+        request.onerror = () => {
+          console.error("Error retrieving data:", request.error);
+          reject(request.error);
+        };
+      });
     } catch (error) {
-        console.error('Failed to get all records', error);
-        throw error;
+      console.error('Failed to get all records', error);
+      throw error;
     }
-};
+  };
+  
 
 export const deleteAudioByID = async (categoryID: string): Promise<boolean> => {
     try {
