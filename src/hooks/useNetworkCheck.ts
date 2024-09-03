@@ -1,39 +1,25 @@
 import { useEffect, useState } from "react";
-import { getAll } from "../utils/audioPlayerIndexedDB";
 
 const useNetworkCheck = () => {
   const [isOnline, setIsOnline] = useState<boolean>(typeof window !== "undefined" ? navigator.onLine : true);
 
-  
-  const checkNetworkStatus = async () => {
-    try {
-      const response = await fetch("https://www.google.com", { mode: "no-cors" });
-      if (response.ok) {
-        setIsOnline(true);
-      } else {
-        setIsOnline(false);
-      }
-    } catch (error) {
-      setIsOnline(false);
-    }
-  };
-
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const handleOnline = () => {
-        setIsOnline(true);
-      };
+      const handleOnline = () => setIsOnline(true);
+      const handleOffline = () => setIsOnline(false);
 
-      const handleOffline = () => {
-        setIsOnline(false);
-      };
+      // Update online status based on navigator.onLine
+      const updateOnlineStatus = () => setIsOnline(navigator.onLine);
 
-      checkNetworkStatus(); // Initial network check
+      // Check initial network status
+      updateOnlineStatus();
 
+      // Add event listeners for online and offline events
       window.addEventListener("online", handleOnline);
       window.addEventListener("offline", handleOffline);
 
-      const intervalId = setInterval(checkNetworkStatus, 1000);
+      // Periodic check to update online status
+      const intervalId = setInterval(updateOnlineStatus, 1000);
 
       return () => {
         clearInterval(intervalId);
@@ -45,7 +31,7 @@ const useNetworkCheck = () => {
 
   console.log("Network status:", isOnline);
 
-  return { isOnline,  };
+  return { isOnline };
 };
 
 export default useNetworkCheck;
