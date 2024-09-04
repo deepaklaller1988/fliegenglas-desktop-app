@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAll, deleteAudioByID } from "utils/audioPlayerIndexedDB";
+import ErrorPopup from "./ErrorPopUp";
 
 export default function DownloadCompo() {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function DownloadCompo() {
   const [offlineAudios, setOfflineAudios] = useState<any>();
   const [offlineAudiosSize, setOfflineAudiosSize] = useState<number[]>([]);
   const [totalSize, setTotalSize] = useState<number>(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
 
   useEffect(() => {
     getOfflineAudios();
@@ -54,14 +57,35 @@ export default function DownloadCompo() {
 
   const handleDeleteOfflineAudio = async (e: any, item: any) => {
     e.stopPropagation();
-    let deleteCheck = await deleteAudioByID(item?.categoryID);
-    if (deleteCheck) {
-      getOfflineAudios();
+    setItemToDelete(item); // Store the item to delete
+    setShowPopup(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (itemToDelete) {
+      let deleteCheck = await deleteAudioByID(itemToDelete?.categoryID);
+      if (deleteCheck) {
+        getOfflineAudios();
+      }
+      setShowPopup(false);
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
   };
 
   return (
     <>
+      {showPopup && (
+        <ErrorPopup
+          message="Hörbücher vom lokalen Gerätespeicher entfernen ?"
+          onClose={handleClosePopup}
+          onSubmit={handleConfirmDelete}
+          heading="Download entfernen ?"
+          type="Downloads"
+        />
+      )}
       <div id="login-page" className="px-4 w-full">
         <div className="loginInner">
           <HeaderLink

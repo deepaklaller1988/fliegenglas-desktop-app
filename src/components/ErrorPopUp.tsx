@@ -20,10 +20,10 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({ message, onClose, heading, type
                         className="w-full bg-gray-500 text-white py-1.5 rounded"
                         onClick={onClose}
                     >
-                        {type == "delete" ? "NEIN" : "OK"}
+                        {type == "delete" ? "NEIN" : type=="Downloads" ? "ABBRECHEN" : "OK"}
                     </button>
 
-                    {type == "delete" &&
+                    {(type == "delete" || type == "Downloads") &&
                         <button
                             className="w-full bg-red-500  text-white py-1.5 rounded"
                             onClick={onSubmit}
@@ -31,6 +31,8 @@ const ErrorPopup: React.FC<ErrorPopupProps> = ({ message, onClose, heading, type
                             JA
                         </button>
                     }
+                      
+                    
                 </div>
             </div>
         </div>
