@@ -1,8 +1,13 @@
 const DB_NAME = 'audioDB';
 const STORE_NAME = 'audios';
 
-export const openDB = async () => {
-    return new Promise<IDBDatabase>((resolve, reject) => {
+export const openDB = async (): Promise<IDBDatabase | null> => {
+    if (typeof indexedDB === 'undefined') {
+        console.warn('IndexedDB is not available in this environment');
+        return null;
+    }
+
+    return new Promise<IDBDatabase | null>((resolve) => {
         const request = indexedDB.open(DB_NAME, 1);
 
         request.onupgradeneeded = () => {
@@ -11,7 +16,10 @@ export const openDB = async () => {
         };
 
         request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+        request.onerror = () => {
+            console.error('Failed to open database:', request.error);
+            resolve(null); // Resolve with null on error
+        };
     });
 };
 
@@ -24,6 +32,11 @@ export const saveAudios = async (
     newAudios: Array<{ id: string; data: ArrayBuffer; title: string; duration: string; name: string; }>
 ) => {
     const db = await openDB();
+    if (!db) {
+        console.warn('Database is not available');
+        return [];
+    }
+
     const transaction = db.transaction(STORE_NAME, 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
@@ -57,6 +70,11 @@ export const saveAudios = async (
 export const getAudioByID = async (categoryID: string) => {
     try {
         const db = await openDB();
+        if (!db) {
+            console.warn('Database is not available');
+            return [];
+        }
+
         const transaction = db.transaction(STORE_NAME, 'readonly');
         const store = transaction.objectStore(STORE_NAME);
 
@@ -74,35 +92,44 @@ export const getAudioByID = async (categoryID: string) => {
 
 export const getAll = async () => {
     try {
-      console.log("Opening IndexedDB...");
-      const db = await openDB();
-      console.log("DB opened. Accessing object store...");
-      const transaction = db.transaction(STORE_NAME, 'readonly');
-      const store = transaction.objectStore(STORE_NAME);
-  
-      console.log("Retrieving all records...");
-      const request = store.getAll();
-  
-      return new Promise((resolve, reject) => {
-        request.onsuccess = () => {
-          console.log("Data retrieved successfully:", request.result);
-          resolve(request.result);
-        };
-        request.onerror = () => {
-          console.error("Error retrieving data:", request.error);
-          reject(request.error);
-        };
-      });
+        console.log("Opening IndexedDB...");
+        const db = await openDB();
+        console.log("DB opened. Accessing object store...");
+        if (!db) {
+            console.warn('Database is not available');
+            return [];
+        }
+
+        const transaction = db.transaction(STORE_NAME, 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+
+        console.log("Retrieving all records...");
+        const request = store.getAll();
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => {
+                console.log("Data retrieved successfully:", request.result);
+                resolve(request.result);
+            };
+            request.onerror = () => {
+                console.error("Error retrieving data:", request.error);
+                reject(request.error);
+            };
+        });
     } catch (error) {
-      console.error('Failed to get all records', error);
-      throw error;
+        console.error('Failed to get all records', error);
+        throw error;
     }
-  };
-  
+};
 
 export const deleteAudioByID = async (categoryID: string): Promise<boolean> => {
     try {
         const db = await openDB();
+        if (!db) {
+            console.warn('Database is not available');
+            return false;
+        }
+
         const transaction = db.transaction(STORE_NAME, 'readwrite');
         const store = transaction.objectStore(STORE_NAME);
 
@@ -124,6 +151,10 @@ export const deleteAudioByID = async (categoryID: string): Promise<boolean> => {
 export const deleteAll = async () => {
     try {
         const db = await openDB();
+        if (!db) {
+            console.warn('Database is not available');
+            return [];
+        }
         const transaction = db.transaction(STORE_NAME, 'readwrite');
         const store = transaction.objectStore(STORE_NAME);
 

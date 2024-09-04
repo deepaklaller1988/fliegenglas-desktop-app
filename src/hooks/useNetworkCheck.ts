@@ -1,14 +1,16 @@
+"use client"
 import { useEffect, useState } from "react";
-import { getAll } from "../utils/audioPlayerIndexedDB";
+import { getServer } from "./getServer";
+
 
 const useNetworkCheck = () => {
   const [isOnline, setIsOnline] = useState<boolean>(typeof window !== "undefined" ? navigator.onLine : true);
 
-  
   const checkNetworkStatus = async () => {
     try {
-      const response = await fetch("https://www.google.com", { mode: "no-cors" });
-      if (response.ok) {
+      // const response = await fetch("/api/network-status");
+      const response = await getServer();
+      if (response.success) {
         setIsOnline(true);
       } else {
         setIsOnline(false);
@@ -28,12 +30,11 @@ const useNetworkCheck = () => {
         setIsOnline(false);
       };
 
-      checkNetworkStatus(); // Initial network check
 
       window.addEventListener("online", handleOnline);
       window.addEventListener("offline", handleOffline);
 
-      const intervalId = setInterval(checkNetworkStatus, 1000);
+      const intervalId = setInterval(checkNetworkStatus, 3000);
 
       return () => {
         clearInterval(intervalId);
@@ -43,9 +44,7 @@ const useNetworkCheck = () => {
     }
   }, []);
 
-  console.log("Network status:", isOnline);
-
-  return { isOnline,  };
+  return { isOnline };
 };
 
 export default useNetworkCheck;
