@@ -1,7 +1,24 @@
+"use client"
 import { useEffect, useState } from "react";
+import { getServer } from "./getServer";
+
 
 const useNetworkCheck = () => {
   const [isOnline, setIsOnline] = useState<boolean>(typeof window !== "undefined" ? navigator.onLine : true);
+
+  const checkNetworkStatus = async () => {
+    try {
+      // const response = await fetch("/api/network-status");
+      const response = await getServer();
+      if (response.success) {
+        setIsOnline(true);
+      } else {
+        setIsOnline(false);
+      }
+    } catch (error) {
+      setIsOnline(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -11,15 +28,12 @@ const useNetworkCheck = () => {
       // Update online status based on navigator.onLine
       const updateOnlineStatus = () => setIsOnline(navigator.onLine);
 
-      // Check initial network status
-      updateOnlineStatus();
 
       // Add event listeners for online and offline events
       window.addEventListener("online", handleOnline);
       window.addEventListener("offline", handleOffline);
 
-      // Periodic check to update online status
-      const intervalId = setInterval(updateOnlineStatus, 1000);
+      const intervalId = setInterval(checkNetworkStatus, 3000);
 
       return () => {
         clearInterval(intervalId);
@@ -28,8 +42,6 @@ const useNetworkCheck = () => {
       };
     }
   }, []);
-
-  console.log("Network status:", isOnline);
 
   return { isOnline };
 };

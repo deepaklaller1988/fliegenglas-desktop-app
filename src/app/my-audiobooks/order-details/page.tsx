@@ -114,12 +114,12 @@ const OrderDetails = () => {
                     <div className="h-20 overflow-hidden relative">
                       <Image
                         src={
-                          (item.line_items[0]?.local_image?.includes("assets")
-                            ? "/" + item.line_items[0]?.local_image
-                            : item.line_items[0]?.local_image) ||
+                          (item.line_items[0]?.image?.includes("assets")
+                            ? "/" + item.line_items[0]?.image
+                            : item.line_items[0]?.image) ||
                           "/image-placeholder.png"
                         }
-                        alt="Order Image"
+                        alt="ord img"
                         width={100}
                         height={100}
                         loading="lazy"

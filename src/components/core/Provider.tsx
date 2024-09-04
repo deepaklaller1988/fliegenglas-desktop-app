@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import useNetworkCheck from "@hooks/useNetworkCheck";
 import { getQueryClient } from "@lib/get-query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -7,25 +7,30 @@ import { UserProvider } from "context/UserContext";
 import OfflinePage from "../../components/OfflinePage";
 import { useEffect, useState } from "react";
 import { getAll } from "../../utils/audioPlayerIndexedDB";
+import DownloadCompo from "@components/DownloadCompo";
+import { AudioPlayerProvider } from "context/AudioPlayerContext";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   // const [hasCachedData, setHasCachedData] = useState<boolean>(false);
-  const { isOnline  } = useNetworkCheck();
-console.log(isOnline,"--")
+  const { isOnline } = useNetworkCheck();
+  const [offlineData, setOfflineData] = useState([]);
+
+  useEffect(() => {
+    checkIndexedDBData();
+  }, [isOnline]);
+
   const checkIndexedDBData = async () => {
     try {
       console.log("Fetching data from IndexedDB...");
       const offlineAudios: any = await getAll();
       console.log("Fetched offline audios:", offlineAudios);
-      // setHasCachedData(offlineAudios.length > 0);
+      setOfflineData(offlineAudios);
     } catch (error) {
-      console.error('IndexedDB Error:', error);
-      // setHasCachedData(false);
+      console.error("IndexedDB Error:", error);
     }
   };
 
-  checkIndexedDBData()
   // useEffect(() => {
   //   if ("serviceWorker" in navigator) {
   //     const registerServiceWorker = async () => {
@@ -50,10 +55,18 @@ console.log(isOnline,"--")
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <AuthContextProvider>
-            {isOnline ? children : <OfflinePage />}
+            <AudioPlayerProvider>
+              {isOnline ? (
+                children
+              ) : offlineData ? (
+                <DownloadCompo />
+              ) : (
+                <OfflinePage />
+              )}
+            </AudioPlayerProvider>
           </AuthContextProvider>
         </UserProvider>
       </QueryClientProvider>
     </>
-  )
+  );
 }

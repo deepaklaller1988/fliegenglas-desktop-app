@@ -40,14 +40,14 @@ export const AuthContextProvider = ({ children }: any) => {
         router.push("/auth/login");
         sessionStorage.removeItem("token");
       })
-      .catch((error) => {
+      .catch((error:any) => {
         console.error("Failed to sign out", error);
       });
     setUser(null);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser:any) => {
       setUser(currentUser);
     });
     return () => unsubscribe();
