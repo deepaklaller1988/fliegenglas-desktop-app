@@ -166,6 +166,9 @@ export default function Homelisting({ list }: any) {
                     </div>
                   </div>
                 </section>
+
+
+               
               </div>
             </div>
           );

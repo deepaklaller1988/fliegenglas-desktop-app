@@ -6,5 +6,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
     },
     send: (channel, args) => {
         ipcRenderer.send(channel, args);
-    }
+    },
+// preload.mjs
+
+    openLink: (url) => ipcRenderer.send('open-link', url)
+
 });

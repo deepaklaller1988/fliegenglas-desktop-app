@@ -1,5 +1,4 @@
-import { app, BrowserWindow } from 'electron';
-import serve from 'electron-serve';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -8,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const isProd = app.isPackaged;
-const loadURL = isProd ? serve({ directory: join(__dirname, '../out') }) : null;
+const loadURL = isProd ? serve({ directory: join(__dirname, '../build') }) : null;
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -17,7 +16,12 @@ const createWindow = () => {
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
-      preload: join(__dirname, 'preload.mjs')
+      preload: join(__dirname, 'preload.mjs'),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false   ,
+         enableRemoteModule: true // Required for accessing Electron's remote module
+
     }
   });
 
@@ -27,7 +31,6 @@ const createWindow = () => {
     });
   } else {
     win.loadURL('http://localhost:3000');
-    // win.webContents.openDevTools();
     win.webContents.on('did-fail-load', () => {
       win.webContents.reloadIgnoringCache();
     });
@@ -46,4 +49,9 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+// IPC Handling
+ipcMain.on('open-link', (event, url) => {
+  shell.openExternal(url);
 });
