@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAll, deleteAudioByID } from "utils/audioPlayerIndexedDB";
 import ErrorPopup from "./ErrorPopUp";
+import { toasterSuccess } from "./core/Toaster";
+import { toast } from "react-toastify";
 
 export default function DownloadCompo() {
   const router = useRouter();
@@ -57,7 +59,7 @@ export default function DownloadCompo() {
 
   const handleDeleteOfflineAudio = async (e: any, item: any) => {
     e.stopPropagation();
-    setItemToDelete(item); // Store the item to delete
+    setItemToDelete(item); 
     setShowPopup(true);
   };
 
@@ -66,10 +68,12 @@ export default function DownloadCompo() {
       let deleteCheck = await deleteAudioByID(itemToDelete?.categoryID);
       if (deleteCheck) {
         getOfflineAudios();
-      }
+        toasterSuccess("Das Hörbüch wurde von Deiner Downloadsliste entfernt",3000,"id");
+        
       setShowPopup(false);
     }
   };
+}
 
   const handleClosePopup = () => {
     setShowPopup(false);
