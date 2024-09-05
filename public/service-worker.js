@@ -2,7 +2,7 @@
 // const AUDIO_CACHE_URLS = [
 //   '/src/app/settings/downloads', // The component's page URL
 //   '/assets', // CSS file for the component
- 
+
 // ];
 
 // self.addEventListener('install', (event) => {
@@ -45,7 +45,32 @@
 // });
 
 const CACHE_NAME = 'my-cache-v1';
-const URLS_TO_CACHE = ['/settings/downloads',"/assets","/loader-animated-gif.gif"];
+const URLS_TO_CACHE = [
+    '/settings/downloads',
+    "favicon.ico",
+    "/_next/static/chunks/reactPlayerFilePlayer.js",
+    "/_next/image?url=%2Floader-animated-gif.gif&w=48&q=75"
+];
+
+
+const cacheDynamicImages = (request) => {
+    if (request.url.includes('/_next/image')) {
+        return fetch(request)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${request.url}: ${response.statusText}`);
+                }
+                const responseClone = response.clone();
+                return caches.open(CACHE_NAME).then((cache) => {
+                    return cache.put(request, responseClone);
+                });
+            })
+            .catch((error) => {
+                console.error(`Failed to cache ${request.url}:`, error);
+            });
+    }
+    return fetch(request); // For non-image requests, just fetch normally
+};
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -79,10 +104,15 @@ self.addEventListener('fetch', (event) => {
                 console.log('Serving from cache:', event.request.url);
                 return response; // Serve from cache
             }
-            return fetch(event.request).catch(() => {
-                console.error('Fetching failed, no cache available.');
-                return caches.match('/settings/downloads'); // Return fallback page if available
-            });
+            return cacheDynamicImages(event.request).then((cachedResponse) => {
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                return fetch(event.request).catch(() => {
+                    console.error('Fetching failed, no cache available.');
+                    return caches.match('/settings/downloads'); // Return fallback page if available
+                });
+            })
         })
     );
 });
