@@ -8,9 +8,11 @@ const useNetworkCheck = () => {
 
   const checkNetworkStatus = async () => {
     try {
-      // const response = await fetch("/api/network-status");
-      const response = await getServer();
-      if (response.success) {
+      const response = await fetch("/api/network-status");
+      let data = await response.json();
+      // const response = await getServer();
+      if (data.success) {
+        // if (response.success) {
         setIsOnline(true);
       } else {
         setIsOnline(false);

@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
     '/assets/',
     '/fonts.googleapis.com/',
     '/fonts.gstatic.com/',
+    '/api'
   ];
 
   for (const path of excludedPaths) {
