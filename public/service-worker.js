@@ -49,7 +49,9 @@ const URLS_TO_CACHE = [
     '/settings/downloads',
     "favicon.ico",
     "/_next/static/chunks/reactPlayerFilePlayer.js",
-    "/_next/image?url=%2Floader-animated-gif.gif&w=48&q=75"
+    "/_next/image?url=%2Floader-animated-gif.gif&w=48&q=75",
+    "/assets/images/download-explanation.jpg",
+    "/wifi.svg"
 ];
 
 

@@ -10,14 +10,26 @@ import { getAll } from "../../utils/audioPlayerIndexedDB";
 import DownloadCompo from "@components/DownloadCompo";
 import { AudioPlayerProvider } from "context/AudioPlayerContext";
 import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   const { isOnline } = useNetworkCheck();
   const [offlineData, setOfflineData] = useState([]);
+  const [cookie, setCookie] = useState<any>();
+
+  const router = useRouter();
 
   useEffect(() => {
     checkIndexedDBData();
+    const storedUser = getCookie("user");
+    setCookie(storedUser);
+    // if (!isOnline) {
+    //   // router.push("/settings/downloads");
+    // } else {
+    //   // router.push("/home");
+    // }
   }, [isOnline]);
 
   const checkIndexedDBData = async () => {
@@ -57,11 +69,15 @@ export default function Provider({ children }: { children: React.ReactNode }) {
             <AudioPlayerProvider>
               {isOnline ? (
                 children
-              ) : offlineData ? (
-                <>
-                  <FliegenglasAudioPlayer />
-                  <DownloadCompo />
-                </>
+              ) : cookie ? (
+                offlineData.length > 0 ? (
+                  <>
+                    <FliegenglasAudioPlayer />
+                    <DownloadCompo />
+                  </>
+                ) : (
+                  <OfflinePage />
+                )
               ) : (
                 <OfflinePage />
               )}
