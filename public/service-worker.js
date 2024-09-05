@@ -45,7 +45,7 @@
 // });
 
 const CACHE_NAME = 'my-cache-v1';
-const URLS_TO_CACHE = ['/settings/downloads'];
+const URLS_TO_CACHE = ['/settings/downloads',"/assets","/loader-animated-gif.gif"];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
