@@ -34,9 +34,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   const checkIndexedDBData = async () => {
     try {
-      console.log("Fetching data from IndexedDB...");
       const offlineAudios: any = await getAll();
-      console.log("Fetched offline audios:", offlineAudios);
       setOfflineData(offlineAudios);
     } catch (error) {
       console.error("IndexedDB Error:", error);
