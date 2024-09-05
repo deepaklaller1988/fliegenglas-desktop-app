@@ -86,6 +86,16 @@ export default function ChannelPurchaseDetail() {
     });
   };
 
+  const openWebsite = (url: any) => {
+    console.log(url, "url")
+    console.log('window object:', window);
+    if (window.indexBridge && window.indexBridge.openWebsite) {
+      window.indexBridge.openWebsite(url);
+    } else {
+      console.error('indexBridge is not available');
+    }
+  };
+
   if (isLoading) {
     return <FlieLoader />;
   }
@@ -159,6 +169,7 @@ export default function ChannelPurchaseDetail() {
           )}
 
           {data?.type === "subscription" ? (
+            console.log(data, "data"),
             <div className="w-full bg-white/80 rounded-md p-3 mt-3">
               {isLoadingCheckPurchase ? (
                 <FlieLoader />
@@ -170,13 +181,13 @@ export default function ChannelPurchaseDetail() {
                   </p>
                 </>
               ) : (
-                <Link
-                  href={``}
-                  prefetch={true}
+                <button
+                  id="openWebsite"
+                  onClick={() => openWebsite(data?.shareurl)}
                   className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
                   1 Woche kostenlos hören
-                </Link>
+                </button>
               )}
               <p className="text-black text-center font-100 mt-5 text-[16px]">
                 Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong> €
@@ -190,7 +201,7 @@ export default function ChannelPurchaseDetail() {
             data?.flag !== 1 && (
               <div className="w-full bg-white/80 rounded-md p-3 mt-3">
                 <Link
-                 prefetch={true}
+                  prefetch={true}
                   href={`/home/album-detail/channel-purchase?id=${data?.subscriptionProductID}`}
                   className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
@@ -199,13 +210,13 @@ export default function ChannelPurchaseDetail() {
                 <div className="w-full border-half-both relative my-2">
                   <p className="block text-center">oder</p>
                 </div>
-                <Link
-                  href=""
-                  prefetch={true}
+                <button
+                  id="openWebsite"
+                  onClick={() => openWebsite(data?.shareurl)}
                   className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
                 >
                   Hörbuch ohne Abo kaufen
-                </Link>
+                </button>
                 <div className="w-full flex items-center justify-between gap-1 pt-3">
                   <p className="text-[#232a2c] text-[16px]">
                     Preis inkl. MWST (7,7%){" "}

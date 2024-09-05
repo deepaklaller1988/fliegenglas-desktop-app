@@ -16,7 +16,7 @@ const createWindow = () => {
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
-      preload: join(__dirname, 'preload.mjs'),
+      preload: join(__dirname, 'preload.js'),
       contextIsolation: true,
       enableRemoteModule: false,
       nodeIntegration: false   ,
@@ -51,7 +51,8 @@ app.on('activate', () => {
   }
 });
 
-// IPC Handling
-ipcMain.on('open-link', (event, url) => {
-  shell.openExternal(url);
+ipcMain.handle('openWebsite', (event, url) => {
+  if (url) {
+    shell.openExternal(url);
+  }
 });
