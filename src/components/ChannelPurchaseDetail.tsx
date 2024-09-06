@@ -87,10 +87,11 @@ export default function ChannelPurchaseDetail() {
   };
 
   const openWebsite = (url: any) => {
-    console.log(url, "url")
-    console.log('window object:', window);
-    if (window.indexBridge && window.indexBridge.openWebsite) {
-      window.indexBridge.openWebsite(url);
+
+    const customWindow = window as typeof window & { indexBridge?: { openWebsite: (url: string) => void } };
+
+    if (customWindow.indexBridge && customWindow.indexBridge.openWebsite) {
+      customWindow.indexBridge.openWebsite(url);
     } else {
       console.error('indexBridge is not available');
     }
