@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import useNetworkCheck from "@hooks/useNetworkCheck";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { saveAudios } from "utils/audioPlayerIndexedDB";
 import { generateToken } from "utils/token";
 
@@ -58,6 +65,12 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
   const [downloadPercentage, setDownloadPercentage] = useState<number>(0);
   const [open, setOpen] = useState(false);
   const [downloadCategoryId, setdownloadCategoryId] = useState<any>();
+
+  const { isOnline } = useNetworkCheck();
+
+  useEffect(() => {
+    closePlayer();
+  }, [isOnline]);
 
   const showPlayer = (detail: AudioDetail) => {
     setAudioDetail(detail);

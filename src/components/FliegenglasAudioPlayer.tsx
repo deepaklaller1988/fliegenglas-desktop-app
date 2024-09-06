@@ -20,6 +20,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import AudioPlayerOptions from "./AudioPlayerOptions";
+import useNetworkCheck from "@hooks/useNetworkCheck";
 
 const playbackRates = [0.25, 0.5, 1, 1.25, 1.5, 1.75, 2];
 interface FliegenglasAudioPlayerProps {
@@ -54,6 +55,8 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   const sleepTimerRef: any = useRef(null);
   const autoSleepTime: any =
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
+
+  const { isOnline } = useNetworkCheck();
 
   const {
     isVisible,
@@ -692,7 +695,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         </div>
                       </div>
                       <button
-                        className="p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white"
+                        className={`p-5 rounded-full hover:bg-white/10 duration-300 sm:text-[3vw] xl:text-[1.5vw] text-[5vw] text-white ${
+                          isOnline ? "visible" : "invisible"
+                        }`}
                         onClick={() => handleMoreDetails(audioDetail)}
                       >
                         <HiDotsHorizontal />

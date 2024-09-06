@@ -22,28 +22,28 @@ const useNetworkCheck = () => {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleOnline = () => setIsOnline(true);
-      const handleOffline = () => setIsOnline(false);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const handleOnline = () => setIsOnline(true);
+  //     const handleOffline = () => setIsOnline(false);
 
-      // Update online status based on navigator.onLine
-      const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+  //     // Update online status based on navigator.onLine
+  //     const updateOnlineStatus = () => setIsOnline(navigator.onLine);
 
 
-      // Add event listeners for online and offline events
-      window.addEventListener("online", handleOnline);
-      window.addEventListener("offline", handleOffline);
+  //     // Add event listeners for online and offline events
+  //     window.addEventListener("online", handleOnline);
+  //     window.addEventListener("offline", handleOffline);
 
-      const intervalId = setInterval(checkNetworkStatus, 3000);
+  //     const intervalId = setInterval(checkNetworkStatus, 3000);
 
-      return () => {
-        clearInterval(intervalId);
-        window.removeEventListener("online", handleOnline);
-        window.removeEventListener("offline", handleOffline);
-      };
-    }
-  }, []);
+  //     return () => {
+  //       clearInterval(intervalId);
+  //       window.removeEventListener("online", handleOnline);
+  //       window.removeEventListener("offline", handleOffline);
+  //     };
+  //   }
+  // }, []);
 
   return { isOnline };
 };
