@@ -81,7 +81,7 @@ const AlbumSection = ({
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
-         prefetch={true}
+          prefetch={true}
           href={`/home/listing?id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
@@ -101,7 +101,11 @@ const AlbumSection = ({
                   src={product?.image || ""}
                   alt={product?.name || ""}
                   loading="lazy"
-                  className="h-full block rounded-md"
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  style={{ width: '100%', height: '100%' }}
+                  className="block rounded-md"
                 />
               </button>
             </div>
@@ -121,7 +125,7 @@ const AlbumSection = ({
               <div className="flex justify-between items-center">
                 <b className="text-[22px]">{"Zuletzt gehört"}</b>
                 <Link
-                 prefetch={true}
+                  prefetch={true}
                   href="/home/recently-viewed"
                   className="text-[14px] whitespace-nowrap mt-1 mr-2"
                 >
@@ -138,11 +142,15 @@ const AlbumSection = ({
                     className="inline-block rounded-md mr-3 h-[220px]"
                   >
                     <button className="w-full h-full" onClick={() => openPlayerOrDetails(item)}>
-                      <img src={item?.image || ""}
+                      <Image src={item?.image || ""}
                         alt={item?.name || ""}
                         loading="lazy"
-                        className="h-full block rounded-md"
-                        />
+                        width="0"
+                        height="0"
+                        sizes="100vw"
+                        style={{ width: '100%', height: '100%' }}
+                        className="block rounded-md"
+                      />
                     </button>
                   </div>
                 ))}

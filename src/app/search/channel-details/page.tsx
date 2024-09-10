@@ -41,8 +41,7 @@ export default function ChannelDetails() {
     mutationFn: async () => {
       const favStatus = isLiked ? 0 : 1;
       const response = await fetch(
-        `addFav?&channel_id=${channelId}&user_id=${
-          user?.id
+        `addFav?&channel_id=${channelId}&user_id=${user?.id
         }&fav=${favStatus}&time=${new Date().toString()}`
       );
 
@@ -203,7 +202,7 @@ export default function ChannelDetails() {
       {/* Top slideshow section */}
       <div className="rightSideSet">
         <div className="w-full relative">
-          <Link href="../search" className="absolute text-white left-4 top-4"  prefetch={true}>
+          <Link href="../search" className="absolute text-white left-4 top-4" prefetch={true}>
             <MdKeyboardBackspace className="w-6 h-6" />
           </Link>
           {!channelData && (
@@ -261,32 +260,36 @@ export default function ChannelDetails() {
                     <ScrollContainer className="scroll-container">
                       {isLoadingAll
                         ? Array.from({ length: 8 }).map((_, index) => (
+                          <div
+                            key={index}
+                            className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                          >
+                            {SkeletonLoader()}
+                          </div>
+                        ))
+                        : item?.products
+                          ?.slice(0, 8)
+                          .map((product: any, index: any) => (
                             <div
                               key={index}
-                              className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
+                              className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
                             >
-                              {SkeletonLoader()}
-                            </div>
-                          ))
-                        : item?.products
-                            ?.slice(0, 8)
-                            .map((product: any, index: any) => (
-                              <div
-                                key={index}
-                                className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
+                              <button className="h-full w-full"
+                                onClick={() => openPlayerOrDetails(product)}
                               >
-                                <button className="h-full w-full"
-                                  onClick={() => openPlayerOrDetails(product)}
-                                >
-                                  <img
-                                    src={product?.image || ""}
-                                    alt={product?.name || ""}
-                                    loading="lazy"
-                                    className="h-full block rounded-md"
-                                  />
-                                </button>
-                              </div>
-                            ))}
+                                <img
+                                  src={product?.image || ""}
+                                  alt={product?.name || ""}
+                                  loading="lazy"
+                                  width="0"
+                                  height="0"
+                                  sizes="100vw"
+                                  style={{ width: '100%', height: '100%' }}
+                                  className="block rounded-md"
+                                />
+                              </button>
+                            </div>
+                          ))}
                     </ScrollContainer>
                   </div>
                 </div>

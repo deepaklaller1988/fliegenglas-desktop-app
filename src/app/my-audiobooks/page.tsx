@@ -119,7 +119,7 @@ const OrderList: React.FC = () => {
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
-         prefetch={true}
+          prefetch={true}
           href={`/my-audiobooks/order-details?name=${encodeURIComponent(item?.category?.name)}&id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
@@ -138,7 +138,11 @@ const OrderList: React.FC = () => {
                 <img
                   src={getImagePath(product.line_items[0]?.image) || ""}
                   alt={product.line_items[0]?.name || ""}
-                  className="h-full block rounded-md"
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  style={{ width: '100%', height: '100%' }}
+                  className="block rounded-md"
                   loading="lazy"
                 />
               </button>
