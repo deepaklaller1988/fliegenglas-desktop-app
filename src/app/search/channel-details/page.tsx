@@ -273,18 +273,16 @@ export default function ChannelDetails() {
                             .map((product: any, index: any) => (
                               <div
                                 key={index}
-                                className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+                                className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
                               >
-                                <button
+                                <button className="h-full w-full"
                                   onClick={() => openPlayerOrDetails(product)}
                                 >
-                                  <Image
+                                  <img
                                     src={product?.image || ""}
                                     alt={product?.name || ""}
-                                    width={150}
-                                    height={150}
                                     loading="lazy"
-                                    className="w-full block rounded-md"
+                                    className="h-full block rounded-md"
                                   />
                                 </button>
                               </div>

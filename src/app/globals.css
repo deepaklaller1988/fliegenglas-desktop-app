@@ -428,7 +428,9 @@ ul#alphabets {
 .listSerachCZ ul {
     background: #030e1c;
 }
-
+.listSerachCZ ul li span:last-child {
+    border: none !important;
+}
 ul#alphabets a {
     display: block;
     font-size: 12px;

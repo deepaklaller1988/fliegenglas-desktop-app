@@ -35,8 +35,8 @@ export default function Sidebar() {
       className={`min-w-[300px] max-w-[300px] bg-white/10 flex flex-col transition-[1s] menuTrans ${isOn ? "collapseMenu" : ""
         }`}
     >
-      <div className="sticky top-0 z-10">
-        <div className="w-full sticky top-0 z-10 bg-[#242e39] openClose">
+      <div className="sticky top-0 z-10 overflow-y-auto overflow-x-hidden max-h-screen">
+        <div className="w-full sticky top-0 z-10 bg-[#242e39] openClose mb-4 border-b border-white/5">
           <section className="text-white/60 flex flex-col gap-4 p-4">
             <span
               onClick={handleClick}
