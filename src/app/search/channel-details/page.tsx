@@ -233,6 +233,7 @@ export default function ChannelDetails() {
                     className="loaderGradient w-[220px] h-[220px] min-w-[220px] min-h-[220px] inline-block rounded-md overflow-hidden mr-3"
                   >
                     {SkeletonLoader()}
+                    
                   </div>
                 ))}
               </div>
