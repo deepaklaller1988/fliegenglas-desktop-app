@@ -119,7 +119,7 @@ const OrderList: React.FC = () => {
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
-         prefetch={true}
+          prefetch={true}
           href={`/my-audiobooks/order-details?name=${encodeURIComponent(item?.category?.name)}&id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
@@ -132,15 +132,17 @@ const OrderList: React.FC = () => {
           {item?.products?.slice(0, 8)?.map((product: any, index: any) => (
             <div
               key={index}
-              className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+              className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
             >
-              <button onClick={() => openPlayerOrDetails(product)}>
-                <Image
+              <button className="w-full h-full" onClick={() => openPlayerOrDetails(product)}>
+                <img
                   src={getImagePath(product.line_items[0]?.image) || ""}
                   alt={product.line_items[0]?.name || ""}
-                  width={150}
-                  height={150}
-                  className="w-full block rounded-md"
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  style={{ width: '100%', height: '100%' }}
+                  className="block rounded-md"
                   loading="lazy"
                 />
               </button>

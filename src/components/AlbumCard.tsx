@@ -81,7 +81,7 @@ const AlbumSection = ({
       <div className="full flex gap-2 justify-between pr-3">
         <b className="text-[22px] leading-tight">{item?.category?.name}</b>
         <Link
-         prefetch={true}
+          prefetch={true}
           href={`/home/listing?id=${item?.category?.categoryid}`}
           className="text-[14px] whitespace-nowrap mt-1"
         >
@@ -94,16 +94,18 @@ const AlbumSection = ({
           {item?.products?.slice(0, 8)?.map((product: any, index: any) => (
             <div
               key={index}
-              className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+              className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
             >
-              <button onClick={() => openPlayerOrDetails(product)}>
-                <Image
+              <button className="w-full h-full" onClick={() => openPlayerOrDetails(product)}>
+                <img
                   src={product?.image || ""}
                   alt={product?.name || ""}
-                  width={150}
-                  height={150}
                   loading="lazy"
-                  className="w-full block rounded-md"
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  style={{ width: '100%', height: '100%' }}
+                  className="block rounded-md"
                 />
               </button>
             </div>
@@ -121,9 +123,9 @@ const AlbumSection = ({
             <div>
               <div className="text-[12px]">{"MEINE HÖRBÜCHER"}</div>
               <div className="flex justify-between items-center">
-                <div className="text-[22px]">{"Zuletzt gehört"}</div>
+                <b className="text-[22px]">{"Zuletzt gehört"}</b>
                 <Link
-                 prefetch={true}
+                  prefetch={true}
                   href="/home/recently-viewed"
                   className="text-[14px] whitespace-nowrap mt-1 mr-2"
                 >
@@ -137,16 +139,17 @@ const AlbumSection = ({
                 {recentlyPlayed?.slice(0, 8).map((item: any, index: any) => (
                   <div
                     key={index}
-                    className="inline-block rounded-md overflow-hidden mr-3 w-[220px] h-[220px] min-w-[220px] min-h-[220px]"
+                    className="inline-block rounded-md mr-3 h-[220px]"
                   >
-                    <button onClick={() => openPlayerOrDetails(item)}>
-                      <Image
-                        src={item?.image || ""}
+                    <button className="w-full h-full" onClick={() => openPlayerOrDetails(item)}>
+                      <Image src={item?.image || ""}
                         alt={item?.name || ""}
-                        width={150}
-                        height={150}
                         loading="lazy"
-                        className="w-full block rounded-md"
+                        width="0"
+                        height="0"
+                        sizes="100vw"
+                        style={{ width: '100%', height: '100%' }}
+                        className="block rounded-md"
                       />
                     </button>
                   </div>

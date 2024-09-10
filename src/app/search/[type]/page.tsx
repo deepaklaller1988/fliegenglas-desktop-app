@@ -80,7 +80,7 @@ export default function TypePage() {
 
       {itemsWithoutLastName.length > 0 && (
         <div key="no-lastname" id="no-lastname">
-          <h2 className="bg-[#112a47] text-[14px] text-white p-4 py-1"></h2>
+          <h2 className="bg-white/10 p-[1px]"></h2>
           <ul>
             <li className="text-white flex flex-col px-4">
               {itemsWithoutLastName.map((item: any, index: number) => (

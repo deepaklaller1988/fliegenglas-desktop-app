@@ -376,6 +376,7 @@ h6 {
 }
 
 .collapseMenuMain a div {
+	display: none;
 	position: absolute;
 	background: #545b64;
 	padding: 6px 15px;
@@ -428,7 +429,9 @@ ul#alphabets {
 .listSerachCZ ul {
     background: #030e1c;
 }
-
+.listSerachCZ ul li span:last-child {
+    border: none !important;
+}
 ul#alphabets a {
     display: block;
     font-size: 12px;
