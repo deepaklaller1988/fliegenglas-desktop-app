@@ -738,8 +738,9 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                       alt="Audio Thumbnail"
                       height={500}
                       width={500}
-                      className="h-[45vh] rounded-2xl w-auto object-fit"
+                      className="h-[45vh] rounded-2xl w-auto"
                       loading="lazy"
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                   {/* <div className="w-full flex items-center justify-center md:block hidden">
