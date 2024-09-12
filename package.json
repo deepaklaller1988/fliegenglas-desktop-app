@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev\" \"electron .\"",
     "build": "next build && electron-builder",
+    "s-build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -19,11 +20,8 @@
       "main/**/*",
       "node_modules/**/*",
       "public/**/*",
+      "out/**/*",
       "package.json"
-    ],
-    "asar": true,
-    "asarUnpack": [
-      ".next/**/*"
     ],
     "win": {
       "icon": "logo.jpg"

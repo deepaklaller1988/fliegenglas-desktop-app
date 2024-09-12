@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { getAll } from "../../utils/audioPlayerIndexedDB";
 import DownloadCompo from "@components/DownloadCompo";
 import { AudioPlayerProvider } from "context/AudioPlayerContext";
-import FliegenglasAudioPlayer from "@components/FliegenglasAudioPlayer";
+import AudioPlayer from "@components/AudioPlayer";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
@@ -70,7 +70,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
               ) : cookie ? (
                 offlineData.length > 0 ? (
                   <>
-                    <FliegenglasAudioPlayer />
+                    <AudioPlayer />
                     <DownloadCompo />
                   </>
                 ) : (

@@ -15,26 +15,26 @@ export default function Album() {
   useTitle("Home")
   const { user }: any = useUser();
 
-  const fetchAllCategories = async () => {
-    if (!user) {
-      return [];
-    }
-    try {
-      const cachedData = await getData("categories");
-      if (cachedData) {
-        return cachedData;
-      }
-      const response: any = await API.get(
-        // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
-        `getCategories?&time=${new Date().toString()}`
-      );
-      await saveData("categories", response);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  };
+  // const fetchAllCategories = async () => {
+  //   if (!user) {
+  //     return [];
+  //   }
+  //   try {
+  //     const cachedData = await getData("categories");
+  //     if (cachedData) {
+  //       return cachedData;
+  //     }
+  //     const response: any = await API.get(
+  //       // `getCategories?&user_id=${user.id}&time=${new Date().toString()}`
+  //       `getCategories?&time=${new Date().toString()}`
+  //     );
+  //     await saveData("categories", response);
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return [];
+  //   }
+  // };
 
   const fetchJsonCategoryData = async(forceRefresh = false) => {
     if (!user) {
@@ -99,38 +99,38 @@ export default function Album() {
     }
   };
 
-  const getOrderByUser = async () => {
-    if (!user) {
-      return [];
-    }
-    try {
-      const response: any = await API.get(
-        `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
-        // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
-      );
-      await putData("order-data", response);
+  // const getOrderByUser = async () => {
+  //   if (!user) {
+  //     return [];
+  //   }
+  //   try {
+  //     const response: any = await API.get(
+  //       `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+  //       // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
+  //     );
+  //     await putData("order-data", response);
 
-      return response;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  }
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return [];
+  //   }
+  // }
 
-  const getChannelData = async (refresh = false) => {
-    if (!user) return [];
+  // const getChannelData = async (refresh = false) => {
+  //   if (!user) return [];
     
-    if (!refresh) {
-      const cachedData = await getData("channelData");
-      if (cachedData) return cachedData;
-    }
+  //   if (!refresh) {
+  //     const cachedData = await getData("channelData");
+  //     if (cachedData) return cachedData;
+  //   }
 
-    const response: any = await API.get(
-      `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
-    );
-    await saveData("channelData", response);
-    return response;
-  };
+  //   const response: any = await API.get(
+  //     `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
+  //   );
+  //   await saveData("channelData", response);
+  //   return response;
+  // };
 
   const { isLoading: isJsonLoading, data: JsonData = [] } = useQuery<any>({
     queryKey: ["json-data", user],
@@ -147,15 +147,15 @@ export default function Album() {
     queryFn: fetchRecentlPlayed,
   });
 
-  const { isLoading: isOrder, data: orderData = [] } = useQuery({
-    queryKey: ["order-data", user],
-    queryFn: getOrderByUser,
-  });
+  // const { isLoading: isOrder, data: orderData = [] } = useQuery({
+  //   queryKey: ["order-data", user],
+  //   queryFn: getOrderByUser,
+  // });
 
-  const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
-    queryKey: ["channel-data", user],
-    queryFn: () => getChannelData(),
-  });
+  // const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
+  //   queryKey: ["channel-data", user],
+  //   queryFn: () => getChannelData(),
+  // });
 
   const handleRefresh = async () => {
     fetchnewCategories(true);

@@ -17,14 +17,14 @@ import { useRouter } from "next/navigation";
 import { useAudioPlayer } from "context/AudioPlayerContext";
 
 export default function Search() {
+  const router = useRouter();
   const { user }: any = useUser();
   const [searchQuery, setSearchQuery] = useState<any>("");
-  const router = useRouter();
   const { showPlayer, handleCurrentAudio, isVisible } = useAudioPlayer();
 
   const fetchTagData = async (refresh = false) => {
     if (!user) return [];
-    
+
     if (!refresh) {
       const cachedData = await getData("tags");
       if (cachedData) return cachedData;
@@ -39,7 +39,7 @@ export default function Search() {
 
   const fecthSearchSuggestions = async (refresh = false) => {
     if (!user) return [];
-    
+
     if (!refresh) {
       const cachedData = await getData("search-suggestions");
       if (cachedData) return cachedData;
@@ -54,7 +54,7 @@ export default function Search() {
 
   const getChannelData = async (refresh = false) => {
     if (!user) return [];
-    
+
     if (!refresh) {
       const cachedData = await getData("channelData");
       if (cachedData) return cachedData;
@@ -89,9 +89,9 @@ export default function Search() {
   };
 
   const handleRefresh = async () => {
-     fetchTagData(true);
-     fecthSearchSuggestions(true);
-     getChannelData(true);
+    fetchTagData(true);
+    fecthSearchSuggestions(true);
+    getChannelData(true);
   };
 
   const openPlayerOrDetails = async (product: any) => {
@@ -148,7 +148,20 @@ export default function Search() {
       }
     }
   };
-  
+
+  const handlePageOpen = (item: any) => {
+    if (item.link) {
+      const url = new URL(item.link, window.location.origin);
+      url.searchParams.append(
+        "type",
+        `${item.link.includes("nav-artist") ? "nav-artist" : "nav-author"}`
+      );
+      router.push(url.toString());
+    } else {
+      router.push(`/search/channel-details?id=${item.id}`);
+    }
+  };
+
   return (
     <div className="rightSideSet">
       <div className="w-full sticky top-0 left-0 p-4 bg-[#0b1521]">
@@ -188,18 +201,19 @@ export default function Search() {
                     ))
                   ) : combinedChannelData.length > 0 ? (
                     combinedChannelData?.map((item: any, index: any) => (
-
                       <div
                         key={index}
                         className="card flex md:w-2/4 sm:w-2/4 my-2 pl-4"
                       >
-                        <Link
-                        
+                        <button
                           className="w-full"
-                          href={
-                            item.link || `/search/channel-details?id=${item.id}`
-                          }
-                          prefetch={true}
+                          // href={
+                          //   item.link || `/search/channel-details?id=${item.id}`
+                          // }
+                          // prefetch={true}
+                          onClick={() => {
+                            handlePageOpen(item);
+                          }}
                         >
                           <Image
                             src={
@@ -213,7 +227,7 @@ export default function Search() {
                             loading="lazy"
                             className="w-full block rounded-md"
                           />
-                        </Link>
+                        </button>
                       </div>
                     ))
                   ) : (
@@ -242,8 +256,12 @@ export default function Search() {
                 <HomeSlider type="search" />
               </div>
 
-              <RefreshButton onClick={handleRefresh} text="Hörbücher aktualisieren"
-                className="w-full p-5 pb-10 flex items-center justify-center" linkClassName="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md" />
+              <RefreshButton
+                onClick={handleRefresh}
+                text="Hörbücher aktualisieren"
+                className="w-full p-5 pb-10 flex items-center justify-center"
+                linkClassName="text-[#232a2c] bg-white/80 hover:bg-white transition p-2 px-4 rounded-md"
+              />
             </>
           )}
         </>

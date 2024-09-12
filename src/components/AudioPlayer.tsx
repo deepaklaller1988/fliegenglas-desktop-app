@@ -21,9 +21,10 @@ import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import AudioPlayerOptions from "./AudioPlayerOptions";
 import useNetworkCheck from "@hooks/useNetworkCheck";
+import AudioPlayerList from "./AudioPlayerList";
 
 const playbackRates = [0.25, 0.5, 1, 1.25, 1.5, 1.75, 2];
-interface FliegenglasAudioPlayerProps {
+interface AudioPlayerProps {
   audioType?: string;
   handleShowPlayer?(): any;
   children?: any;
@@ -36,15 +37,12 @@ interface GetCounts {
   shares: number;
   shared: string;
 }
-const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
-  children,
-}) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
   const { user }: any = useUser();
   const [played, setPlayed] = useState(0);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
-  // const [open, setOpen] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [getCounts, setGetCounts] = useState<GetCounts>();
   const [buffering, setBuffering] = useState<boolean>(true);
@@ -544,6 +542,14 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                     />
                   </div>
                   {showList && (
+                    <AudioPlayerList
+                      audioDetail={audioDetail}
+                      handleShowList={handleShowList}
+                      handleCurrentAudio={handleCurrentAudio}
+                      currentAudio={currentAudio}
+                    />
+                  )}
+                  {/* {showList && (
                     <div className="absolute inset-0 bg-black z-20 h-full ">
                       <div className="absolute inset-0 h-full z-[-1] bg-black">
                         <Image
@@ -627,51 +633,55 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {showPopup && (
-                    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 h-screen w-full flex justify-center items-center">
-                      <div className="absolute inset-0 h-full z-[-1] bg-black">
-                        <Image
-                          src={
-                            audioDetail?.imageUrl.includes("assets")
-                              ? "/" + audioDetail?.imageUrl
-                              : audioDetail?.imageUrl ||
-                                "/image-placeholder.png"
-                          }
-                          alt="Background Image"
-                          fill={true}
-                          className="blur-2xl opacity-65 object-fit"
-                          loading="lazy"
-                        />
-                      </div>
+                    // <div className="fixed inset-0 z-50 bg-black bg-opacity-50 h-screen w-full flex justify-center items-center">
+                    //   <div className="absolute inset-0 h-full z-[-1] bg-black">
+                    //     <Image
+                    //       src={
+                    //         audioDetail?.imageUrl.includes("assets")
+                    //           ? "/" + audioDetail?.imageUrl
+                    //           : audioDetail?.imageUrl ||
+                    //             "/image-placeholder.png"
+                    //       }
+                    //       alt="Background Image"
+                    //       fill={true}
+                    //       className="blur-2xl opacity-65 object-fit"
+                    //       loading="lazy"
+                    //     />
+                    //   </div>
 
-                      <div className="p-5 h-full md:w-8/12 w-11/12">
-                        <div className="flex flex-row justify-between items-center h-1/12 pt-8 mb-5 px-10 w-full">
-                          <Image
-                            src={
-                              audioDetail?.imageUrl.includes("assets")
-                                ? "/" + audioDetail?.imageUrl
-                                : audioDetail?.imageUrl ||
-                                  "/image-placeholder.png"
-                            }
-                            alt="Audio Thumbnail"
-                            height={200}
-                            width={200}
-                            className="rounded-xl shadow-lg h-40 w-auto"
-                            loading="lazy"
-                          />
-                          <button
-                            className="flex flex-row text-white items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
-                            onClick={handleClosePopup}
-                          >
-                            <IoMdClose size={25} />
-                            Schließen
-                          </button>
-                        </div>
-                        <AudioPlayerOptions audioDetail={audioDetail} />
-                      </div>
-                    </div>
+                    //   <div className="p-5 h-full md:w-8/12 w-11/12">
+                    //     <div className="flex flex-row justify-between items-center h-1/12 pt-8 mb-5 px-10 w-full">
+                    //       <Image
+                    //         src={
+                    //           audioDetail?.imageUrl.includes("assets")
+                    //             ? "/" + audioDetail?.imageUrl
+                    //             : audioDetail?.imageUrl ||
+                    //               "/image-placeholder.png"
+                    //         }
+                    //         alt="Audio Thumbnail"
+                    //         height={200}
+                    //         width={200}
+                    //         className="rounded-xl shadow-lg h-40 w-auto"
+                    //         loading="lazy"
+                    //       />
+                    //       <button
+                    //         className="flex flex-row text-white items-center gap-2 hover:bg-white/10 hover:shadow-xl p-2 rounded-lg duration-300"
+                    //         onClick={handleClosePopup}
+                    //       >
+                    //         <IoMdClose size={25} />
+                    //         Schließen
+                    //       </button>
+                    //     </div>
+                    //     <AudioPlayerOptions audioDetail={audioDetail} />
+                    //   </div>
+                    // </div>
+                    <AudioPlayerOptions
+                      audioDetail={audioDetail}
+                      handleClosePopup={handleClosePopup}
+                    />
                   )}
                 </div>
 
@@ -967,4 +977,4 @@ const FliegenglasAudioPlayer: React.FC<FliegenglasAudioPlayerProps> = ({
   );
 };
 
-export default FliegenglasAudioPlayer;
+export default AudioPlayer;
