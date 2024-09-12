@@ -122,7 +122,7 @@ export default function AuthorDetails() {
                 >
                   <span className="min-w-[80px] max-h-[80px] min-w-[80px] max-w-[80px]">
                     <img
-                      src={getImagePath(item?.local_image)}
+                      src={getImagePath(item?.image)}
                       alt="Image"
                       className="rounded-lg"
                     />

@@ -191,7 +191,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
           )
         )}
       </section>
-
       <div className="mt-4">
         {filteredSuggestions.length === 0 && inputValue && (
           <p className="text-black p-4 bg-white/80 rounded-md">
