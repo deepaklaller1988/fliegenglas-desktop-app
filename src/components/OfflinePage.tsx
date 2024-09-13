@@ -1,10 +1,13 @@
 "use client";
 
-import useNetworkCheck from "@hooks/useNetworkCheck";
+// import useNetworkCheck from "@hooks/useNetworkCheck";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useNetwork } from "context/NetworkContext";
+
 export default function OfflinePage() {
-  const { isOnline } = useNetworkCheck();
+  // const { isOnline } = useNetworkCheck();
+  const { isOnline } = useNetwork();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 "use client";
-import useNetworkCheck from "@hooks/useNetworkCheck";
+// import useNetworkCheck from "@hooks/useNetworkCheck";
 import { getQueryClient } from "@lib/get-query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthContextProvider } from "context/AuthContext";
@@ -12,10 +12,12 @@ import { AudioPlayerProvider } from "context/AudioPlayerContext";
 import AudioPlayer from "@components/AudioPlayer";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { useNetwork } from "context/NetworkContext";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const { isOnline } = useNetworkCheck();
+  // const { isOnline } = useNetworkCheck();
+  const { isOnline } = useNetwork();
   const [offlineData, setOfflineData] = useState([]);
   const [cookie, setCookie] = useState<any>();
 

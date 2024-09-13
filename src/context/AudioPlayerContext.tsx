@@ -1,6 +1,7 @@
 "use client";
 
-import useNetworkCheck from "@hooks/useNetworkCheck";
+// import useNetworkCheck from "@hooks/useNetworkCheck";
+import { useNetwork } from "./NetworkContext";
 import React, {
   createContext,
   useContext,
@@ -66,7 +67,8 @@ export const AudioPlayerProvider: React.FC<{ children: ReactNode }> = ({
   const [open, setOpen] = useState(false);
   const [downloadCategoryId, setdownloadCategoryId] = useState<any>();
 
-  const { isOnline } = useNetworkCheck();
+  // const { isOnline } = useNetworkCheck();
+  const { isOnline } = useNetwork();
 
   useEffect(() => {
     closePlayer();

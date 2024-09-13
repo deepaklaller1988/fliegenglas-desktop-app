@@ -20,8 +20,9 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 import { useUser } from "context/UserContext";
 import API from "@lib/API";
 import AudioPlayerOptions from "./AudioPlayerOptions";
-import useNetworkCheck from "@hooks/useNetworkCheck";
+// import useNetworkCheck from "@hooks/useNetworkCheck";
 import AudioPlayerList from "./AudioPlayerList";
+import { useNetwork } from "context/NetworkContext";
 
 const playbackRates = [0.25, 0.5, 1, 1.25, 1.5, 1.75, 2];
 interface AudioPlayerProps {
@@ -54,7 +55,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
   const autoSleepTime: any =
     typeof window !== "undefined" && sessionStorage.getItem("autosleeptime");
 
-  const { isOnline } = useNetworkCheck();
+  // const { isOnline } = useNetworkCheck();
+  const { isOnline } = useNetwork();
 
   const {
     isVisible,
@@ -140,15 +142,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
   const handleAutoSleepMode = () => {
     clearTimeout(sleepTimerRef.current);
     if (isPlaying && autoSleepTime > 0) {
-      console.log("Setting auto-sleep timer...");
       sleepTimerRef.current = setTimeout(() => {
-        console.log("Auto-sleep time reached. Pausing the player...");
         setIsPlaying(false);
         setPlay(false);
         sessionStorage.removeItem("autosleeptime");
       }, parseInt(autoSleepTime, 10));
     } else if (autoSleepTime === -1) {
-      console.log("Auto-sleep is disabled. Continuing playback...");
       sessionStorage.removeItem("autosleeptime");
     }
   };
@@ -306,19 +305,26 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
     }
   };
 
-  const seekBackward = () => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(playedSeconds - 10);
-    }
-  };
-
   const togglePlayPause = () => {
     setPlay(!play);
   };
 
+  const seekBackward = () => {
+    if (Math.sign(played * duration - 10) != -1) {
+      if (playerRef.current) {
+        // playerRef.current.seekTo(playedSeconds - 10);
+        playerRef.current.seekTo((played - 10 / duration) * duration);
+        setPlayed(played - 10 / duration);
+      }
+    }
+  };
+
   const seekForward = () => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(playedSeconds + 10);
+    if (duration >= played * duration + 10) {
+      if (playerRef.current) {
+        playerRef.current.seekTo((played + 10 / duration) * duration);
+        setPlayed(played + 10 / duration);
+      }
     }
   };
 
@@ -467,7 +473,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                     <IoPlaySkipBack />
                   </button>
                   <button
-                    className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full text-white"
+                    className={`cursor-pointer sm:p-4 p-2  rounded-full ${
+                      Math.sign(played * duration - 10) != -1
+                        ? "text-white hover:bg-white/10"
+                        : "text-white/50"
+                    }`}
+                    disabled={Math.sign(played * duration - 10) == -1}
                     onClick={seekBackward}
                   >
                     <TbRewindBackward10 />
@@ -488,7 +499,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                     </button>
                   )}
                   <button
-                    className="cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white"
+                    className={`cursor-pointer sm:p-4 p-2 hover:bg-white/10 rounded-full duration-300 text-[4vw] text-white ${
+                      duration < played * duration + 10
+                        ? "text-white/50"
+                        : "text-white hover:bg-white/10"
+                    }`}
+                    disabled={duration < played * duration + 10}
                     onClick={seekForward}
                   >
                     <TbRewindForward10 />
@@ -829,7 +845,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                         <IoPlaySkipBack className="md:text-[2vw] text-[4vw]" />
                       </button>
                       <button
-                        className="cursor-pointer p-4 hover:bg-white/10 rounded-full text-white"
+                        className={`cursor-pointer p-4 hover:bg-white/10 rounded-full text-white ${
+                          Math.sign(played * duration - 10) != -1
+                            ? "text-white hover:bg-white/10"
+                            : "text-white/50"
+                        }`}
+                        disabled={Math.sign(played * duration - 10) == -1}
                         onClick={seekBackward}
                       >
                         <TbRewindBackward10 className="md:text-[2vw] text-[4vw]" />
@@ -850,16 +871,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                         </button>
                       )}
                       <button
-                        className={`p-4 rounded-full duration-300 ${
-                          audioDetail?.list.length > currentAudio + 1
-                            ? "text-white hover:bg-white/10 cursor-pointer"
-                            : "text-white/50"
+                        className={`p-4 rounded-full duration-300 cursor-pointer ${
+                          duration < played * duration + 10
+                            ? "text-white/50"
+                            : "text-white hover:bg-white/10"
                         }`}
-                        disabled={
-                          audioDetail?.list.length > currentAudio + 1
-                            ? false
-                            : true
-                        }
+                        disabled={duration < played * duration + 10}
                         onClick={seekForward}
                       >
                         <TbRewindForward10 className="md:text-[2vw] text-[4vw]" />
