@@ -73,7 +73,7 @@ export default function AudioPlayerOptions({
         />
       </div>
 
-      <div className="p-5 h-full md:w-8/12 w-11/12">
+      <div className="p-5 h-full w-[90vw]">
         <div className="flex flex-row justify-between items-center h-1/12 pt-8 mb-5 px-10 w-full">
           <Image
             src={
