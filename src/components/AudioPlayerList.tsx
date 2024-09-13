@@ -22,7 +22,7 @@ const AudioPlayerList = ({
           loading="lazy"
         />
       </div>
-      <div className="max-h-screen md:w-9/12 w-11/12 h-full m-auto">
+      <div className="max-h-screen w-[90vw] h-full m-auto">
         <div className="lg:mx-20 flex flex-col">
           <div className="flex flex-row justify-between items-center h-1/12 pt-8 mx-10 mb-5">
             <Image
