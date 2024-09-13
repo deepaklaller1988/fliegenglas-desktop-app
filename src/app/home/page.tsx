@@ -12,7 +12,7 @@ import RefreshButton from "@components/buttons/RefreshButton";
 import useTitle from "@hooks/useTitle";
 
 export default function Album() {
-  useTitle("Home")
+  useTitle("Home");
   const { user }: any = useUser();
 
   // const fetchAllCategories = async () => {
@@ -36,7 +36,7 @@ export default function Album() {
   //   }
   // };
 
-  const fetchJsonCategoryData = async(forceRefresh = false) => {
+  const fetchJsonCategoryData = async (forceRefresh = false) => {
     if (!user) {
       return [];
     }
@@ -58,7 +58,7 @@ export default function Album() {
     }
   };
 
-  const fetchnewCategories = async (forceRefresh=false) => {
+  const fetchnewCategories = async (forceRefresh = false) => {
     if (!user) {
       return [];
     }
@@ -75,7 +75,6 @@ export default function Album() {
       );
       await saveData("home-categories", response);
       return response;
-
     } catch (error) {
       console.log(error);
       return [];
@@ -99,47 +98,47 @@ export default function Album() {
     }
   };
 
-  // const getOrderByUser = async () => {
-  //   if (!user) {
-  //     return [];
-  //   }
-  //   try {
-  //     const response: any = await API.get(
-  //       `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
-  //       // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
-  //     );
-  //     await putData("order-data", response);
+  const getOrderByUser = async () => {
+    if (!user) {
+      return [];
+    }
+    try {
+      const response: any = await API.get(
+        `getOrderByUserID/?&userId=${50451}&time=${new Date().toString()}`
+        // `getOrderByUserID/?&userId=${user.id}&time=${new Date().toString()}`
+      );
+      await putData("order-data", response);
 
-  //     return response;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return [];
-  //   }
-  // }
+      return response;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
 
-  // const getChannelData = async (refresh = false) => {
-  //   if (!user) return [];
-    
-  //   if (!refresh) {
-  //     const cachedData = await getData("channelData");
-  //     if (cachedData) return cachedData;
-  //   }
+  const getChannelData = async (refresh = false) => {
+    if (!user) return [];
 
-  //   const response: any = await API.get(
-  //     `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
-  //   );
-  //   await saveData("channelData", response);
-  //   return response;
-  // };
+    if (!refresh) {
+      const cachedData = await getData("channelData");
+      if (cachedData) return cachedData;
+    }
+
+    const response: any = await API.get(
+      `getChannels?&user_id=${user.id}?&time=${new Date().toString()}`
+    );
+    await saveData("channelData", response);
+    return response;
+  };
 
   const { isLoading: isJsonLoading, data: JsonData = [] } = useQuery<any>({
     queryKey: ["json-data", user],
-    queryFn:()=> fetchJsonCategoryData(true),
+    queryFn: () => fetchJsonCategoryData(true),
   });
 
   const { isLoading, data = [] } = useQuery<any>({
     queryKey: ["categories-data", user],
-    queryFn:()=> fetchnewCategories(true)
+    queryFn: () => fetchnewCategories(true),
   });
 
   const { isLoading: isRecentlyPlayed, data: recentlyPlayed = [] } = useQuery({
@@ -147,15 +146,15 @@ export default function Album() {
     queryFn: fetchRecentlPlayed,
   });
 
-  // const { isLoading: isOrder, data: orderData = [] } = useQuery({
-  //   queryKey: ["order-data", user],
-  //   queryFn: getOrderByUser,
-  // });
+  const { isLoading: isOrder, data: orderData = [] } = useQuery({
+    queryKey: ["order-data", user],
+    queryFn: getOrderByUser,
+  });
 
-  // const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
-  //   queryKey: ["channel-data", user],
-  //   queryFn: () => getChannelData(),
-  // });
+  const { isLoading: isChannelLoading, data: channelData = [] } = useQuery({
+    queryKey: ["channel-data", user],
+    queryFn: () => getChannelData(),
+  });
 
   const handleRefresh = async () => {
     fetchnewCategories(true);
@@ -168,7 +167,6 @@ export default function Album() {
 
   return (
     <div className="rightSideSet">
-
       <HomeSlider type="home" />
 
       <div className="w-full">

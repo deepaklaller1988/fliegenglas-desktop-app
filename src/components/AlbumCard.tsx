@@ -96,15 +96,18 @@ const AlbumSection = ({
               key={index}
               className="inline-block rounded-md overflow-hidden mr-3 h-[220px]"
             >
-              <button className="w-full h-full" onClick={() => openPlayerOrDetails(product)}>
-                <img
+              <button
+                className="w-full h-full"
+                onClick={() => openPlayerOrDetails(product)}
+              >
+                <Image
                   src={product?.image || ""}
                   alt={product?.name || ""}
                   loading="lazy"
                   width="0"
                   height="0"
                   sizes="100vw"
-                  style={{ width: '100%', height: '100%' }}
+                  style={{ width: "100%", height: "100%" }}
                   className="block rounded-md"
                 />
               </button>
@@ -141,14 +144,18 @@ const AlbumSection = ({
                     key={index}
                     className="inline-block rounded-md mr-3 h-[220px]"
                   >
-                    <button className="w-full h-full" onClick={() => openPlayerOrDetails(item)}>
-                      <Image src={item?.image || ""}
+                    <button
+                      className="w-full h-full"
+                      onClick={() => openPlayerOrDetails(item)}
+                    >
+                      <Image
+                        src={item?.image || ""}
                         alt={item?.name || ""}
                         loading="lazy"
                         width="0"
                         height="0"
                         sizes="100vw"
-                        style={{ width: '100%', height: '100%' }}
+                        style={{ width: "100%", height: "100%" }}
                         className="block rounded-md"
                       />
                     </button>

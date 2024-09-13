@@ -7,6 +7,7 @@ import { useUser } from "context/UserContext";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import ErrorPopup from "@components/ErrorPopUp";
+import Image from "next/image";
 
 export default function Subscriptions() {
   const router = useRouter();
@@ -74,9 +75,11 @@ export default function Subscriptions() {
               className="max-w-md mx-auto bg-gray-900 text-white rounded-lg overflow-hidden shadow-lg"
             >
               <div className="p-4 flex">
-                <img
+                <Image
                   src={item.image}
                   alt="Subscription"
+                  width={100}
+                  height={100}
                   className="w-24 h-24 object-cover rounded"
                 />
                 <div className="ml-4">

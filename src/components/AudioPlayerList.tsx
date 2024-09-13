@@ -64,10 +64,12 @@ const AudioPlayerList = ({
                     <div className="flex justify-between items-center h-7">
                       <p className="text-gray-500 mt-1">{item?.duration}</p>
                       {index === currentAudio && (
-                        <img
+                        <Image
                           src="/assets/fly.gif"
                           alt="flie seelctor"
-                          className="h-7"
+                          width={30}
+                          height={100}
+                          // className="h-7"
                         />
                       )}
                     </div>
