@@ -840,7 +840,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                             : "text-white hover:bg-white/10 cursor-pointer"
                         }`}
                         disabled={currentAudio === 0 ? true : false}
-                        onClick={seekBackward}
+                        onClick={handlePreviousAudio}
                       >
                         <IoPlaySkipBack className="md:text-[2vw] text-[4vw]" />
                       </button>
@@ -892,7 +892,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ children }) => {
                             ? false
                             : true
                         }
-                        onClick={seekForward}
+                        onClick={handleNextAudio}
                       >
                         <IoPlaySkipForward className="md:text-[2vw] text-[4vw]" />
                       </button>

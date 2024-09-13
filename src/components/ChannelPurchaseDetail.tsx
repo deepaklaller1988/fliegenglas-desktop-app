@@ -71,6 +71,27 @@ export default function ChannelPurchaseDetail() {
       queryFn: checkPurchase,
     });
 
+  const checkImage = async () => {
+    const homeCat: any[] = await getData("home-categories");
+
+    let image = "";
+    if (homeCat && homeCat.length > 0) {
+      homeCat.forEach((value: any) => {
+        value.products.forEach((item: any) => {
+          if (Number(item.id) === Number(productId)) {
+            image = item.image;
+          }
+        });
+      });
+    }
+    return image;
+  };
+  const { isLoading: isLoadingCheckImage, data: checkImageData = "" } =
+    useQuery<any>({
+      queryKey: ["check-image", productId],
+      queryFn: checkImage,
+    });
+
   const handleShowPlayer = () => {
     showPlayer({
       categoryID: data?.id,
@@ -78,8 +99,8 @@ export default function ChannelPurchaseDetail() {
       list: [
         { m3u8: data?.preview_url?.replace("mp3", "m3u8"), title: data?.name },
       ],
-      imageUrl: data?.local_image,
-      backgroundImageUrl: data?.player_background_image,
+      imageUrl: checkImageData,
+      backgroundImageUrl: checkImageData,
       artist: data?.artist,
       shareurl: data?.shareurl,
       paid: false,
@@ -87,13 +108,14 @@ export default function ChannelPurchaseDetail() {
   };
 
   const openWebsite = (url: any) => {
-
-    const customWindow = window as typeof window & { indexBridge?: { openWebsite: (url: string) => void } };
+    const customWindow = window as typeof window & {
+      indexBridge?: { openWebsite: (url: string) => void };
+    };
 
     if (customWindow.indexBridge && customWindow.indexBridge.openWebsite) {
       customWindow.indexBridge.openWebsite(url);
     } else {
-      console.error('indexBridge is not available');
+      console.error("indexBridge is not available");
     }
   };
 
@@ -106,13 +128,7 @@ export default function ChannelPurchaseDetail() {
       <div className="w-full h-full overflow-auto bgChangeAlbum bg-cover bg-center bg-fixed">
         <div className="absolute inset-0 h-full z-[-1] bg-black">
           <Image
-            src={
-              checkPurchaseData?.imageUrl?.includes("undefined")
-                ? data?.local_image?.includes("assets")
-                  ? "/" + data?.local_image
-                  : data?.local_image
-                : checkPurchaseData?.imageUrl
-            }
+            src={checkImageData}
             alt="Background Image"
             fill={true}
             className="blur-2xl opacity-65 object-cover"
@@ -129,13 +145,7 @@ export default function ChannelPurchaseDetail() {
           <div className="w-full">
             <Image
               className="block w-full shadow-xl"
-              src={
-                checkPurchaseData?.imageUrl?.includes("undefined")
-                  ? data?.local_image?.includes("assets")
-                    ? "/" + data?.local_image
-                    : data?.local_image
-                  : checkPurchaseData?.imageUrl
-              }
+              src={checkImageData}
               alt="Album"
               width={500}
               height={500}
@@ -169,66 +179,66 @@ export default function ChannelPurchaseDetail() {
             </div>
           )}
 
-          {data?.type === "subscription" ? (
-            console.log(data, "data"),
-            <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-              {isLoadingCheckPurchase ? (
-                <FlieLoader />
-              ) : checkPurchaseData?.flag === 1 ? (
-                <>
-                  <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
-                    Du hast dieses Abo schon gekauft. Die Hörbücher befinden
-                    sich unter «Meine Hörbücher».
+          {data?.type === "subscription"
+            ? (console.log(data, "data"),
+              (
+                <div className="w-full bg-white/80 rounded-md p-3 mt-3">
+                  {isLoadingCheckPurchase ? (
+                    <FlieLoader />
+                  ) : checkPurchaseData?.flag === 1 ? (
+                    <>
+                      <p className="text-[#ff9900] border-b-[1px] py-4 border-b-black text-center">
+                        Du hast dieses Abo schon gekauft. Die Hörbücher befinden
+                        sich unter «Meine Hörbücher».
+                      </p>
+                    </>
+                  ) : (
+                    <button
+                      id="openWebsite"
+                      onClick={() => openWebsite(data?.shareurl)}
+                      className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                    >
+                      1 Woche kostenlos hören
+                    </button>
+                  )}
+                  <p className="text-black text-center font-100 mt-5 text-[16px]">
+                    Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong>{" "}
+                    € pro Monat
                   </p>
-                </>
-              ) : (
-                <button
-                  id="openWebsite"
-                  onClick={() => openWebsite(data?.shareurl)}
-                  className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                >
-                  1 Woche kostenlos hören
-                </button>
+                  <p className="text-black text-center font-100 text-[16px]">
+                    Jederzeit über die App kündbar.
+                  </p>
+                </div>
+              ))
+            : checkPurchaseData?.flag !== 1 && (
+                <div className="w-full bg-white/80 rounded-md p-3 mt-3">
+                  <Link
+                    prefetch={true}
+                    href={`/home/album-detail/channel-purchase?id=${data?.subscriptionProductID}`}
+                    className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  >
+                    1 Woche kostenlos hören
+                  </Link>
+                  <div className="w-full border-half-both relative my-2">
+                    <p className="block text-center">oder</p>
+                  </div>
+                  <button
+                    id="openWebsite"
+                    onClick={() => openWebsite(data?.shareurl)}
+                    className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
+                  >
+                    Hörbuch ohne Abo kaufen
+                  </button>
+                  <div className="w-full flex items-center justify-between gap-1 pt-3">
+                    <p className="text-[#232a2c] text-[16px]">
+                      Preis inkl. MWST (7,7%){" "}
+                    </p>
+                    <b className="text-[#232a2c] text-[16px]">
+                      € {data.preview_price}
+                    </b>
+                  </div>
+                </div>
               )}
-              <p className="text-black text-center font-100 mt-5 text-[16px]">
-                Danach im Hörbuch-Abo <strong>{data?.preview_price}</strong> €
-                pro Monat
-              </p>
-              <p className="text-black text-center font-100 text-[16px]">
-                Jederzeit über die App kündbar.
-              </p>
-            </div>
-          ) : (
-            checkPurchaseData?.flag !== 1 && (
-              <div className="w-full bg-white/80 rounded-md p-3 mt-3">
-                <Link
-                  prefetch={true}
-                  href={`/home/album-detail/channel-purchase?id=${data?.subscriptionProductID}`}
-                  className="w-full text-center bg-[#ff9900] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                >
-                  1 Woche kostenlos hören
-                </Link>
-                <div className="w-full border-half-both relative my-2">
-                  <p className="block text-center">oder</p>
-                </div>
-                <button
-                  id="openWebsite"
-                  onClick={() => openWebsite(data?.shareurl)}
-                  className="w-full text-center bg-[#6c7279] rounded-md text-white p-3 text-[18px] inline-block m-auto"
-                >
-                  Hörbuch ohne Abo kaufen
-                </button>
-                <div className="w-full flex items-center justify-between gap-1 pt-3">
-                  <p className="text-[#232a2c] text-[16px]">
-                    Preis inkl. MWST (7,7%){" "}
-                  </p>
-                  <b className="text-[#232a2c] text-[16px]">
-                    € {data.preview_price}
-                  </b>
-                </div>
-              </div>
-            )
-          )}
 
           {data?.type !== "subscription" && (
             <>

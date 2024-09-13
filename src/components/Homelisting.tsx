@@ -138,11 +138,11 @@ export default function Homelisting({ list }: any) {
 
       {displayData &&
         displayData.length > 0 &&
-        displayData.map((item: any) => {
-          const productId =
-            list == "recently-viewed" ? item?.product_id : item?.id;
+        displayData.map((item: any, index: number) => {
+          // const productId =
+          //   list == "recently-viewed" ? item?.product_id : item?.id;
           return (
-            <div key={item?.id}>
+            <div key={index}>
               <div className="w-full spaceBorder px-4">
                 <section className="">
                   <div
@@ -157,7 +157,6 @@ export default function Homelisting({ list }: any) {
                         height={100}
                         className="object-cover w-full h-full"
                         loading="lazy"
-                        
                       />
                     </span>
                     <div className="flex flex-col justify-between">
@@ -166,9 +165,6 @@ export default function Homelisting({ list }: any) {
                     </div>
                   </div>
                 </section>
-
-
-               
               </div>
             </div>
           );

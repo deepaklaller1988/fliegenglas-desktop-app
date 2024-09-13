@@ -12,6 +12,7 @@ import { getImagePath } from "@lib/getImagePath";
 import { useRouter } from "next/navigation";
 import { SkeletonLoader } from "./core/SkeletonLoader";
 import { useAudioPlayer } from "context/AudioPlayerContext";
+import Image from "next/image";
 
 export default function HomeSlider({ type }: any) {
   const { user }: any = useUser();
@@ -129,15 +130,17 @@ export default function HomeSlider({ type }: any) {
                       <img
                         src={getImagePath(item?.product_header_graphic)}
                         alt="background image"
-                        className="blur-xl"
+                        className="blur-2xl w-full h-full object-fit"
                       />
                     </div>
                   </div>
-                  <div className="w-60 z-10 bg-black rounded-xl">
-                    <img
-                      className="w-full rounded-xl"
+                  <div className="h-full z-10 bg-black rounded-xl">
+                    <Image
+                      className="w-full h-64 rounded-xl"
                       src={getImagePath(item?.product_header_graphic)}
                       alt="Album"
+                      height={200}
+                      width={200}
                     />
                   </div>
                 </button>
